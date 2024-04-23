@@ -9,10 +9,10 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Restaurant Owner!')
 
 #load button images
-title_img = pygame.image.load('gametitle.png').convert_alpha()
-start_img = pygame.image.load('playbutton.png').convert_alpha()
-credit_img = pygame.image.load('creditbutton.png').convert_alpha()
-exit_img = pygame.image.load('quitbutton.png').convert_alpha()
+title_img = pygame.image.load('gameasset\gametitle.png').convert_alpha()
+start_img = pygame.image.load('gameasset\playbutton.png').convert_alpha()
+credit_img = pygame.image.load('gameasset\creditbutton.png').convert_alpha()
+exit_img = pygame.image.load('gameasset\quitbutton.png').convert_alpha()
 
 
 #create button instances
