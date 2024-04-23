@@ -29,7 +29,7 @@ while run:
 
     title.draw(screen)
     
-    # print these
+    # your mommy
     if start_button.draw(screen):
         print('START')
     
