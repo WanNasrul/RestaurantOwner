@@ -8,6 +8,10 @@ SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Restaurant Owner!')
 
+# background
+bg = pygame.image.load('gameasset/background.png')
+
+
 #load button images
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
@@ -26,10 +30,10 @@ run = True
 while run:
 
     screen.fill((255,235,216))
-
+    screen.blit(bg, (0,0))
     title.draw(screen)
     
-    # your mommy
+    # print these
     if start_button.draw(screen):
         print('START')
     
