@@ -1,6 +1,8 @@
 import pygame
 import button
 
+from maingame import *
+
 #hello
 #create display window
 SCREEN_WIDTH = 1280
@@ -37,6 +39,7 @@ while run:
     # print these
     if start_button.draw(screen):
         print('START')
+        maingame()
     
     if credit_button.draw(screen):
         print('CREDITS')
