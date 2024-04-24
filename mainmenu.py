@@ -10,7 +10,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Restaurant Owner!')
 
 # background
-bg = pygame.image.load('gameasset/background.png')
+bg = pygame.image.load('gameasset/backgroundmainmenu.png')
 
 
 #load button images
