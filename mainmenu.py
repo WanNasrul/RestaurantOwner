@@ -39,7 +39,6 @@ while run:
     # print these
     if start_button.draw(screen):
         print('START')
-        maingame()
     
     if credit_button.draw(screen):
         print('CREDITS')
