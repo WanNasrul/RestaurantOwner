@@ -2,6 +2,8 @@ import pygame
 import sys
 from datetime import datetime
 
+# Hello this is a test
+
 # Initialize Pygame
 pygame.init()
 
