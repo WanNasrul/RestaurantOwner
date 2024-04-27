@@ -1,7 +1,7 @@
 import pygame
 import button
 
-from maingame import *
+from main import *
 from datetime import *
 
 #hello
