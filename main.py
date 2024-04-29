@@ -1,5 +1,6 @@
 import pygame
 import button
+from sys import exit #import one thing
 
 # initialize pygame
 pygame.init()
@@ -39,10 +40,12 @@ def main_menu():
 
         if exit_button.draw(screen):
             pygame.quit()  # quit pygame directly
+            exit()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                pygame.quit()
+                exit()
         pygame.display.update()
 
 def game_screen():
@@ -55,7 +58,8 @@ def game_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                pygame.quit()
+                exit()
         pygame.display.update()
 
 # def credits_menu():
