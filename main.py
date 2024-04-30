@@ -67,7 +67,7 @@ def game_screen():
     run = True
 
     # default money and day value
-    money = 0
+    money = 0   
     day = 1
 
     while run:
@@ -87,6 +87,7 @@ def game_screen():
         if pause_button.draw(screen):
             print('game paused')
             # insert pause code here
+            run = False
         
         if shop_button.draw(screen):
             print('opened shop')
