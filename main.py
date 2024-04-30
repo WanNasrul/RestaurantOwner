@@ -32,10 +32,13 @@ pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
 
 # text
-daycycle_font = pygame.font.Font('font/Pixeltype.ttf', 60)
-daycycle_surf = daycycle_font.render('Day 1', False, 'Black')
-daycycle_rect = daycycle_surf.get_rect(topleft=(40, 40))
+# daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
+# daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
+# daycycle_rect = daycycle_surf.get_rect(topleft=(495,600))
 
+# money_font = pygame.font.Font('font/segoepr.ttf', 50)
+# money_surf = money_font.render(str(money), True, 'darkred')
+# money_rect = daycycle_surf.get_rect(topleft=(170,590))
 
 def main_menu():
     run = True
@@ -62,12 +65,24 @@ def main_menu():
 
 def game_screen():
     run = True
+
+    # default money and day value
+    money = 0
+    day = 1
+
     while run:
+        # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
 
-        # game screen code here
-        screen.blit(daycycle_surf,daycycle_rect)
+        # game font variables such as day count and money count
+        daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
+        daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
+        daycycle_rect = daycycle_surf.get_rect(topleft=(495,600))
+
+        money_font = pygame.font.Font('font/segoepr.ttf', 50)
+        money_surf = money_font.render(str(money), True, 'darkred')
+        money_rect = daycycle_surf.get_rect(topleft=(170,590))
 
         if pause_button.draw(screen):
             print('game paused')
@@ -79,6 +94,11 @@ def game_screen():
         
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
+        screen.blit(daycycle_surf,daycycle_rect)
+        screen.blit(money_surf,money_rect)
+    
+        # testing, add 1 money every 1 frame
+        money += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
