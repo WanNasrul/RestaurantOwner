@@ -25,14 +25,14 @@ credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
 
 # characters
-cheftest = pygame.image.load('gameasset/testchef.png').convert_alpha()
+# cheftest = pygame.image.load('gameasset/testchef.png').convert_alpha()
 fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
-waitertest = pygame.image.load('gameasset/testwaiter.png').convert_alpha()
+# waitertest = pygame.image.load('gameasset/testwaiter.png').convert_alpha()
 
 
-cheftest_button = button.Button(175, 65, cheftest, 0.09)
+# cheftest_button = button.Button(175, 65, cheftest, 0.09)
 fern_button = button.Button(508, 300, fern_img, 0.11)
-waitertest_button = button.Button(460, 65, waitertest, 0.03)
+# waitertest_button = button.Button(460, 65, waitertest, 0.03)
 
 
 def main_menu():
@@ -63,10 +63,10 @@ def game_screen():
         screen.blit(bg_game_screen, (0, 0))
 
         # game screen code here
-        if cheftest_button.draw(screen):
-            chef_menu()
+        # if cheftest_button.draw(screen):
+        #     chef_menu()
 
-        waitertest_button.draw(screen)
+        # waitertest_button.draw(screen)
 
         fern_button.draw(screen)
 
