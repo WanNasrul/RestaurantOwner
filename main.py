@@ -18,12 +18,24 @@ title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
+pause_img = pygame.image.load('gameasset/pause.png').convert_alpha()
+shop_img = pygame.image.load('gameasset/shopui.png').convert_alpha()
+moneycounter_img = pygame.image.load('gameasset/moneycounter.png').convert_alpha()
+daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
 
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
 start_button = button.Button(515, 350, start_img, 0.5)
 credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
+pause_button = button.Button(20, 20, pause_img, 2/3)
+shop_button  = button.Button(890, 510, shop_img, 2/3)
+
+# text
+daycycle_font = pygame.font.Font('font/Pixeltype.ttf', 60)
+daycycle_surf = daycycle_font.render('Day 1', False, 'Black')
+daycycle_rect = daycycle_surf.get_rect(topleft=(40, 40))
+
 
 def main_menu():
     run = True
@@ -55,6 +67,18 @@ def game_screen():
         screen.blit(bg_game_screen, (0, 0))
 
         # game screen code here
+        screen.blit(daycycle_surf,daycycle_rect)
+
+        if pause_button.draw(screen):
+            print('game paused')
+            # insert pause code here
+        
+        if shop_button.draw(screen):
+            print('opened shop')
+            # insert shop code here
+        
+        screen.blit(moneycounter_img, (30,530))
+        screen.blit(daycounter_img, (380,615))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
