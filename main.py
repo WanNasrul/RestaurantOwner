@@ -22,6 +22,15 @@ pause_img = pygame.image.load('gameasset/pause.png').convert_alpha()
 shop_img = pygame.image.load('gameasset/shopui.png').convert_alpha()
 moneycounter_img = pygame.image.load('gameasset/moneycounter.png').convert_alpha()
 daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
+fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
+chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
+waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
+npc1_img = pygame.image.load('gameasset/npc1.png')
+
+# npc position
+npc1_x_pos = 1000
+
+
 
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
@@ -30,6 +39,17 @@ credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
 pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
+
+# click the chef and cat
+fern_button = button.Button(508, 300, fern_img, 0.08)
+chef_button = button.Button(200, 215, chef_img, 0.5)
+waiter_button = button.Button(450, 215, waiter_img, 0.5)
+
+# sound effects
+cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
+
+
+
 
 # text
 # daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
@@ -64,6 +84,7 @@ def main_menu():
         pygame.display.update()
 
 def game_screen():
+    global npc1_x_pos, npc1_img
     run = True
 
     # default money and day value
@@ -74,6 +95,20 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+
+        if fern_button.draw(screen):
+            cat_sfx.play()
+
+        if chef_button.draw(screen):
+            print('Meals Pop Up')
+
+        waiter_button.draw(screen)
+
+        npc1_x_pos -= 1.5
+        if npc1_x_pos < 530: 
+            npc1_img = 1000
+        else: # NEED TO RECHECK THIS !!! 
+            screen.blit(npc1_img,(npc1_x_pos, 70))
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
@@ -105,6 +140,8 @@ def game_screen():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
+
         pygame.display.update()
 
 # def credits_menu():
