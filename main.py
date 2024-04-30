@@ -79,7 +79,8 @@ def game_screen():
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
 
-        fern_button.draw(screen)
+        if fern_button.draw(screen):
+            print('meow')
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
