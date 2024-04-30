@@ -18,12 +18,18 @@ title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
+daycycle_font = pygame.font.Font('font/Pixeltype.ttf', 60)
 
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
 start_button = button.Button(515, 350, start_img, 0.5)
 credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
+
+# text
+daycycle_surf = daycycle_font.render('Day 1', False, 'Black')
+daycycle_rect = daycycle_surf.get_rect(topleft=(40, 40))
+
 
 def main_menu():
     run = True
@@ -55,6 +61,7 @@ def game_screen():
         screen.blit(bg_game_screen, (0, 0))
 
         # game screen code here
+        screen.blit(daycycle_surf,daycycle_rect)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
