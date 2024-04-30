@@ -1,6 +1,7 @@
 import pygame
 import button
 from sys import exit #import one thing
+from mapping import map
 
 # initialize pygame
 pygame.init()
@@ -52,7 +53,7 @@ def game_screen():
     run = True
     while run:
         screen.fill((255, 255, 255))
-        screen.blit(bg_game_screen, (0, 0))
+        screen.blit(map(), (0, 0))
 
         # game screen code here
 
