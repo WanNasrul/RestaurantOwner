@@ -22,6 +22,7 @@ pause_img = pygame.image.load('gameasset/pause.png').convert_alpha()
 shop_img = pygame.image.load('gameasset/shopui.png').convert_alpha()
 moneycounter_img = pygame.image.load('gameasset/moneycounter.png').convert_alpha()
 daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
+fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
@@ -30,6 +31,9 @@ credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
 pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
+
+# click the chef and cat
+fern_button = button.Button(508, 300, fern_img, 0.11)
 
 # text
 # daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
@@ -74,6 +78,8 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+
+        fern_button.draw(screen)
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
