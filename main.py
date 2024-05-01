@@ -10,16 +10,19 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Restaurant Owner!')
+clock = pygame.time.Clock()
 
 
 # moving main menu background
-mainmenubg_surf = pygame.image.load('gameasset/backgroundmainmenuanimated.png')
+mainmenubg_surf = pygame.image.load('gameasset/backgroundmainmenuanimated.png').convert_alpha()
 mainmenubg_rect = mainmenubg_surf.get_rect(topleft = (0,10))
+mainmenubg2_surf = pygame.image.load('gameasset/backgroundmainmenuanimateddark.png').convert_alpha()
+mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 
 #load images
 
 # bg_main_menu = pygame.image.load('gameasset/backgroundmainmenu.png')
-bg_game_screen = pygame.image.load('gameasset/background.png')
+bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
@@ -31,7 +34,7 @@ daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
 fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
-npc1_img = pygame.image.load('gameasset/npc1.png')
+npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
 
 # npc position
 npc1_x_pos = 1000
@@ -53,6 +56,7 @@ waiter_button = button.Button(450, 215, waiter_img, 1)
 
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
+music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 
 
 
@@ -72,14 +76,20 @@ def main_menu():
     
     run = True
     while run:
+
         screen.fill((255, 235, 216))
         # screen.blit(bg_main_menu, (0, 0))
 
         # moving main menu background
-        mainmenubg_rect.x -= 1
-        if mainmenubg_rect.left <= -740: 
+        mainmenubg_rect.x -= 2
+        if mainmenubg_rect.left <= -743: 
             mainmenubg_rect.left = 0
+        
+        mainmenubg2_rect.x -= 1
+        if mainmenubg2_rect.left <= -743: 
+            mainmenubg2_rect.left = 0
 
+        screen.blit(mainmenubg2_surf, mainmenubg2_rect)
         screen.blit(mainmenubg_surf, mainmenubg_rect)
 
         title_button.draw(screen)
@@ -99,6 +109,7 @@ def main_menu():
                 pygame.quit()
                 exit()
         pygame.display.update()
+        clock.tick(60)
 
 def game_screen():
     global npc1_x_pos, npc1_img
@@ -160,6 +171,7 @@ def game_screen():
 
 
         pygame.display.update()
+        clock.tick(60)
 
 # def credits_menu():
    # run = True
