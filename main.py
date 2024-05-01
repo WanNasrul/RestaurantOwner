@@ -34,6 +34,10 @@ waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/npc1.png')
 bubble_img = pygame.image.load('gameasset/chatbubble.png').convert_alpha()
 
+# resize images
+waiter_img = pygame.transform.scale(waiter_img, (50, 80)) 
+npc1_img = pygame.transform.scale(npc1_img, (50, 80)) 
+
 # npc position
 npc1_x_pos = 1000
 
@@ -131,17 +135,17 @@ def game_screen():
 
         # Update waiter's position based on key presses
         if keys[pygame.K_w]:
-            waiter_y_pos -= 5
+            waiter_y_pos -= 3
         if keys[pygame.K_s]:
-            waiter_y_pos += 5
+            waiter_y_pos += 3
         if keys[pygame.K_a]:
-            waiter_x_pos -= 5
+            waiter_x_pos -= 3
         if keys[pygame.K_d]:
-            waiter_x_pos += 5
+            waiter_x_pos += 3
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
-            npc1_img = 1000
+            npc1_img = 1100
         else: # NEED TO RECHECK THIS !!! 
             screen.blit(npc1_img,(npc1_x_pos, 70))
 
