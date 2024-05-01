@@ -11,8 +11,14 @@ SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Restaurant Owner!')
 
-# load images
-bg_main_menu = pygame.image.load('gameasset/backgroundmainmenu.png')
+
+# moving main menu background
+mainmenubg_surf = pygame.image.load('gameasset/backgroundmainmenuanimated.png')
+mainmenubg_rect = mainmenubg_surf.get_rect(topleft = (0,10))
+
+#load images
+
+# bg_main_menu = pygame.image.load('gameasset/backgroundmainmenu.png')
 bg_game_screen = pygame.image.load('gameasset/background.png')
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
@@ -41,10 +47,22 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
 
 def main_menu():
+
+    # default value for background intial position
+    
     run = True
     while run:
         screen.fill((255, 235, 216))
-        screen.blit(bg_main_menu, (0, 0))
+        # screen.blit(bg_main_menu, (0, 0))
+
+        # moving main menu background
+        mainmenubg_rect.x -= 1
+        print(mainmenubg_rect.left, mainmenubg_rect.bottom)
+        if mainmenubg_rect.left <= -740: 
+            mainmenubg_rect.left = 0
+
+        screen.blit(mainmenubg_surf, mainmenubg_rect)
+
         title_button.draw(screen)
 
         if start_button.draw(screen):
@@ -75,14 +93,15 @@ def game_screen():
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
 
+
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
         daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
         daycycle_rect = daycycle_surf.get_rect(topleft=(495,600))
 
-        money_font = pygame.font.Font('font/segoepr.ttf', 50)
+        money_font = pygame.font.Font('font/segoepr.ttf', 40)
         money_surf = money_font.render(str(money), True, 'darkred')
-        money_rect = daycycle_surf.get_rect(topleft=(170,590))
+        money_rect = money_surf.get_rect(topleft=(165,598))
 
         if pause_button.draw(screen):
             print('game paused')
@@ -98,8 +117,8 @@ def game_screen():
         screen.blit(daycycle_surf,daycycle_rect)
         screen.blit(money_surf,money_rect)
     
-        # testing, add 1 money every 1 frame
-        money += 1
+        # testing, add 12 money every 1 frame
+        money += 12
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
