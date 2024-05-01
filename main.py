@@ -123,7 +123,7 @@ def game_screen():
         waiter_button.draw(screen)
 
         npc1_x_pos -= 1.5
-        if npc1_x_pos < 530: 
+        if npc1_x_pos < 550: 
             npc1_img = 1000
         else: # NEED TO RECHECK THIS !!! 
             screen.blit(npc1_img,(npc1_x_pos, 70))
