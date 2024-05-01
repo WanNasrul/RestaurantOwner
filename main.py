@@ -2,6 +2,7 @@ import pygame
 import button
 from sys import exit #import one thing
 from mapping import map
+from mapping import collisions
 
 # initialize pygame
 pygame.init()

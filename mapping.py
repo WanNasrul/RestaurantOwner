@@ -51,7 +51,7 @@ def map():
 
     return bg_surf, casher_rect, table_rects
 
-def handle_collisions(block_rect, table_rects, casher_rect):
+def collisions(block_rect, table_rects, casher_rect):
     for table_rect in table_rects:
         if block_rect.colliderect(table_rect):
             print("Block collided with a table!")
@@ -64,62 +64,3 @@ def handle_collisions(block_rect, table_rects, casher_rect):
             if block_rect.top < casher_rect.bottom and block_rect.bottom > casher_rect.top:
                 return True
     return False
-
-# Main game loop
-def game_loop():
-    block_x = 100
-    block_y = 300
-    block_width = 30
-    block_height = 30
-    block_speed = 5
-
-    # Get the background surface and rectangles from the map function
-    bg_surf, casher_rect, table_rects = map()
-
-    # Dictionary to track keys being pressed
-    keys_pressed = {}
-
-    run = True
-    while run:
-        screen.fill((255, 255, 255))
-
-        # Draw the background surface
-        screen.blit(bg_surf, (0, 0))
-
-        # Draw the block
-        pygame.draw.rect(screen, (0, 0, 0), (block_x, block_y, block_width, block_height))
-
-        # Handle events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            elif event.type == pygame.KEYDOWN:
-                keys_pressed[event.key] = True
-            elif event.type == pygame.KEYUP:
-                keys_pressed[event.key] = False
-
-        # Update block position based on keys being pressed
-        if keys_pressed.get(pygame.K_w):
-            block_y -= block_speed
-            if handle_collisions(pygame.Rect(block_x, block_y, block_width, block_height), table_rects, casher_rect):
-                block_y += block_speed
-        if keys_pressed.get(pygame.K_s):
-            block_y += block_speed
-            if handle_collisions(pygame.Rect(block_x, block_y, block_width, block_height), table_rects, casher_rect):
-                block_y -= block_speed
-        if keys_pressed.get(pygame.K_a):
-            block_x -= block_speed
-            if handle_collisions(pygame.Rect(block_x, block_y, block_width, block_height), table_rects, casher_rect):
-                block_x += block_speed
-        if keys_pressed.get(pygame.K_d):
-            block_x += block_speed
-            if handle_collisions(pygame.Rect(block_x, block_y, block_width, block_height), table_rects, casher_rect):
-                block_x -= block_speed
-
-        pygame.display.update()
-        clock.tick(60)
-
-    pygame.quit()
-
-# Call the game loop
-game_loop()
