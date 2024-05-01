@@ -50,12 +50,14 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 0.5)
-waiter_button = button.Button(450, 215, waiter_img, 0.5)
+waiter_button = button.Button(450, 215, waiter_img, 0.2)
 
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 
-
+# initial position of the waiter
+waiter_x_pos = 450  
+waiter_y_pos = 215
 
 
 # text
@@ -104,7 +106,7 @@ def main_menu():
 
 
 def game_screen():
-    global npc1_x_pos, npc1_img
+    global npc1_x_pos, npc1_img, waiter_x_pos, waiter_y_pos
     run = True
 
     # default money and day value
@@ -122,7 +124,20 @@ def game_screen():
         if chef_button.draw(screen):
             print('Text bubble')
 
-        waiter_button.draw(screen)
+        # Get the state of all keyboard keys
+        keys = pygame.key.get_pressed()
+
+        screen.blit(waiter_img, (waiter_x_pos, waiter_y_pos))
+
+        # Update waiter's position based on key presses
+        if keys[pygame.K_w]:
+            waiter_y_pos -= 5
+        if keys[pygame.K_s]:
+            waiter_y_pos += 5
+        if keys[pygame.K_a]:
+            waiter_x_pos -= 5
+        if keys[pygame.K_d]:
+            waiter_x_pos += 5
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
