@@ -52,8 +52,10 @@ def main_menu():
 def game_screen():
     run = True
     while run:
+        bg_surf, casher_rect, table_rects = map()
+        
         screen.fill((255, 255, 255))
-        screen.blit(map(), (0, 0))
+        screen.blit(bg_surf, (0, 0))
 
         # game screen code here
 
