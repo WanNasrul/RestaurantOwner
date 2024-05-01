@@ -78,8 +78,7 @@ def main_menu():
     while run:
 
         screen.fill((255, 235, 216))
-        # screen.blit(bg_main_menu, (0, 0))
-
+        # screen.blit(bg_main_menu, (0, 0)
         # moving main menu background
         mainmenubg_rect.x -= 2
         if mainmenubg_rect.left <= -743: 
