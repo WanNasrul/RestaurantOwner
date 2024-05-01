@@ -48,8 +48,8 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
-chef_button = button.Button(200, 215, chef_img, 0.5)
-waiter_button = button.Button(450, 215, waiter_img, 0.5)
+chef_button = button.Button(200, 215, chef_img, 1)
+waiter_button = button.Button(450, 215, waiter_img, 1)
 
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
@@ -77,7 +77,6 @@ def main_menu():
 
         # moving main menu background
         mainmenubg_rect.x -= 1
-        print(mainmenubg_rect.left, mainmenubg_rect.bottom)
         if mainmenubg_rect.left <= -740: 
             mainmenubg_rect.left = 0
 
