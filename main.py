@@ -32,6 +32,7 @@ fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/npc1.png')
+bubble_img = pygame.image.load('gameasset/chatbubble.png').convert_alpha()
 
 # npc position
 npc1_x_pos = 1000
@@ -77,7 +78,7 @@ def main_menu():
 
         # moving main menu background
         mainmenubg_rect.x -= 1
-        print(mainmenubg_rect.left, mainmenubg_rect.bottom)
+        # print(mainmenubg_rect.left, mainmenubg_rect.bottom)
         if mainmenubg_rect.left <= -740: 
             mainmenubg_rect.left = 0
 
@@ -101,6 +102,7 @@ def main_menu():
                 exit()
         pygame.display.update()
 
+
 def game_screen():
     global npc1_x_pos, npc1_img
     run = True
@@ -118,7 +120,7 @@ def game_screen():
             cat_sfx.play()
 
         if chef_button.draw(screen):
-            print('Meals Pop Up')
+            print('Text bubble')
 
         waiter_button.draw(screen)
 
