@@ -23,6 +23,7 @@ mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 
 # bg_main_menu = pygame.image.load('gameasset/backgroundmainmenu.png')
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
+bg_credit_menu = pygame.image.load('gameasset\credit.png').convert_alpha()
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
@@ -58,9 +59,7 @@ waiter_button = button.Button(450, 215, waiter_img, 1)
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 
-# initial position of the waiter
-waiter_x_pos = 450  
-waiter_y_pos = 215
+
 
 
 # text
@@ -80,7 +79,8 @@ def main_menu():
     while run:
 
         screen.fill((255, 235, 216))
-        # screen.blit(bg_main_menu, (0, 0)
+        # screen.blit(bg_main_menu, (0, 0))
+
         # moving main menu background
         mainmenubg_rect.x -= 2
         if mainmenubg_rect.left <= -743: 
@@ -99,7 +99,7 @@ def main_menu():
             game_screen()
 
         if credit_button.draw(screen):
-            print('CREDIT')
+            credit_menu()
 
         if exit_button.draw(screen):
             pygame.quit()  # quit pygame directly
@@ -113,7 +113,7 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-    global npc1_x_pos, npc1_img, waiter_x_pos, waiter_y_pos
+    global npc1_x_pos, npc1_img
     run = True
 
     # default money and day value
@@ -129,26 +129,13 @@ def game_screen():
             cat_sfx.play()
 
         if chef_button.draw(screen):
-            print('Text bubble')
+            print('Meals Pop Up')
 
-        # Get the state of all keyboard keys
-        keys = pygame.key.get_pressed()
-
-        screen.blit(waiter_img, (waiter_x_pos, waiter_y_pos))
-
-        # Update waiter's position based on key presses
-        if keys[pygame.K_w]:
-            waiter_y_pos -= 3
-        if keys[pygame.K_s]:
-            waiter_y_pos += 3
-        if keys[pygame.K_a]:
-            waiter_x_pos -= 3
-        if keys[pygame.K_d]:
-            waiter_x_pos += 3
+        waiter_button.draw(screen)
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
-            npc1_img = 1100
+            npc1_img = 1000
         else: # NEED TO RECHECK THIS !!! 
             screen.blit(npc1_img,(npc1_x_pos, 70))
 
@@ -187,11 +174,24 @@ def game_screen():
         pygame.display.update()
         clock.tick(60)
 
-# def credits_menu():
-   # run = True
-   # while run:
-        # credits menu code here
-     #   pass
+def credit_menu():
+    run = True
+    while run :
+
+        screen.fill((255, 255, 255))
+        screen.blit(bg_credit_menu, (0, 0))
+
+        if pause_button.draw(screen):
+            print('game paused')
+            # insert pause code here
+            run = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+             run = False
+        pygame.display.update()
+
+
 
 # call the main menu
 main_menu()
