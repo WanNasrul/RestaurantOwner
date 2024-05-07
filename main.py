@@ -187,7 +187,7 @@ def game_screen():
         
         if shop_button.draw(screen):
             click_sfx.play()
-            print('opened shop')
+            shop_open()
             # insert shop code here
         
         screen.blit(moneycounter_img, (30,530))
@@ -225,6 +225,27 @@ def credit_menu():
             if event.type == pygame.QUIT:
              run = False
         pygame.display.update()
+
+
+def shop_open():
+    run = True
+    while run :
+
+        screen.fill((255, 255, 255))
+        screen.blit(bg_game_screen, (0, 0))
+
+        if pause_button.draw(screen):
+            click_sfx.play()
+            print('game paused')
+            # insert pause code here
+            run = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+             run = False
+        pygame.display.update()
+
+
 
 
 # call the main menu
