@@ -35,10 +35,13 @@ fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
+tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+# Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
+# Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
+# table_img = pygame.image.load('gameasset/table.png').convert_alpha()
 
 # npc position
 npc1_x_pos = 1000
-
 
 
 # create button instances
@@ -48,16 +51,16 @@ credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
 pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
+tablechair1_button = button.Button(600, 380, tablechair1_img, 0.6)
 
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
-waiter_button = button.Button(450, 215, waiter_img, 1)
+# waiter_button = button.Button(450, 215, waiter_img, 1)
 
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
-
 
 
 
@@ -69,6 +72,12 @@ music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 # money_font = pygame.font.Font('font/segoepr.ttf', 50)
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
+
+def waiter(x, y):
+    screen.blit(waiter_img, (x, y))
+
+
+
 
 def main_menu():
 
@@ -118,22 +127,39 @@ def game_screen():
     money = 0   
     day = 1
 
+    waiterX = 450
+    waiterY =  215
+
     while run:
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+        
+
+        tablechair1_button.draw(screen)
 
         if fern_button.draw(screen):
             cat_sfx.play()
 
         if chef_button.draw(screen):
-            print('Meals Pop Up')
+            print('Text bubble')
 
-        waiter_button.draw(screen)
+        # get the state of all keyboard keys
+        keys = pygame.key.get_pressed()
+
+        # update waiter position based on key presses
+        if keys[pygame.K_w]:
+            waiterY -= 3
+        if keys[pygame.K_s]:
+            waiterY += 3
+        if keys[pygame.K_a]:
+            waiterX -= 3
+        if keys[pygame.K_d]:
+            waiterX += 3
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
-            npc1_img = 1000
+            npc1_img = 1100
         else: # NEED TO RECHECK THIS !!! 
             screen.blit(npc1_img,(npc1_x_pos, 70))
 
@@ -163,11 +189,12 @@ def game_screen():
         # testing, add 12 money every 1 frame
         money += 12
 
+        waiter(waiterX, waiterY)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-
 
         pygame.display.update()
         clock.tick(60)
