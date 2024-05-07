@@ -60,7 +60,8 @@ pizza_button = button.Button(890, 250, pizza_img, 1)
 steak_button = button.Button(1040, 250, steak_img, 1)
 
 # npc position
-npc1_pos = 1000
+npc1_x_pos = 1000
+
 
 
 # create button instances
@@ -139,7 +140,7 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-    global npc1_pos, npc1_img
+    global npc1_x_pos, npc1_img
     run = True
 
     # default money and day value
@@ -181,11 +182,23 @@ def game_screen():
             if waiterX < 1045:
                 waiterX += 3
 
-        npc1_pos -= 1.5
-        if npc1_pos <= 550: 
-            npc1_img = 1100
-        else: # NEED TO RECHECK THIS !!! 
-            screen.blit(npc1_img,(npc1_pos, 70))
+        #npc1_x_pos -= 1.5
+        #if npc1_x_pos <= 550: 
+        #    npc1_img = 1100
+        #if npc1_x_pos
+        #else: # NEED TO RECHECK THIS !!! 
+        #    screen.blit(npc1_img,(npc1_x_pos, 70))
+        speed = 0.5
+            
+        if npc_rect.x <= 600:
+            npc_rect.x += 1 * speed
+
+        if npc_rect.x == 601 and npc_rect.y <= 400:
+            npc_rect.y += 1 * speed
+                
+        if npc_rect.y == 401 and npc_rect.x == 601:
+            npc_rect.x = 800
+            npc_rect.y = 600
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
