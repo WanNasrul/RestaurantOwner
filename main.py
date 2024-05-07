@@ -39,7 +39,7 @@ npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
 tablechair1_img= pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
-tablechair4_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+
 # Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
 # table_img = pygame.image.load('gameasset/table.png').convert_alpha()
@@ -80,7 +80,7 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
-chef_button = button.Button(200, 215, chef_img, 1)
+chef_button = button.Button(200, 215, chef_img, 1.5)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
 # sound effects
@@ -98,34 +98,35 @@ music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
 def npc(x, y):
-    npc1_width = int(npc1_img.get_width() * 0.8)
-    npc1_height = int(npc1_img.get_height() * 0.8)
+    npc1_width = int(npc1_img.get_width() * 0.9)
+    npc1_height = int(npc1_img.get_height() * 0.9)
     npc1_resize= pygame.transform.scale(npc1_img, (npc1_width, npc1_height))
     screen.blit(npc1_resize, (x, y))
 
+def waiter(x, y):
+    waiter_width = int(waiter_img.get_width() * 1.4)
+    waiter_height = int(waiter_img.get_height() * 1.4)
+    waiter_resize = pygame.transform.scale(waiter_img, (waiter_width, waiter_height))
+    waiter_flip = pygame.transform.flip(waiter_resize, True, False)
+    screen.blit(waiter_flip, (x, y))
+
 def table1(x, y):
-    tablechair1_width = int(tablechair1_img.get_width() * 0.8)
-    tablechair1_height = int(tablechair1_img.get_height() * 0.8)
+    tablechair1_width = int(tablechair1_img.get_width() * 0.9)
+    tablechair1_height = int(tablechair1_img.get_height() * 0.9)
     tablechair1_resize = pygame.transform.scale(tablechair1_img, (tablechair1_width, tablechair1_height))
     screen.blit(tablechair1_resize, (x, y))
 
 def table2(x, y):
-    tablechair2_width = int(tablechair2_img.get_width() * 0.8)
-    tablechair2_height = int(tablechair2_img.get_height() * 0.8)
+    tablechair2_width = int(tablechair2_img.get_width() * 0.9)
+    tablechair2_height = int(tablechair2_img.get_height() * 0.9)
     tablechair2_resize = pygame.transform.scale(tablechair2_img, (tablechair2_width, tablechair2_height))
     screen.blit(tablechair2_resize, (x, y))
 
 def table3(x, y):
-    tablechair3_width = int(tablechair3_img.get_width() * 0.6)
-    tablechair3_height = int(tablechair3_img.get_height() * 0.6)
+    tablechair3_width = int(tablechair3_img.get_width() * 0.9)
+    tablechair3_height = int(tablechair3_img.get_height() * 0.9)
     tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
     screen.blit(tablechair3_resize, (x, y))
-
-#def table4(x, y):
-    #screen.blit(tablechair4_img, (x,y))
-
-def waiter(x, y):
-    screen.blit(waiter_img, (x, y))
 
 def main_menu():
 
@@ -175,20 +176,17 @@ def game_screen():
     money = 0   
     day = 1
 
-    tablechair1X = 780
-    tablechair1Y = 390
+    tablechair1X = 740
+    tablechair1Y = 405
 
-    tablechair2X = 741
+    tablechair2X = 750
     tablechair2Y = 250
 
-    tablechair3X = 395
-    tablechair3Y = 390
+    tablechair3X = 400
+    tablechair3Y = 480
 
-    #tablechair4X = 600
-    #tablechair4Y = 880
-
-    waiterX = 450
-    waiterY =  215
+    waiterX = 570
+    waiterY =  150
 
     runchefUI = False
     cooking = emptybox_img
@@ -220,14 +218,17 @@ def game_screen():
                 waiterX += 3
 
         npc1_x_pos -= 1.5
-        if npc1_x_pos <= 550: 
-            npc1_x_pos = 551
+        if npc1_x_pos <= 650: 
+            npc1_x_pos = 651
             npc1_y_pos += 1.5
 
-            if npc1_y_pos >= 200:
-                npc1_y_pos = 200  
+            if npc1_y_pos >= 250:
+                npc1_y_pos = 250  
 
-        npc(npc1_x_pos, npc1_y_pos)
+                if npc1_y_pos == 250:
+                    npc1_y_pos = 415
+                    npc1_x_pos = 400
+                    npc
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
@@ -255,13 +256,15 @@ def game_screen():
         # testing, add 12 money every 1 frame
         money += 12
 
-        waiter(waiterX, waiterY)
-
         table1(tablechair1X,tablechair1Y)
 
         table2(tablechair2X,tablechair2Y)
 
         table3(tablechair3X,tablechair3Y)
+
+        npc(npc1_x_pos, npc1_y_pos)
+
+        waiter(waiterX, waiterY)
 
         #table4(tablechair4X,tablechair4Y)
 
