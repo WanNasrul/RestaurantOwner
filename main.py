@@ -36,7 +36,10 @@ fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
-tablechair_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+tablechair1_img= pygame.image.load('gameasset/tablechair.png').convert_alpha()
+tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+tablechair4_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 # Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
 # table_img = pygame.image.load('gameasset/table.png').convert_alpha()
@@ -70,10 +73,10 @@ credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
 pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
-tablechair1_button = button.Button(900, 830, tablechair_img, 0.6)
-tablechair2_button = button.Button(900, 680, tablechair_img, 0.6)
-tablechair3_button = button.Button(600, 680, tablechair_img, 0.6)
-tablechair4_button = button.Button(600, 880, tablechair_img, 0.6)
+#tablechair1_button = button.Button(900, 830, tablechair1_img, 0.6)
+#tablechair2_button = button.Button(900, 680, tablechair2_img, 0.6)
+#tablechair3_button = button.Button(600, 680, tablechair3_img, 0.6)
+#tablechair4_button = button.Button(600, 880, tablechair4_img, 0.6)
 
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
@@ -95,8 +98,31 @@ music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
 def npc(x, y):
-    screen.blit(npc1_img, (x, y))
+    npc1_width = int(npc1_img.get_width() * 0.8)
+    npc1_height = int(npc1_img.get_height() * 0.8)
+    npc1_resize= pygame.transform.scale(npc1_img, (npc1_width, npc1_height))
+    screen.blit(npc1_resize, (x, y))
 
+def table1(x, y):
+    tablechair1_width = int(tablechair1_img.get_width() * 0.8)
+    tablechair1_height = int(tablechair1_img.get_height() * 0.8)
+    tablechair1_resize = pygame.transform.scale(tablechair1_img, (tablechair1_width, tablechair1_height))
+    screen.blit(tablechair1_resize, (x, y))
+
+def table2(x, y):
+    tablechair2_width = int(tablechair2_img.get_width() * 0.8)
+    tablechair2_height = int(tablechair2_img.get_height() * 0.8)
+    tablechair2_resize = pygame.transform.scale(tablechair2_img, (tablechair2_width, tablechair2_height))
+    screen.blit(tablechair2_resize, (x, y))
+
+def table3(x, y):
+    tablechair3_width = int(tablechair3_img.get_width() * 0.6)
+    tablechair3_height = int(tablechair3_img.get_height() * 0.6)
+    tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
+    screen.blit(tablechair3_resize, (x, y))
+
+#def table4(x, y):
+    #screen.blit(tablechair4_img, (x,y))
 
 def waiter(x, y):
     screen.blit(waiter_img, (x, y))
@@ -149,6 +175,18 @@ def game_screen():
     money = 0   
     day = 1
 
+    tablechair1X = 780
+    tablechair1Y = 390
+
+    tablechair2X = 741
+    tablechair2Y = 250
+
+    tablechair3X = 395
+    tablechair3Y = 390
+
+    #tablechair4X = 600
+    #tablechair4Y = 880
+
     waiterX = 450
     waiterY =  215
 
@@ -160,11 +198,6 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
-        
-        tablechair1_button.draw(screen)
-        tablechair2_button.draw(screen)
-        tablechair3_button.draw(screen)
-        tablechair4_button.draw(screen)
 
         if fern_button.draw(screen):
             cat_sfx.play()
@@ -223,6 +256,14 @@ def game_screen():
         money += 12
 
         waiter(waiterX, waiterY)
+
+        table1(tablechair1X,tablechair1Y)
+
+        table2(tablechair2X,tablechair2Y)
+
+        table3(tablechair3X,tablechair3Y)
+
+        #table4(tablechair4X,tablechair4Y)
 
         # Chef UI ====================================== #
         
