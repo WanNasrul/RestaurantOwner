@@ -235,6 +235,7 @@ def game_screen():
         progressbar_rect = progressbar_surf.get_rect(midleft = (615,535))
 
         if chef_button.draw(screen):
+            click_sfx.play()
             runchefUI = True
 
         if runchefUI == True:
@@ -243,22 +244,28 @@ def game_screen():
             # close chef UI
             # kinda not efficient code for now, I'll optimize it later
             if xbutton_button.draw(screen):
+                click_sfx.play()
                 runchefUI = False
             
             if chicken_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = chicken_img
                 # if the player clicks on the food icon, it will be added to the cooking slot
 
             if fish_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = fish_img
 
             if burger_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = burger_img
 
             if pizza_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = pizza_img
                 
             if steak_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = steak_img
             
             if cooking != emptybox_img:
