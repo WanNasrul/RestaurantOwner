@@ -35,6 +35,10 @@ fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
+tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+# Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
+# Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
+# table_img = pygame.image.load('gameasset/table.png').convert_alpha()
 
 # npc position
 npc1_x_pos = 1000
@@ -48,6 +52,7 @@ credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
 pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
+tablechair1_button = button.Button(600, 380, tablechair1_img, 0.6)
 
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
@@ -124,6 +129,8 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+
+        tablechair1_button.draw(screen)
 
         if fern_button.draw(screen):
             cat_sfx.play()
