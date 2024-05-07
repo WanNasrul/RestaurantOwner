@@ -1,6 +1,7 @@
 import pygame
 import button
 from sys import exit #import one thing
+import json
 
 # initialize pygame
 pygame.init()
@@ -11,6 +12,11 @@ SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Restaurant Owner!')
 clock = pygame.time.Clock()
+
+
+# the file path for saving/loading
+save_game = "save_game.json"
+
 
 
 # moving main menu background
@@ -51,7 +57,7 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 tablechair1_button = button.Button(600, 380, tablechair1_img, 0.6)
 
 # click the chef and cat
-fern_button = button.Button(508, 300, fern_img, 0.08)
+fern_button = button.Button(502, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
@@ -69,6 +75,23 @@ music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 # money_font = pygame.font.Font('font/segoepr.ttf', 50)
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
+
+# define function to save the game state to a JSON file
+def save_game_state(day, money):
+    game_state = {"day": day, "money": money}
+    with open(save_game, "w") as file:
+        json.dump(game_state, file)
+
+def load_game_state():
+    try:
+        with open(save_game, "r") as file:
+            game_state = json.load(file)
+            return game_state["day"], game_state["money"]
+    except FileNotFoundError:
+        # return default values if the file does not exist
+        return 1, 0
+
+
 def npc(x, y):
     screen.blit(npc1_img, (x, y))
 
@@ -135,7 +158,8 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
-        
+
+        day, money = load_game_state()
 
         tablechair1_button.draw(screen)
 
@@ -180,6 +204,7 @@ def game_screen():
         if pause_button.draw(screen):
             print('game paused')
             # insert pause code here
+
             run = False
         
         if shop_button.draw(screen):
@@ -198,6 +223,7 @@ def game_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                save_game_state(day, money)
                 pygame.quit()
                 exit()
 
