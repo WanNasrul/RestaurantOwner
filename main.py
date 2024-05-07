@@ -1,7 +1,7 @@
 import pygame
 import button
 from sys import exit #import one thing
-import json
+
 
 # initialize pygame
 pygame.init()
@@ -12,11 +12,6 @@ SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Restaurant Owner!')
 clock = pygame.time.Clock()
-
-
-# the file path for saving/loading
-save_game = "save_game.json"
-
 
 
 # moving main menu background
@@ -76,20 +71,6 @@ music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
 
-# define function to save the game state to a JSON file
-def save_game_state(day, money):
-    game_state = {"day": day, "money": money}
-    with open(save_game, "w") as file:
-        json.dump(game_state, file)
-
-def load_game_state():
-    try:
-        with open(save_game, "r") as file:
-            game_state = json.load(file)
-            return game_state["day"], game_state["money"]
-    except FileNotFoundError:
-        # return default values if the file does not exist
-        return 1, 0
 
 
 def npc(x, y):
@@ -159,7 +140,6 @@ def game_screen():
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
 
-        day, money = load_game_state()
 
         tablechair1_button.draw(screen)
 
@@ -223,7 +203,6 @@ def game_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                save_game_state(day, money)
                 pygame.quit()
                 exit()
 
