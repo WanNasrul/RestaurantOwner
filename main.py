@@ -91,6 +91,9 @@ music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 # money_font = pygame.font.Font('font/segoepr.ttf', 50)
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
+def npc(x, y):
+    screen.blit(npc1_img, (x, y))
+
 
 def waiter(x, y):
     screen.blit(waiter_img, (x, y))
@@ -166,13 +169,17 @@ def game_screen():
 
         # update waiter position based on key presses
         if keys[pygame.K_w]:
-            waiterY -= 3
+            if waiterY > 0:
+                waiterY -= 3
         if keys[pygame.K_s]:
-            waiterY += 3
+            if waiterY < 520:
+                waiterY += 3
         if keys[pygame.K_a]:
-            waiterX -= 3
+            if waiterX > 381:
+                waiterX -= 3
         if keys[pygame.K_d]:
-            waiterX += 3
+            if waiterX < 1045:
+                waiterX += 3
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
