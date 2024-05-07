@@ -58,7 +58,9 @@ waiter_button = button.Button(450, 215, waiter_img, 1)
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 
-
+# initial position of the waiter
+waiter_x_pos = 450  
+waiter_y_pos = 215
 
 
 # text
@@ -111,7 +113,7 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-    global npc1_x_pos, npc1_img
+    global npc1_x_pos, npc1_img, waiter_x_pos, waiter_y_pos
     run = True
 
     # default money and day value
@@ -127,13 +129,26 @@ def game_screen():
             cat_sfx.play()
 
         if chef_button.draw(screen):
-            print('Meals Pop Up')
+            print('Text bubble')
 
-        waiter_button.draw(screen)
+        # Get the state of all keyboard keys
+        keys = pygame.key.get_pressed()
+
+        screen.blit(waiter_img, (waiter_x_pos, waiter_y_pos))
+
+        # Update waiter's position based on key presses
+        if keys[pygame.K_w]:
+            waiter_y_pos -= 3
+        if keys[pygame.K_s]:
+            waiter_y_pos += 3
+        if keys[pygame.K_a]:
+            waiter_x_pos -= 3
+        if keys[pygame.K_d]:
+            waiter_x_pos += 3
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
-            npc1_img = 1000
+            npc1_img = 1100
         else: # NEED TO RECHECK THIS !!! 
             screen.blit(npc1_img,(npc1_x_pos, 70))
 
