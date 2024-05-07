@@ -19,14 +19,15 @@ mainmenubg_rect = mainmenubg_surf.get_rect(topleft = (0,10))
 mainmenubg2_surf = pygame.image.load('gameasset/backgroundmainmenuanimateddark.png').convert_alpha()
 mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 
-#load images
 
-# bg_main_menu = pygame.image.load('gameasset/backgroundmainmenu.png')
+# main menu images
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
+
+# game images
 pause_img = pygame.image.load('gameasset/pause.png').convert_alpha()
 shop_img = pygame.image.load('gameasset/shopui.png').convert_alpha()
 moneycounter_img = pygame.image.load('gameasset/moneycounter.png').convert_alpha()
@@ -39,6 +40,24 @@ tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 # Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
 # table_img = pygame.image.load('gameasset/table.png').convert_alpha()
+
+# chef ui images
+chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
+xbutton_img = pygame.image.load('gameasset/chef ui/xbutton.png').convert_alpha()
+chicken_img = pygame.image.load('gameasset/chef ui/chicken.png').convert_alpha()
+fish_img = pygame.image.load('gameasset/chef ui/fish.png').convert_alpha()
+burger_img = pygame.image.load('gameasset/chef ui/burger.png').convert_alpha()
+pizza_img = pygame.image.load('gameasset/chef ui/pizza.png').convert_alpha()
+steak_img = pygame.image.load('gameasset/chef ui/steak.png').convert_alpha()
+progressbar_img = pygame.image.load('gameasset/chef ui/progressbar.png').convert_alpha()
+emptybox_img = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
+# chef ui buttons
+xbutton_button = button.Button(1100, 70, xbutton_img, 1)
+chicken_button = button.Button(440, 250, chicken_img, 1)
+fish_button = button.Button(590, 250, fish_img, 1)
+burger_button = button.Button(740, 250, burger_img, 1)
+pizza_button = button.Button(890, 250, pizza_img, 1)
+steak_button = button.Button(1040, 250, steak_img, 1)
 
 # npc position
 npc1_x_pos = 1000
@@ -75,9 +94,6 @@ music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 
 def waiter(x, y):
     screen.blit(waiter_img, (x, y))
-
-
-
 
 def main_menu():
 
@@ -130,6 +146,10 @@ def game_screen():
     waiterX = 450
     waiterY =  215
 
+    runchefUI = False
+    cooking = emptybox_img
+    progress = 0
+
     while run:
         # game screen code here
         screen.fill((255, 255, 255))
@@ -140,9 +160,6 @@ def game_screen():
 
         if fern_button.draw(screen):
             cat_sfx.play()
-
-        if chef_button.draw(screen):
-            print('Text bubble')
 
         # get the state of all keyboard keys
         keys = pygame.key.get_pressed()
@@ -191,6 +208,58 @@ def game_screen():
 
         waiter(waiterX, waiterY)
 
+        # Chef UI ====================================== #
+        
+        # chef progress bar
+        progressbar_font = pygame.font.Font('font/segoepr.ttf', 15)
+        progressbar_surf = progressbar_font.render('I'*progress, False, (64,64,64))
+        progressbar_rect = progressbar_surf.get_rect(midleft = (615,535))
+
+        if chef_button.draw(screen):
+            runchefUI = True
+
+        if runchefUI == True:
+            
+            screen.blit(chefuibackground_img, (410,65))
+            # close chef UI
+            # kinda not efficient code for now, I'll optimize it later
+            if xbutton_button.draw(screen):
+                runchefUI = False
+            
+            if chicken_button.draw(screen):
+                cooking = chicken_img
+                progress = 0    
+
+            if fish_button.draw(screen):
+                cooking = fish_img
+                progress = 0
+
+            if burger_button.draw(screen):
+                cooking = burger_img
+                progress = 0
+
+            if pizza_button.draw(screen):
+                cooking = pizza_img
+                progress = 0
+                
+            if steak_button.draw(screen):
+                cooking = steak_img
+                progress = 0
+            
+            if cooking != emptybox_img:
+                progress += 1
+                
+            screen.blit(cooking, (450,480))
+            screen.blit(progressbar_img, (605,515))
+            screen.blit(progressbar_surf, progressbar_rect)
+            pygame.draw.rect(screen,'red',progressbar_rect)
+
+        # mouse_pos = pygame.mouse.get_pos()
+        # print(mouse_pos)
+
+        # Chef UI ====================================== #
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -198,6 +267,7 @@ def game_screen():
 
         pygame.display.update()
         clock.tick(60)
+
 
 # def credits_menu():
    # run = True
