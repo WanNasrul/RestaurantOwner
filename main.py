@@ -212,7 +212,7 @@ def game_screen():
         
         # chef progress bar
         progressbar_font = pygame.font.Font('font/segoepr.ttf', 15)
-        progressbar_surf = progressbar_font.render('I'*progress, False, (64,64,64))
+        progressbar_surf = progressbar_font.render('.'*progress, False, (64,64,64))
         progressbar_rect = progressbar_surf.get_rect(midleft = (615,535))
 
         if chef_button.draw(screen):
@@ -226,33 +226,34 @@ def game_screen():
             if xbutton_button.draw(screen):
                 runchefUI = False
             
-            if chicken_button.draw(screen):
+            if chicken_button.draw(screen) and cooking == emptybox_img:
                 cooking = chicken_img
-                progress = 0    
+                # if the player clicks on the food icon, it will be added to the cooking slot
 
-            if fish_button.draw(screen):
+            if fish_button.draw(screen) and cooking == emptybox_img:
                 cooking = fish_img
-                progress = 0
 
-            if burger_button.draw(screen):
+            if burger_button.draw(screen) and cooking == emptybox_img:
                 cooking = burger_img
-                progress = 0
 
-            if pizza_button.draw(screen):
+            if pizza_button.draw(screen) and cooking == emptybox_img:
                 cooking = pizza_img
-                progress = 0
                 
-            if steak_button.draw(screen):
+            if steak_button.draw(screen) and cooking == emptybox_img:
                 cooking = steak_img
-                progress = 0
             
             if cooking != emptybox_img:
-                progress += 1
-                
+                if progress <= 130:
+                    progress += 1
+                else:
+                    cooking = emptybox_img
+                    progress = 0
+ 
             screen.blit(cooking, (450,480))
             screen.blit(progressbar_img, (605,515))
             screen.blit(progressbar_surf, progressbar_rect)
             pygame.draw.rect(screen,'red',progressbar_rect)
+
 
         # mouse_pos = pygame.mouse.get_pos()
         # print(mouse_pos)
