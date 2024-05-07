@@ -22,7 +22,9 @@ mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 
 # main menu images
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
+bg_credit_menu = pygame.image.load('gameasset\credit.png').convert_alpha()
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
+shoppic_img = pygame.image.load('gameasset\shop.jpg').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
@@ -86,6 +88,7 @@ chef_button = button.Button(200, 215, chef_img, 1.5)
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
+click_sfx = pygame.mixer.Sound('gameasset\click (2).mp3')
 
 
 
@@ -152,13 +155,18 @@ def main_menu():
         title_button.draw(screen)
 
         if start_button.draw(screen):
+            click_sfx.play()
             game_screen()
 
+
         if credit_button.draw(screen):
-            print('CREDIT')
+            click_sfx.play()
+            credit_menu()
 
         if exit_button.draw(screen):
-            pygame.quit()  # quit pygame directly
+            click_sfx.play() 
+            pygame.quit() 
+             # quit pygame directly
             exit()
 
         for event in pygame.event.get():
@@ -240,12 +248,16 @@ def game_screen():
         money_rect = money_surf.get_rect(topleft=(165,598))
 
         if pause_button.draw(screen):
+            click_sfx.play()
             print('game paused')
             # insert pause code here
             run = False
         
         if shop_button.draw(screen):
-            print('opened shop')
+            click_sfx.play()
+            shop_open()
+
+
             # insert shop code here
         
         screen.blit(moneycounter_img, (30,530))
@@ -276,6 +288,7 @@ def game_screen():
         progressbar_rect = progressbar_surf.get_rect(midleft = (615,535))
 
         if chef_button.draw(screen):
+            click_sfx.play()
             runchefUI = True
 
         if runchefUI == True:
@@ -284,22 +297,28 @@ def game_screen():
             # close chef UI
             # kinda not efficient code for now, I'll optimize it later
             if xbutton_button.draw(screen):
+                click_sfx.play()
                 runchefUI = False
             
             if chicken_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = chicken_img
                 # if the player clicks on the food icon, it will be added to the cooking slot
 
             if fish_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = fish_img
 
             if burger_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = burger_img
 
             if pizza_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = pizza_img
                 
             if steak_button.draw(screen) and cooking == emptybox_img:
+                click_sfx.play()
                 cooking = steak_img
             
             if cooking != emptybox_img:
@@ -328,6 +347,48 @@ def game_screen():
 
         pygame.display.update()
         clock.tick(60)
+
+def credit_menu():
+    run = True
+    while run :
+
+        screen.fill((255, 255, 255))
+        screen.blit(bg_credit_menu, (0, 0))
+
+        if pause_button.draw(screen):
+            click_sfx.play()
+            print('game paused')
+            # insert pause code here
+            run = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+             run = False
+        pygame.display.update()
+
+def shop_open():
+    run = True
+    while run :
+
+        screen.fill((255, 255, 255))
+        screen.blit(bg_game_screen, (0,0))
+        screen.blit(shoppic_img, (150,150))
+        
+
+        if pause_button.draw(screen):
+            click_sfx.play()
+            print('game paused')
+            # insert pause code here
+            run = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+             run = False
+        pygame.display.update()
+
+
+
+
 
 
 # def credits_menu():
