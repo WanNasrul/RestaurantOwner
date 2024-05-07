@@ -36,7 +36,7 @@ fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
-tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+tablechair_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 # Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
 # table_img = pygame.image.load('gameasset/table.png').convert_alpha()
@@ -61,9 +61,7 @@ steak_button = button.Button(1040, 250, steak_img, 1)
 
 # npc position
 npc1_x_pos = 1000
-npc_rect = npc1_x_pos.get_rect()
-
-
+npc1_y_pos = 100
 
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
@@ -72,7 +70,10 @@ credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
 pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
-tablechair1_button = button.Button(600, 380, tablechair1_img, 0.6)
+tablechair1_button = button.Button(900, 830, tablechair_img, 0.6)
+tablechair2_button = button.Button(900, 680, tablechair_img, 0.6)
+tablechair3_button = button.Button(600, 680, tablechair_img, 0.6)
+tablechair4_button = button.Button(600, 880, tablechair_img, 0.6)
 
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
@@ -141,7 +142,7 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-    global npc_rect, npc1_img
+    global npc1_x_pos, npc1_img, npc1_y_pos
     run = True
 
     # default money and day value
@@ -160,8 +161,10 @@ def game_screen():
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
         
-
         tablechair1_button.draw(screen)
+        tablechair2_button.draw(screen)
+        tablechair3_button.draw(screen)
+        tablechair4_button.draw(screen)
 
         if fern_button.draw(screen):
             cat_sfx.play()
@@ -183,23 +186,15 @@ def game_screen():
             if waiterX < 1045:
                 waiterX += 3
 
-        #npc1_x_pos -= 1.5
-        #if npc1_x_pos <= 550: 
-        #    npc1_img = 1100
-        #if npc1_x_pos
-        #else: # NEED TO RECHECK THIS !!! 
-        #    screen.blit(npc1_img,(npc1_x_pos, 70))
-        speed = 0.5
-            
-        if npc_rect.x <= 600:
-            npc_rect.x += 1 * speed
+        npc1_x_pos -= 1.5
+        if npc1_x_pos <= 550: 
+            npc1_x_pos = 551
+            npc1_y_pos += 1.5
 
-        if npc_rect.x == 601 and npc_rect.y <= 400:
-            npc_rect.y += 1 * speed
-                
-        if npc_rect.y == 401 and npc_rect.x == 601:
-            npc_rect.x = 800
-            npc_rect.y = 600
+            if npc1_y_pos >= 200:
+                npc1_y_pos = 200  
+
+        npc(npc1_x_pos, npc1_y_pos)
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
