@@ -232,7 +232,8 @@ def shop_open():
     while run :
 
         screen.fill((255, 255, 255))
-        screen.blit(bg_game_screen, (0, 0))
+        screen.blit(bg_game_screen, (0,0))
+        
 
         if pause_button.draw(screen):
             click_sfx.play()
