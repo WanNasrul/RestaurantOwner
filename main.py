@@ -61,6 +61,7 @@ steak_button = button.Button(1040, 250, steak_img, 1)
 
 # npc position
 npc1_x_pos = 1000
+npc_rect = npc1_x_pos.get_rect()
 
 
 
@@ -140,7 +141,7 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-    global npc1_x_pos, npc1_img
+    global npc_rect, npc1_img
     run = True
 
     # default money and day value
