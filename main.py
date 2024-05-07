@@ -25,6 +25,7 @@ mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
 bg_credit_menu = pygame.image.load('gameasset\credit.png').convert_alpha()
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
+shoppic_img = pygame.image.load('gameasset\shop.jpg').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
@@ -233,6 +234,7 @@ def shop_open():
 
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0,0))
+        screen.blit(shoppic_img, (150,150))
         
 
         if pause_button.draw(screen):
