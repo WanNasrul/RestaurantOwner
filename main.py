@@ -44,7 +44,6 @@ tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 npc1_x_pos = 1000
 
 
-
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
 start_button = button.Button(515, 350, start_img, 0.5)
@@ -57,15 +56,12 @@ tablechair1_button = button.Button(600, 380, tablechair1_img, 0.6)
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
-waiter_button = button.Button(450, 215, waiter_img, 1)
+# waiter_button = button.Button(450, 215, waiter_img, 1)
 
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 
-# initial position of the waiter
-waiter_x_pos = 450  
-waiter_y_pos = 215
 
 
 # text
@@ -76,6 +72,12 @@ waiter_y_pos = 215
 # money_font = pygame.font.Font('font/segoepr.ttf', 50)
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
+
+def waiter(x, y):
+    screen.blit(waiter_img, (x, y))
+
+
+
 
 def main_menu():
 
@@ -118,17 +120,21 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-    global npc1_x_pos, npc1_img, waiter_x_pos, waiter_y_pos
+    global npc1_x_pos, npc1_img
     run = True
 
     # default money and day value
     money = 0   
     day = 1
 
+    waiterX = 450
+    waiterY =  215
+
     while run:
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+        
 
         tablechair1_button.draw(screen)
 
@@ -138,20 +144,18 @@ def game_screen():
         if chef_button.draw(screen):
             print('Text bubble')
 
-        # Get the state of all keyboard keys
+        # get the state of all keyboard keys
         keys = pygame.key.get_pressed()
 
-        screen.blit(waiter_img, (waiter_x_pos, waiter_y_pos))
-
-        # Update waiter's position based on key presses
+        # update waiter position based on key presses
         if keys[pygame.K_w]:
-            waiter_y_pos -= 3
+            waiterY -= 3
         if keys[pygame.K_s]:
-            waiter_y_pos += 3
+            waiterY += 3
         if keys[pygame.K_a]:
-            waiter_x_pos -= 3
+            waiterX -= 3
         if keys[pygame.K_d]:
-            waiter_x_pos += 3
+            waiterX += 3
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
@@ -185,11 +189,12 @@ def game_screen():
         # testing, add 12 money every 1 frame
         money += 12
 
+        waiter(waiterX, waiterY)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-
 
         pygame.display.update()
         clock.tick(60)
