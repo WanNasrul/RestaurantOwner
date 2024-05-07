@@ -150,13 +150,17 @@ def game_screen():
 
         # update waiter position based on key presses
         if keys[pygame.K_w]:
-            waiterY -= 3
+            if waiterY > 0:
+                waiterY -= 3
         if keys[pygame.K_s]:
-            waiterY += 3
+            if waiterY < 520:
+                waiterY += 3
         if keys[pygame.K_a]:
-            waiterX -= 3
+            if waiterX > 381:
+                waiterX -= 3
         if keys[pygame.K_d]:
-            waiterX += 3
+            if waiterX < 1045:
+                waiterX += 3
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
