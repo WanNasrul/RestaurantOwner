@@ -174,10 +174,10 @@ def game_screen():
         # Update waiter Rect object position
         waiter_rect.topleft = (waiterX, waiterY)
 
-        if collision_detection(waiter_rect, tablechair1_rect):
-            print("Collision Detected!")
-            print("Waiter Rect:", waiter_rect)
-            print("Table Chair Rect:", tablechair1_rect)
+        # if collision_detection(waiter_rect, tablechair1_rect):
+            # print("Collision Detected!")
+            # print("Waiter Rect:", waiter_rect)
+            # print("Table Chair Rect:", tablechair1_rect)
 
 
             # heck for collision between waiter and table chair
@@ -215,9 +215,12 @@ def game_screen():
 
             run = False
         
+        waiter(waiterX, waiterY)
+
         if shop_button.draw(screen):
             print('opened shop')
             # insert shop code here
+
         
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
@@ -227,7 +230,6 @@ def game_screen():
         # testing, add 12 money every 1 frame
         money += 12
 
-        waiter(waiterX, waiterY)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
