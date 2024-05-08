@@ -1,10 +1,12 @@
 import pygame
 import button
 from sys import exit #import one thing
+from SaveLoadManager import SaveLoadSystem
 
 # initialize pygame
 pygame.init()
 
+saveloadmanager = SaveLoadSystem(".save", "save_data")
 # create display window
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -75,7 +77,7 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 tablechair1_button = button.Button(600, 380, tablechair1_img, 0.6)
 
 # click the chef and cat
-fern_button = button.Button(508, 300, fern_img, 0.08)
+fern_button = button.Button(502, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
@@ -94,6 +96,11 @@ click_sfx = pygame.mixer.Sound('gameasset\click (2).mp3')
 # money_font = pygame.font.Font('font/segoepr.ttf', 50)
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
+
+def collision_detection(rect1, rect2):
+    # check if two rectangles collide
+    return rect1.colliderect(rect2)
+
 def npc(x, y):
     screen.blit(npc1_img, (x, y))
 
@@ -161,11 +168,16 @@ def game_screen():
     cooking = emptybox_img
     progress = 0
 
+    # rect object for waiter
+    waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
+    # rect object for table and chair
+    tablechair1_rect = pygame.Rect(615, 380, tablechair1_img.get_width() - 150, tablechair1_img.get_height() - 150)
+
     while run:
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
-        
+
 
         tablechair1_button.draw(screen)
 
@@ -189,6 +201,26 @@ def game_screen():
             if waiterX < 1045:
                 waiterX += 3
 
+        
+        # Update waiter Rect object position
+        waiter_rect.topleft = (waiterX, waiterY)
+
+               # Check for collision between waiter and table chair
+        if collision_detection(waiter_rect, tablechair1_rect):
+            # If collision detected, prevent waiter from moving in that direction
+            # Implement your logic here
+            # For example, if moving left and colliding with table chair, don't allow further left movement
+            if keys[pygame.K_w] and waiterY < tablechair1_rect.bottom:
+                waiterY += 3
+            if keys[pygame.K_s] and waiterY + waiter_img.get_height() > tablechair1_rect.top:
+                waiterY -= 3
+            if keys[pygame.K_a] and waiterX < tablechair1_rect.right:
+                waiterX += 3
+            if keys[pygame.K_d] and waiterX + waiter_img.get_width() > tablechair1_rect.left:
+                waiterX -= 3
+
+
+
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
             npc1_img = 1100
@@ -208,6 +240,7 @@ def game_screen():
             click_sfx.play()
             print('game paused')
             # insert pause code here
+
             run = False
         
         if shop_button.draw(screen):
@@ -289,10 +322,11 @@ def game_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
                 pygame.quit()
                 exit()
 
-        pygame.display.update()
+        pygame.display.update() 
         clock.tick(60)
 
 def credit_menu():
