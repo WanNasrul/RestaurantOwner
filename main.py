@@ -253,12 +253,15 @@ def game_screen():
             # insert pause code here
             run = False
         
+        waiter(waiterX, waiterY)
+
         if shop_button.draw(screen):
             click_sfx.play()
             shop_open()
 
 
             # insert shop code here
+
         
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
