@@ -38,9 +38,6 @@ chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
 tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
-# Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
-# Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
-# table_img = pygame.image.load('gameasset/table.png').convert_alpha()
 
 
 # create button instances
@@ -55,7 +52,7 @@ tablechair1_button = button.Button(600, 380, tablechair1_img, 0.6)
 # click the chef and cat
 fern_button = button.Button(502, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
-# waiter_button = button.Button(450, 215, waiter_img, 1)
+
 
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
@@ -92,8 +89,7 @@ def main_menu():
     while run:
 
         screen.fill((255, 235, 216))
-        # screen.blit(bg_main_menu, (0, 0)
-        # moving main menu background
+
         mainmenubg_rect.x -= 2
         if mainmenubg_rect.left <= -743: 
             mainmenubg_rect.left = 0
@@ -141,7 +137,7 @@ def game_screen():
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
-    tablechair1_rect = pygame.Rect(615, 380, tablechair1_img.get_width() - 150, tablechair1_img.get_height() - 150)
+    tablechair1_rect = pygame.Rect(615, 380, 195, 20)
 
     while run:
         # game screen code here
@@ -178,18 +174,22 @@ def game_screen():
         # Update waiter Rect object position
         waiter_rect.topleft = (waiterX, waiterY)
 
-               # Check for collision between waiter and table chair
         if collision_detection(waiter_rect, tablechair1_rect):
-            # If collision detected, prevent waiter from moving in that direction
-            # Implement your logic here
-            # For example, if moving left and colliding with table chair, don't allow further left movement
-            if keys[pygame.K_w] and waiterY < tablechair1_rect.bottom:
+            print("Collision Detected!")
+            print("Waiter Rect:", waiter_rect)
+            print("Table Chair Rect:", tablechair1_rect)
+
+
+            # heck for collision between waiter and table chair
+        if collision_detection(waiter_rect, tablechair1_rect):
+            # if collision is detected, prevent waiter from moving in that direction
+            if keys[pygame.K_w] and waiter_rect.top < tablechair1_rect.bottom:
                 waiterY += 3
-            if keys[pygame.K_s] and waiterY + waiter_img.get_height() > tablechair1_rect.top:
+            if keys[pygame.K_s] and waiter_rect.bottom > tablechair1_rect.top:
                 waiterY -= 3
-            if keys[pygame.K_a] and waiterX < tablechair1_rect.right:
+            if keys[pygame.K_a] and waiter_rect.left < tablechair1_rect.right:
                 waiterX += 3
-            if keys[pygame.K_d] and waiterX + waiter_img.get_width() > tablechair1_rect.left:
+            if keys[pygame.K_d] and waiter_rect.right > tablechair1_rect.left:
                 waiterX -= 3
 
 
