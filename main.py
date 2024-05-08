@@ -1,11 +1,12 @@
 import pygame
 import button
 from sys import exit #import one thing
-
+from SaveLoadManager import SaveLoadSystem
 
 # initialize pygame
 pygame.init()
 
+saveloadmanager = SaveLoadSystem(".save", "save_data")
 # create display window
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -71,7 +72,9 @@ music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
 
-
+def collision_detection(rect1, rect2):
+    # check if two rectangles collide
+    return rect1.colliderect(rect2)
 
 def npc(x, y):
     screen.blit(npc1_img, (x, y))
@@ -135,6 +138,11 @@ def game_screen():
     # npc position
     npc1_x_pos = 1000
 
+    # rect object for waiter
+    waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
+    # rect object for table and chair
+    tablechair1_rect = pygame.Rect(615, 380, tablechair1_img.get_width() - 150, tablechair1_img.get_height() - 150)
+
     while run:
         # game screen code here
         screen.fill((255, 255, 255))
@@ -165,6 +173,26 @@ def game_screen():
         if keys[pygame.K_d]:
             if waiterX < 1045:
                 waiterX += 3
+
+        
+        # Update waiter Rect object position
+        waiter_rect.topleft = (waiterX, waiterY)
+
+               # Check for collision between waiter and table chair
+        if collision_detection(waiter_rect, tablechair1_rect):
+            # If collision detected, prevent waiter from moving in that direction
+            # Implement your logic here
+            # For example, if moving left and colliding with table chair, don't allow further left movement
+            if keys[pygame.K_w] and waiterY < tablechair1_rect.bottom:
+                waiterY += 3
+            if keys[pygame.K_s] and waiterY + waiter_img.get_height() > tablechair1_rect.top:
+                waiterY -= 3
+            if keys[pygame.K_a] and waiterX < tablechair1_rect.right:
+                waiterX += 3
+            if keys[pygame.K_d] and waiterX + waiter_img.get_width() > tablechair1_rect.left:
+                waiterX -= 3
+
+
 
         npc1_x_pos -= 1.5
         if npc1_x_pos < 550: 
@@ -203,10 +231,11 @@ def game_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
                 pygame.quit()
                 exit()
 
-        pygame.display.update()
+        pygame.display.update() 
         clock.tick(60)
 
 # def credits_menu():
