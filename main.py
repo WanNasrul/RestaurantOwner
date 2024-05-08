@@ -275,7 +275,7 @@ def game_screen():
                 if npc1_y_pos == 250:
                     npc1_y_pos = 415
                     npc1_x_pos = 400
-                    npc
+                    npc()
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
