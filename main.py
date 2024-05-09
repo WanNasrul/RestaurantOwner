@@ -45,6 +45,7 @@ tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 
 # chef ui images
 chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
+shopbackground_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopbackground.png').convert_alpha()
 xbutton_img = pygame.image.load('gameasset/chef ui/xbutton.png').convert_alpha()
 chicken_img = pygame.image.load('gameasset/chef ui/chicken.png').convert_alpha()
 fish_img = pygame.image.load('gameasset/chef ui/fish.png').convert_alpha()
@@ -60,6 +61,21 @@ fish_button = button.Button(590, 250, fish_img, 1)
 burger_button = button.Button(740, 250, burger_img, 1)
 pizza_button = button.Button(890, 250, pizza_img, 1)
 steak_button = button.Button(1040, 250, steak_img, 1)
+
+
+#shop img
+cheficon_img =  pygame.image.load('gameasset\ShopUI\ShopUI\cheficon.png').convert_alpha()
+chefborder_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopcolumn.png').convert_alpha()
+#star_img = pygame.image.load('gameasset\ShopUI\ShopUI\star.png').convert_alpha()
+upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/starupgraded.png').convert_alpha()
+
+
+# shop ui buttons 
+xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
+upgrade_button1 = button.Button(1050, 150, upgradebutton_img, 1)
+upgrade_button2 = button.Button(1050,315, upgradebutton_img,1)
+upgrade_button3 = button.Button(1050,475, upgradebutton_img,1)
+
 
 # npc position
 npc1_x_pos = 1000
@@ -157,7 +173,11 @@ def game_screen():
     waiterX = 450
     waiterY =  215
 
+    runShopUI = False
+
     runchefUI = False
+
+    
     cooking = emptybox_img
     progress = 0
 
@@ -212,7 +232,40 @@ def game_screen():
         
         if shop_button.draw(screen):
             click_sfx.play()
-            shop_open()
+            runShopUI = True 
+
+        if runShopUI == True:
+
+            
+            screen.blit(shopbackground_img, (410,25))
+            screen.blit(chefborder_img, (435,125))
+            screen.blit(cheficon_img, (450,135))
+            screen.blit(chefborder_img, (435,285))
+            screen.blit(cheficon_img, (450,295))
+            screen.blit(chefborder_img, (435,445))
+            screen.blit(cheficon_img, (450,455))
+            
+
+            if xshopbutton_button.draw(screen):
+                click_sfx.play()
+                runShopUI = False
+
+            if upgrade_button1.draw(screen):
+                 click_sfx.play()
+                 print('hello')
+
+            if upgrade_button2.draw(screen):
+                 click_sfx.play()
+                 print('hello')
+
+            if upgrade_button3.draw(screen):
+                 click_sfx.play()
+                 print('hello')
+
+
+
+        
+
 
 
             # insert shop code here
@@ -265,7 +318,7 @@ def game_screen():
                 cooking = pizza_img
                 
             if steak_button.draw(screen) and cooking == emptybox_img:
-                click_sfx.play()
+                click_sfx.play() 
                 cooking = steak_img
             
             if cooking != emptybox_img:
@@ -308,30 +361,14 @@ def credit_menu():
             # insert pause code here
             run = False
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-             run = False
-        pygame.display.update()
-
-def shop_open():
-    run = True
-    while run :
-
-        screen.fill((255, 255, 255))
-        screen.blit(bg_game_screen, (0,0))
-        screen.blit(shoppic_img, (150,150))
         
 
-        if pause_button.draw(screen):
-            click_sfx.play()
-            print('game paused')
-            # insert pause code here
-            run = False
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
              run = False
         pygame.display.update()
+
+
 
 
 
