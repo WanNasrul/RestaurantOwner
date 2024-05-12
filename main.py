@@ -138,6 +138,24 @@ for i in range(1):
     food = pygame.Rect(x, y, w, h)
     foods.append(food)
 
+class NPC:
+    def __init__(self, x , y, img, pizza_img):
+        self.x = x
+        self.y = y
+        self.img = img
+        self.meal_img = pizza_img
+        self.seated = False
+
+    def display(self, screen):
+        screen.blit(self.img, (self.x, self.y))
+
+    def display_order(self, screen):
+        if self.seated:
+            screen.blit(self.pizza_img, (self.x + 20, self.y - 50))
+
+
+
+
 
 def npc(x, y):
     npc1_width = int(npc1_img.get_width() * 0.9)
@@ -313,17 +331,15 @@ def game_screen():
 
 
         npc1_x_pos -= 1.5
-        if npc1_x_pos <= 650: 
+        if npc1_x_pos <= 650 and npc1_y_pos >= 250: 
+            npc.seated = True
             npc1_x_pos = 651
             npc1_y_pos += 1.5
 
-            if npc1_y_pos >= 250:
-                npc1_y_pos = 250  
-
-                if npc1_y_pos == 250:
-                    npc1_y_pos = 415
-                    npc1_x_pos = 400
-                    npc
+            if npc1_y_pos == 250:
+                npc1_y_pos = 415
+                npc1_x_pos = 400
+                npc
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
@@ -368,6 +384,9 @@ def game_screen():
         npc(npc1_x_pos, npc1_y_pos)
 
         waiter(waiterX, waiterY)
+
+        npc.display(screen)
+        npc.display_order(screen)
 
         for food in foods:
             pygame.draw.rect(screen, "purple", food)
