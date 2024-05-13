@@ -258,12 +258,18 @@ def game_screen():
     cooking = emptybox_img
     progress = 0
 
+    waiterfood = emptybox_img
+
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
-    tablechair1_rect = pygame.Rect(430, 460, 250, 15)
-    # tablechair2_rect = pygame.Rect(615, 440, 100, 20)
-    # tablechair3_rect = pygame.Rect(615, 440, 100, 20)
+    tablechair1_rect = pygame.Rect(430, 480, 220, 15)
+    tablechair2_rect = pygame.Rect(760, 410, 220, 10)
+    tablechair3_rect = pygame.Rect(765, 255, 220, 10)
+
+    # food rect and surf
+    emptybox_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
+    emptybox_rect = emptybox_surf.get_rect(topleft = (550, 210))
 
 
     while run:
@@ -295,7 +301,7 @@ def game_screen():
         # update waiter Rect object position
         waiter_rect.topleft = (waiterX, waiterY)
 
-        # check for collision between waiter and table chair
+        # check for collision between waiter and table chair (1)
         if collision_detection(waiter_rect, tablechair1_rect):
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < tablechair1_rect.bottom:
@@ -305,6 +311,33 @@ def game_screen():
             if keys[pygame.K_a] and waiter_rect.left < tablechair1_rect.right:
                 waiterX += 3
             if keys[pygame.K_d] and waiter_rect.right > tablechair1_rect.left:
+                waiterX -= 3
+
+            waiterfood = emptybox_img
+            cooking = emptybox_img
+
+        # check for collision between waiter and table chair (2)
+        if collision_detection(waiter_rect, tablechair2_rect):
+        # If collision is detected, prevent waiter from moving in that direction
+            if keys[pygame.K_w] and waiter_rect.top < tablechair2_rect.bottom:
+                waiterY += 3
+            if keys[pygame.K_s] and waiter_rect.bottom > tablechair2_rect.top:
+                waiterY -= 3
+            if keys[pygame.K_a] and waiter_rect.left < tablechair2_rect.right:
+                waiterX += 3
+            if keys[pygame.K_d] and waiter_rect.right > tablechair2_rect.left:
+                waiterX -= 3
+
+        # check for collision between waiter and table chair (3)
+        if collision_detection(waiter_rect, tablechair3_rect):
+        # If collision is detected, prevent waiter from moving in that direction
+            if keys[pygame.K_w] and waiter_rect.top < tablechair3_rect.bottom:
+                waiterY += 3
+            if keys[pygame.K_s] and waiter_rect.bottom > tablechair3_rect.top:
+                waiterY -= 3
+            if keys[pygame.K_a] and waiter_rect.left < tablechair3_rect.right:
+                waiterX += 3
+            if keys[pygame.K_d] and waiter_rect.right > tablechair3_rect.left:
                 waiterX -= 3
 
 
@@ -337,8 +370,7 @@ def game_screen():
             print('game paused')
             # insert pause code here
             run = False
-        
-        waiter(waiterX, waiterY)
+
 
         if shop_button.draw(screen):
             click_sfx.play()
@@ -364,9 +396,8 @@ def game_screen():
 
         npc(npc1_x_pos, npc1_y_pos)
 
-        waiter(waiterX, waiterY)
-        
-        foodserve(foodserveX,foodserveY)
+        screen.blit(emptybox_surf, emptybox_rect)
+
 
         #table4(tablechair4X,tablechair4Y)
 
@@ -381,7 +412,9 @@ def game_screen():
             click_sfx.play()
             runchefUI = True
 
-        # screen.blit(cooking, (503,254))
+        waiter(waiterX, waiterY)
+        screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
+        foodserve(foodserveX,foodserveY)
 
         if runchefUI == True:
             
@@ -416,9 +449,9 @@ def game_screen():
             if cooking != emptybox_img:
                 if progress <= 130:
                     progress += 1
-                else:
-                    cooking = emptybox_img
-                    progress = 0
+                # else:
+                #     cooking = emptybox_img
+                #     progress = 0
  
             screen.blit(cooking, (450,480))
             screen.blit(progressbar_img, (605,515))
@@ -427,10 +460,21 @@ def game_screen():
 
             
         # CHECK MOUSE POSITION
-        # mouse_pos = pygame.mouse.get_pos()
-        # print(mouse_pos)
+        mouse_pos = pygame.mouse.get_pos()
+        print(mouse_pos)
 
         # Chef UI ====================================== #
+
+        # food serve ================================ #
+
+        if emptybox_rect.colliderect(waiter_rect):
+            print("waiter pick food")
+            waiterfood = cooking
+
+        # food serve ================================ #
+
+
+
 
 
         for event in pygame.event.get():
