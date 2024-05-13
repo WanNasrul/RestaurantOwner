@@ -174,12 +174,14 @@ def collision_detection(waiter_rect, table_rect):
     # Check if two rectangles collide while taking into account the waiter's position
     return waiter_rect.colliderect(table_rect)
 
-
+wait_duration = 5000  # 5000 milliseconds = 5 seconds
+movement_timer = None
+npc_moving = False  # NPC should not move initially
 
 
 
 def main_menu():
-
+    global movement_timer, npc_moving
     # default value for background intial position
     
     run = True
@@ -204,6 +206,8 @@ def main_menu():
         if start_button.draw(screen):
             click_sfx.play()
             click_sfx.play()
+            movement_timer = pygame.time.get_ticks()  # Start the timer
+            npc_moving = False  # NPC should stay still initially
             game_screen()
 
 
@@ -232,7 +236,7 @@ def main_menu():
 
 def game_screen():
 
-    global npc1_x_pos, npc1_img, npc1_y_pos
+    global npc1_x_pos, npc1_img, npc1_y_pos, movement_timer, npc_moving
     run = True
 
     # default money and day value
@@ -263,11 +267,7 @@ def game_screen():
     # rect object for table and chair
     tablechair1_rect = pygame.Rect(430, 460, 250, 15)
     # tablechair2_rect = pygame.Rect(615, 440, 100, 20)
-    # tablechair3_rect = pygame.Rect(615, 440, 100, 20)\
-
-    wait_duration = 5000  # 5000 milliseconds = 5 seconds
-    movement_timer = None
-    npc_moving = False  # NPC should not move initially
+    # tablechair3_rect = pygame.Rect(615, 440, 100, 20)
 
 
     while run:
@@ -312,24 +312,21 @@ def game_screen():
                 waiterX -= 3
 
         if not npc_moving:
-            # Check if the waiting duration has passed
-            if movement_timer is None or pygame.time.get_ticks() - movement_timer >= wait_duration:
-                npc_moving = True  # NPC should start moving now
-                movement_timer = None  # Reset the timer
+            if movement_timer is not None and pygame.time.get_ticks() - movement_timer >= wait_duration:
+                npc_moving = True
 
-        if npc1_x_pos >= 1000: 
-            npc1_x_pos -= 1.5
-            npc1_y_pos += 1.5
+        if npc_moving:
+            if npc1_x_pos >= 1000:
+                npc1_y_pos += 1.5
+                
+                if npc1_y_pos >= 250:
+                    npc1_y_pos = 250
 
-            if npc1_y_pos >= 250:
-                npc1_y_pos = 250  
-
-                if npc1_y_pos == 250:
-                    npc1_y_pos = 425
-                    npc1_x_pos = 400
-                            
-                    movement_timer = pygame.time.get_ticks()
-                    npc_moving = False  # NPC should stop moving after reaching its destination
+                    if npc1_y_pos == 250:
+                        npc1_y_pos = 425
+                        npc1_x_pos = 400
+                        movement_timer = pygame.time.get_ticks()
+                        npc_moving = False
 
 
         # game font variables such as day count and money count
