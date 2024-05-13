@@ -119,7 +119,49 @@ def npc(x, y):
 
 
 def waiter(x, y):
-    screen.blit(waiter_img, (x, y))
+    waiter_width = int(waiter_img.get_width() * 1)
+    waiter_height = int(waiter_img.get_height() * 1)
+    waiter_resize = pygame.transform.scale(waiter_img, (waiter_width, waiter_height))
+    waiter_flip = pygame.transform.flip(waiter_resize, True, False)
+    screen.blit(waiter_flip, (x, y))
+
+def table1(x, y):
+    tablechair1_width = int(tablechair1_img.get_width() * 1)
+    tablechair1_height = int(tablechair1_img.get_height() * 1)
+    tablechair1_resize = pygame.transform.scale(tablechair1_img, (tablechair1_width, tablechair1_height))
+    screen.blit(tablechair1_resize, (x, y))
+
+def table2(x, y):
+    tablechair2_width = int(tablechair2_img.get_width() * 1)
+    tablechair2_height = int(tablechair2_img.get_height() * 1)
+    tablechair2_resize = pygame.transform.scale(tablechair2_img, (tablechair2_width, tablechair2_height))
+    screen.blit(tablechair2_resize, (x, y))
+
+def table3(x, y):
+    tablechair3_width = int(tablechair3_img.get_width() * 1)
+    tablechair3_height = int(tablechair3_img.get_height() * 1)
+    tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
+    screen.blit(tablechair3_resize, (x, y))
+
+def foodserve(x, y):
+    foodserve_width = int(chicken_img.get_width() *0.5)
+    foodserve_height = int(chicken_img.get_height() * 0.5)
+    foodserve_resize = pygame.transform.scale(chicken_img, (foodserve_width, foodserve_height))
+    screen.blit(foodserve_resize, (x, y))
+
+def collision_detection(waiter_rect, table_rect):
+
+    # print("waiter_rect:", waiter_rect)
+    # print("table_rect:", table_rect)
+    # print("Collision:", waiter_rect.colliderect(table_rect))
+
+
+    # Check if two rectangles collide while taking into account the waiter's position
+    return waiter_rect.colliderect(table_rect)
+
+
+
+
 
 def main_menu():
 
