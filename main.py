@@ -265,9 +265,9 @@ def game_screen():
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
-    tablechair1_rect = pygame.Rect(430, 460, 250, 15)
-    # tablechair2_rect = pygame.Rect(615, 440, 100, 20)
-    # tablechair3_rect = pygame.Rect(615, 440, 100, 20)
+    tablechair1_rect = pygame.Rect(430, 480, 220, 15)
+    tablechair2_rect = pygame.Rect(760, 410, 220, 10)
+    tablechair3_rect = pygame.Rect(765, 255, 220, 10)
 
 
     while run:
@@ -299,7 +299,7 @@ def game_screen():
         # update waiter Rect object position
         waiter_rect.topleft = (waiterX, waiterY)
 
-        # check for collision between waiter and table chair
+        # check for collision between waiter and table chair (1)
         if collision_detection(waiter_rect, tablechair1_rect):
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < tablechair1_rect.bottom:
@@ -309,6 +309,30 @@ def game_screen():
             if keys[pygame.K_a] and waiter_rect.left < tablechair1_rect.right:
                 waiterX += 3
             if keys[pygame.K_d] and waiter_rect.right > tablechair1_rect.left:
+                waiterX -= 3
+
+        # check for collision between waiter and table chair (2)
+        if collision_detection(waiter_rect, tablechair2_rect):
+        # If collision is detected, prevent waiter from moving in that direction
+            if keys[pygame.K_w] and waiter_rect.top < tablechair2_rect.bottom:
+                waiterY += 3
+            if keys[pygame.K_s] and waiter_rect.bottom > tablechair2_rect.top:
+                waiterY -= 3
+            if keys[pygame.K_a] and waiter_rect.left < tablechair2_rect.right:
+                waiterX += 3
+            if keys[pygame.K_d] and waiter_rect.right > tablechair2_rect.left:
+                waiterX -= 3
+
+        # check for collision between waiter and table chair (3)
+        if collision_detection(waiter_rect, tablechair3_rect):
+        # If collision is detected, prevent waiter from moving in that direction
+            if keys[pygame.K_w] and waiter_rect.top < tablechair3_rect.bottom:
+                waiterY += 3
+            if keys[pygame.K_s] and waiter_rect.bottom > tablechair3_rect.top:
+                waiterY -= 3
+            if keys[pygame.K_a] and waiter_rect.left < tablechair3_rect.right:
+                waiterX += 3
+            if keys[pygame.K_d] and waiter_rect.right > tablechair3_rect.left:
                 waiterX -= 3
 
 
