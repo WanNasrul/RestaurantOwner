@@ -239,20 +239,7 @@ def game_screen():
             print('game paused')
             # insert pause code here
             run = False
-        
-       
-            
-
-            
-                 
-
-            
-
-
-
-        
-
-
+    
 
             # insert shop code here
         
@@ -394,12 +381,6 @@ def credit_menu():
             if event.type == pygame.QUIT:
              run = False
         pygame.display.update()
-
-
-
-
-
-
 
 
 # def credits_menu():
