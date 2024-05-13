@@ -174,7 +174,7 @@ def collision_detection(waiter_rect, table_rect):
     # Check if two rectangles collide while taking into account the waiter's position
     return waiter_rect.colliderect(table_rect)
 
-wait_duration = 5000  # 5000 milliseconds = 5 seconds
+wait_duration = 2000  # 5000 milliseconds = 5 seconds
 movement_timer = None
 npc_moving = False  # NPC should not move initially
 
@@ -344,15 +344,16 @@ def game_screen():
             if keys[pygame.K_d] and waiter_rect.right > tablechair3_rect.left:
                 waiterX -= 3
 
+        if not npc_moving:
+            if movement_timer is not None and pygame.time.get_ticks() - movement_timer >= wait_duration:
+                npc_moving = True
 
+        if npc_moving:
+            if npc1_x_pos >= 1000:
+                npc1_y_pos += 1.5
 
-        npc1_x_pos -= 1.5
-        if npc1_x_pos <= 650: 
-            npc1_x_pos = 651
-            npc1_y_pos += 1.5
-
-            if npc1_y_pos >= 250:
-                npc1_y_pos = 250  
+                if npc1_y_pos >= 250:
+                    npc1_y_pos = 250
 
                     if npc1_y_pos == 250:
                         npc1_y_pos = 425
