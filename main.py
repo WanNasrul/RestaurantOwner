@@ -126,22 +126,10 @@ click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
 # money_font = pygame.font.Font('font/segoepr.ttf', 50)
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
-    
-active_food = None
-
-foods = []
-for i in range(1):
-    x = random.randint(50, 700)
-    y = random.randint(50, 350)
-    w = random.randint(35, 65)
-    h = random.randint(35, 65)
-    food = pygame.Rect(x, y, w, h)
-    foods.append(food)
-
 
 def npc(x, y):
-    npc1_width = int(npc1_img.get_width() * 0.9)
-    npc1_height = int(npc1_img.get_height() * 0.9)
+    npc1_width = int(npc1_img.get_width() * 1)
+    npc1_height = int(npc1_img.get_height() * 1)
     npc1_resize= pygame.transform.scale(npc1_img, (npc1_width, npc1_height))
     screen.blit(npc1_resize, (x, y))
 
@@ -170,11 +158,17 @@ def table3(x, y):
     tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
     screen.blit(tablechair3_resize, (x, y))
 
+def foodserve(x, y):
+    foodserve_width = int(chicken_img.get_width() *0.5)
+    foodserve_height = int(chicken_img.get_height() * 0.5)
+    foodserve_resize = pygame.transform.scale(chicken_img, (foodserve_width, foodserve_height))
+    screen.blit(foodserve_resize, (x, y))
+
 def collision_detection(waiter_rect, table_rect):
 
-    print("waiter_rect:", waiter_rect)
-    print("table_rect:", table_rect)
-    print("Collision:", waiter_rect.colliderect(table_rect))
+    # print("waiter_rect:", waiter_rect)
+    # print("table_rect:", table_rect)
+    # print("Collision:", waiter_rect.colliderect(table_rect))
 
 
     # Check if two rectangles collide while taking into account the waiter's position
@@ -256,6 +250,9 @@ def game_screen():
 
     waiterX = 570
     waiterY =  150
+
+    foodserveX = 490
+    foodserveY = 240
 
     runchefUI = False
     cooking = emptybox_img
@@ -368,9 +365,8 @@ def game_screen():
         npc(npc1_x_pos, npc1_y_pos)
 
         waiter(waiterX, waiterY)
-
-        for food in foods:
-            pygame.draw.rect(screen, "purple", food)
+        
+        foodserve(foodserveX,foodserveY)
 
         #table4(tablechair4X,tablechair4Y)
 
@@ -384,6 +380,8 @@ def game_screen():
         if chef_button.draw(screen):
             click_sfx.play()
             runchefUI = True
+
+        # screen.blit(cooking, (503,254))
 
         if runchefUI == True:
             
@@ -427,9 +425,8 @@ def game_screen():
             screen.blit(progressbar_surf, progressbar_rect)
             pygame.draw.rect(screen,'red',progressbar_rect)
 
-
-
-
+            
+        # CHECK MOUSE POSITION
         # mouse_pos = pygame.mouse.get_pos()
         # print(mouse_pos)
 
@@ -437,22 +434,6 @@ def game_screen():
 
 
         for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    for num, food in enumerate(foods):
-                        if food.collidepoint(event.pos):
-                            active_food = num
-            
-            if event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1:
-                    active_food = None 
-
-
-            if event.type == pygame.MOUSEMOTION:
-                if active_food != None:
-                    foods[active_food].move_ip(event.rel)
-
-
             if event.type == pygame.QUIT:
                 # saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
                 pygame.quit()
