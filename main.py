@@ -427,8 +427,8 @@ def game_screen():
 
             
         # CHECK MOUSE POSITION
-        # mouse_pos = pygame.mouse.get_pos()
-        # print(mouse_pos)
+        mouse_pos = pygame.mouse.get_pos()
+        print(mouse_pos)
 
         # Chef UI ====================================== #
 
