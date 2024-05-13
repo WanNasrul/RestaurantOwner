@@ -531,11 +531,6 @@ def shop_open():
              run = False
         pygame.display.update()
 
-
-
-
-
-
 def credit_menu():
     run = True
     while run :
