@@ -209,7 +209,7 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-    global npc1_x_pos, npc1_img
+    global npc1_x_pos, npc1_img, money
     run = True
 
     # default money and day value
@@ -237,6 +237,17 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+
+         # update game state
+        if cooking != emptybox_img and progress >= 130:
+            # increase money when chef finishes cooking
+            money += 100
+            # limit money to a maximum value of 100
+            if money > 100:
+                money = 100
+            # reset cooking progress
+            cooking = emptybox_img
+            progress = 0
         
 
         tablechair1_button.draw(screen)
@@ -291,11 +302,47 @@ def game_screen():
         screen.blit(money_surf,money_rect)
     
         # testing, add 12 money every 1 frame
-        money += 12
+        
 
         waiter(waiterX, waiterY)
 
-        # Chef UI ====================================== #
+        # Chef UI ====================================== #\
+
+        #shop ui
+        if shop_button.draw(screen):
+            click_sfx.play()
+            runShopUI = True 
+
+        if runShopUI == True:
+
+            
+            screen.blit(shopbackground_img, (410,25))
+            screen.blit(chefborder_img, (435,125))
+            screen.blit(cheficon_img, (450,135))
+            screen.blit(chefborder_img, (435,285))
+            screen.blit(cheficon_img, (450,295))
+            screen.blit(chefborder_img, (435,445))
+            screen.blit(cheficon_img, (450,455))
+            screen.blit(chef, (610,155))
+            screen.blit(chef2, (610,315))
+            screen.blit(waiter1, (610,475))
+            
+            
+            if xshopbutton_button.draw(screen) :
+                click_sfx.play()
+                runShopUI = False
+
+            if upgrade_button1.draw(screen) and chef == star_img:
+                 click_sfx.play()
+                 chef = starupgrade_img
+
+            if upgrade_button2.draw(screen) and chef2 == star_img:
+                 click_sfx.play()
+                 chef2 = starupgrade_img
+
+            if upgrade_button3.draw(screen) and waiter1 == star_img :
+                 click_sfx.play()
+                 waiter1 = starupgrade_img
         
         # chef progress bar
         progressbar_font = pygame.font.Font('font/segoepr.ttf', 15)
@@ -342,6 +389,7 @@ def game_screen():
                 else:
                     cooking = emptybox_img
                     progress = 0
+
  
             screen.blit(cooking, (450,480))
             screen.blit(progressbar_img, (605,515))
@@ -349,44 +397,7 @@ def game_screen():
             pygame.draw.rect(screen,'red',progressbar_rect)
 
 
-        if shop_button.draw(screen):
-            click_sfx.play()
-            runShopUI = True 
-
-        if runShopUI == True:
-
-            
-            screen.blit(shopbackground_img, (410,25))
-            screen.blit(chefborder_img, (435,125))
-            screen.blit(cheficon_img, (450,135))
-            screen.blit(chefborder_img, (435,285))
-            screen.blit(cheficon_img, (450,295))
-            screen.blit(chefborder_img, (435,445))
-            screen.blit(cheficon_img, (450,455))
-            screen.blit(chef, (610,155))
-            screen.blit(chef2, (610,315))
-            screen.blit(waiter1, (610,475))
-            
-            
-
-
-            
-
-            if xshopbutton_button.draw(screen) :
-                click_sfx.play()
-                runShopUI = False
-
-            if upgrade_button1.draw(screen) and chef == star_img:
-                 click_sfx.play()
-                 chef = starupgrade_img
-
-            if upgrade_button2.draw(screen) and chef2 == star_img:
-                 click_sfx.play()
-                 chef2 = starupgrade_img
-
-            if upgrade_button3.draw(screen) and waiter1 == star_img :
-                 click_sfx.play()
-                 waiter1 = starupgrade_img
+       
 
 
 
