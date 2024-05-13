@@ -175,6 +175,9 @@ def collision_detection(waiter_rect, table_rect):
     return waiter_rect.colliderect(table_rect)
 
 
+#jdbcdvkdjvlkdjvjlv
+
+
 
 
 
