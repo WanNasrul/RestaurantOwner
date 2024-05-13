@@ -54,6 +54,8 @@ pizza_img = pygame.image.load('gameasset/chef ui/pizza.png').convert_alpha()
 steak_img = pygame.image.load('gameasset/chef ui/steak.png').convert_alpha()
 progressbar_img = pygame.image.load('gameasset/chef ui/progressbar.png').convert_alpha()
 emptybox_img = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
+
+
 # chef ui buttons
 xbutton_button = button.Button(1100, 70, xbutton_img, 1)
 chicken_button = button.Button(440, 250, chicken_img, 1)
@@ -66,8 +68,10 @@ steak_button = button.Button(1040, 250, steak_img, 1)
 #shop img
 cheficon_img =  pygame.image.load('gameasset\ShopUI\ShopUI\cheficon.png').convert_alpha()
 chefborder_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopcolumn.png').convert_alpha()
-#star_img = pygame.image.load('gameasset\ShopUI\ShopUI\star.png').convert_alpha()
-upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/starupgraded.png').convert_alpha()
+star_img = pygame.image.load('gameasset\ShopUI\ShopUI\star.png').convert_alpha()
+upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/upgrade.png').convert_alpha()
+starupgrade_img = pygame.image.load('gameasset\ShopUI\ShopUI\starupgraded.png').convert_alpha()
+
 
 
 # shop ui buttons 
@@ -177,6 +181,12 @@ def game_screen():
 
     runchefUI = False
 
+    chef = star_img
+    chef2 = star_img
+    waiter1 = star_img
+    
+    
+
     
     cooking = emptybox_img
     progress = 0
@@ -230,37 +240,13 @@ def game_screen():
             # insert pause code here
             run = False
         
-        if shop_button.draw(screen):
-            click_sfx.play()
-            runShopUI = True 
-
-        if runShopUI == True:
-
-            
-            screen.blit(shopbackground_img, (410,25))
-            screen.blit(chefborder_img, (435,125))
-            screen.blit(cheficon_img, (450,135))
-            screen.blit(chefborder_img, (435,285))
-            screen.blit(cheficon_img, (450,295))
-            screen.blit(chefborder_img, (435,445))
-            screen.blit(cheficon_img, (450,455))
+       
             
 
-            if xshopbutton_button.draw(screen):
-                click_sfx.play()
-                runShopUI = False
+            
+                 
 
-            if upgrade_button1.draw(screen):
-                 click_sfx.play()
-                 print('hello')
-
-            if upgrade_button2.draw(screen):
-                 click_sfx.play()
-                 print('hello')
-
-            if upgrade_button3.draw(screen):
-                 click_sfx.play()
-                 print('hello')
+            
 
 
 
@@ -332,6 +318,47 @@ def game_screen():
             screen.blit(progressbar_img, (605,515))
             screen.blit(progressbar_surf, progressbar_rect)
             pygame.draw.rect(screen,'red',progressbar_rect)
+
+
+        if shop_button.draw(screen):
+            click_sfx.play()
+            runShopUI = True 
+
+        if runShopUI == True:
+
+            
+            screen.blit(shopbackground_img, (410,25))
+            screen.blit(chefborder_img, (435,125))
+            screen.blit(cheficon_img, (450,135))
+            screen.blit(chefborder_img, (435,285))
+            screen.blit(cheficon_img, (450,295))
+            screen.blit(chefborder_img, (435,445))
+            screen.blit(cheficon_img, (450,455))
+            screen.blit(chef, (610,155))
+            screen.blit(chef2, (610,315))
+            screen.blit(waiter1, (610,475))
+            
+            
+
+
+            
+
+            if xshopbutton_button.draw(screen) :
+                click_sfx.play()
+                runShopUI = False
+
+            if upgrade_button1.draw(screen) and chef == star_img:
+                 click_sfx.play()
+                 chef = starupgrade_img
+
+            if upgrade_button2.draw(screen) and chef2 == star_img:
+                 click_sfx.play()
+                 chef2 = starupgrade_img
+
+            if upgrade_button3.draw(screen) and waiter1 == star_img :
+                 click_sfx.play()
+                 waiter1 = starupgrade_img
+
 
 
         # mouse_pos = pygame.mouse.get_pos()
