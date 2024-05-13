@@ -265,6 +265,10 @@ def game_screen():
     tablechair2_rect = pygame.Rect(760, 410, 220, 10)
     tablechair3_rect = pygame.Rect(765, 255, 220, 10)
 
+    # food rect and surf
+    emptybox_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
+    emptybox_rect = emptybox_surf.get_rect(topleft = (550, 210))
+
 
     while run:
         # game screen code here
@@ -388,9 +392,13 @@ def game_screen():
 
         npc(npc1_x_pos, npc1_y_pos)
 
+        screen.blit(emptybox_surf, emptybox_rect)
+
         waiter(waiterX, waiterY)
         
         foodserve(foodserveX,foodserveY)
+
+
 
         #table4(tablechair4X,tablechair4Y)
 
@@ -455,6 +463,16 @@ def game_screen():
         # print(mouse_pos)
 
         # Chef UI ====================================== #
+
+        # food serve ================================ #
+
+        if emptybox_rect.colliderect(waiter_rect):
+            print("waiter pick food")
+
+        # food serve ================================ #
+
+
+
 
 
         for event in pygame.event.get():
