@@ -177,7 +177,7 @@ def game_screen():
 
         tablechair1_button.draw(screen)
 
-        if fern_button.draw(screen):
+        if fern_button.draw(screen) and runchefUI == False:
             cat_sfx.play()
 
         # get the state of all keyboard keys
@@ -322,7 +322,7 @@ def game_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
+                # saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
                 pygame.quit()
                 exit()
 
