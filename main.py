@@ -146,8 +146,8 @@ def npc(x, y):
     screen.blit(npc1_resize, (x, y))
 
 def waiter(x, y):
-    waiter_width = int(waiter_img.get_width() * 1.4)
-    waiter_height = int(waiter_img.get_height() * 1.4)
+    waiter_width = int(waiter_img.get_width() * 1)
+    waiter_height = int(waiter_img.get_height() * 1)
     waiter_resize = pygame.transform.scale(waiter_img, (waiter_width, waiter_height))
     waiter_flip = pygame.transform.flip(waiter_resize, True, False)
     screen.blit(waiter_flip, (x, y))
