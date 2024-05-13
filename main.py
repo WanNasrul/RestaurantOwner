@@ -41,7 +41,7 @@ daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
 fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
-npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
+npc1_img = pygame.image.load('gameasset/casher.png').convert_alpha()
 tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
@@ -107,7 +107,7 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 
 # click the chef and cat
 fern_button = button.Button(508, 300, fern_img, 0.08)
-chef_button = button.Button(200, 215, chef_img, 1.5)
+chef_button = button.Button(200, 215, chef_img, 1)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
 # sound effects
@@ -147,27 +147,27 @@ def npc(x, y):
     screen.blit(npc1_resize, (x, y))
 
 def waiter(x, y):
-    waiter_width = int(waiter_img.get_width() * 1.4)
-    waiter_height = int(waiter_img.get_height() * 1.4)
+    waiter_width = int(waiter_img.get_width() * 1)
+    waiter_height = int(waiter_img.get_height() * 1)
     waiter_resize = pygame.transform.scale(waiter_img, (waiter_width, waiter_height))
     waiter_flip = pygame.transform.flip(waiter_resize, True, False)
     screen.blit(waiter_flip, (x, y))
 
 def table1(x, y):
-    tablechair1_width = int(tablechair1_img.get_width() * 0.9)
-    tablechair1_height = int(tablechair1_img.get_height() * 0.9)
+    tablechair1_width = int(tablechair1_img.get_width() * 1)
+    tablechair1_height = int(tablechair1_img.get_height() * 1)
     tablechair1_resize = pygame.transform.scale(tablechair1_img, (tablechair1_width, tablechair1_height))
     screen.blit(tablechair1_resize, (x, y))
 
 def table2(x, y):
-    tablechair2_width = int(tablechair2_img.get_width() * 0.9)
-    tablechair2_height = int(tablechair2_img.get_height() * 0.9)
+    tablechair2_width = int(tablechair2_img.get_width() * 1)
+    tablechair2_height = int(tablechair2_img.get_height() * 1)
     tablechair2_resize = pygame.transform.scale(tablechair2_img, (tablechair2_width, tablechair2_height))
     screen.blit(tablechair2_resize, (x, y))
 
 def table3(x, y):
-    tablechair3_width = int(tablechair3_img.get_width() * 0.9)
-    tablechair3_height = int(tablechair3_img.get_height() * 0.9)
+    tablechair3_width = int(tablechair3_img.get_width() * 1)
+    tablechair3_height = int(tablechair3_img.get_height() * 1)
     tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
     screen.blit(tablechair3_resize, (x, y))
 
@@ -276,7 +276,7 @@ def game_screen():
         screen.blit(bg_game_screen, (0, 0))
 
 
-        if fern_button.draw(screen):
+        if fern_button.draw(screen) and runchefUI == False:
             cat_sfx.play()
 
         # get the state of all keyboard keys
@@ -322,7 +322,7 @@ def game_screen():
                 npc1_y_pos = 250  
 
                 if npc1_y_pos == 250:
-                    npc1_y_pos = 415
+                    npc1_y_pos = 425
                     npc1_x_pos = 400
                     npc
 
@@ -455,6 +455,7 @@ def game_screen():
 
 
             if event.type == pygame.QUIT:
+                # saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
                 pygame.quit()
                 exit()
 
