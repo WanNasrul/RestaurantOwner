@@ -2,6 +2,7 @@ import pygame
 import button
 from sys import exit #import one thing
 import random
+import time
 
 # initialize pygame
 pygame.init()
@@ -238,6 +239,7 @@ def game_screen():
     # default money and day value
     money = 0   
     day = 1
+    increaseday = time.time()
 
     tablechair1X = 740
     tablechair1Y = 405
@@ -258,6 +260,7 @@ def game_screen():
     cooking = emptybox_img
     progress = 0
 
+
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
@@ -275,6 +278,12 @@ def game_screen():
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
 
+        current_time =  time.time()
+
+         # increase day every 30 seconds
+        if current_time - increaseday >= 120:
+            day += 1
+            increaseday = current_time
 
         if fern_button.draw(screen) and runchefUI == False:
             cat_sfx.play()
@@ -290,7 +299,7 @@ def game_screen():
             if waiterY < 520:
                 waiterY += 3
         if keys[pygame.K_a]:
-            if waiterX > 381:
+            if waiterX > 381 and waiterX - 3 > 540:
                 waiterX -= 3
         if keys[pygame.K_d]:
             if waiterX < 1045:
@@ -466,8 +475,9 @@ def game_screen():
 
         # food serve ================================ #
 
-        if emptybox_rect.colliderect(waiter_rect):
-            print("waiter pick food")
+        # if emptybox_rect.colliderect(waiter_rect):
+           # print("waiter pick food")
+
 
         # food serve ================================ #
 
