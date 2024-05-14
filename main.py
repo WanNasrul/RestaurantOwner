@@ -156,7 +156,8 @@ def table3(x, y):
     tablechair3_height = int(tablechair3_img.get_height() * 1)
     tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
     screen.blit(tablechair3_resize, (x, y))
-
+    
+    # food on the counter (fahim) 
 def foodserve(x, y, FoodOnTable):
     foodserve_width = int(FoodOnTable.get_width() *0.5)
     foodserve_height = int(FoodOnTable.get_height() * 0.5)
