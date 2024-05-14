@@ -131,17 +131,17 @@ def table1(x, y):
     tablechair1_resize = pygame.transform.scale(tablechair1_img, (tablechair1_width, tablechair1_height))
     screen.blit(tablechair1_resize, (x, y))
 
-def table2(x, y):
-    tablechair2_width = int(tablechair2_img.get_width() * 1)
-    tablechair2_height = int(tablechair2_img.get_height() * 1)
-    tablechair2_resize = pygame.transform.scale(tablechair2_img, (tablechair2_width, tablechair2_height))
-    screen.blit(tablechair2_resize, (x, y))
+#def table2(x, y):
+  #  tablechair2_width = int(tablechair2_img.get_width() * 1)
+  #  tablechair2_height = int(tablechair2_img.get_height() * 1)
+   # tablechair2_resize = pygame.transform.scale(tablechair2_img, (tablechair2_width, tablechair2_height))
+    #screen.blit(tablechair2_resize, (x, y))
 
-def table3(x, y):
-    tablechair3_width = int(tablechair3_img.get_width() * 1)
-    tablechair3_height = int(tablechair3_img.get_height() * 1)
-    tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
-    screen.blit(tablechair3_resize, (x, y))
+#def table3(x, y):
+    #tablechair3_width = int(tablechair3_img.get_width() * 1)
+    #tablechair3_height = int(tablechair3_img.get_height() * 1)
+    #tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
+    #screen.blit(tablechair3_resize, (x, y))
 
 def foodserve(x, y):
     foodserve_width = int(chicken_img.get_width() *0.5)
@@ -225,7 +225,12 @@ def game_screen():
 
     chef = star_img
     chef2 = star_img
+    chef3 = star_img
     waiter1 = star_img
+
+    cooking_speed_multiplier = 1
+
+    
     
     
 
@@ -243,8 +248,8 @@ def game_screen():
             # increase money when chef finishes cooking
             money += 100
             # limit money to a maximum value of 100
-            if money > 100:
-                money = 100
+            if money > 10000:
+                money = 10000
             # reset cooking progress
             cooking = emptybox_img
             progress = 0
@@ -324,6 +329,7 @@ def game_screen():
             screen.blit(chefborder_img, (435,445))
             screen.blit(cheficon_img, (450,455))
             screen.blit(chef, (610,155))
+            screen.blit(chef3, (810,155))
             screen.blit(chef2, (610,315))
             screen.blit(waiter1, (610,475))
             
@@ -332,17 +338,37 @@ def game_screen():
                 click_sfx.play()
                 runShopUI = False
 
-            if upgrade_button1.draw(screen) and chef == star_img:
+            if upgrade_button1.draw(screen) and chef == star_img and money>= 100 :
                  click_sfx.play()
                  chef = starupgrade_img
+                 money -= 100
+                 cooking_speed_multiplier = 2 
 
-            if upgrade_button2.draw(screen) and chef2 == star_img:
+            elif upgrade_button1.draw(screen) and chef3 == star_img and money >= 200 :
+                click_sfx.play()
+                chef3 = starupgrade_img
+                money -= 200 
+
+
+            if upgrade_button2.draw(screen) and chef2 == star_img and money>= 100:
                  click_sfx.play()
                  chef2 = starupgrade_img
+                 money -= 100
 
-            if upgrade_button3.draw(screen) and waiter1 == star_img :
+            if upgrade_button3.draw(screen) and waiter1 == star_img and money >= 100 :
                  click_sfx.play()
                  waiter1 = starupgrade_img
+                 money -= 100
+
+            
+            if cooking != emptybox_img:
+                if progress <= 130:
+                     progress += cooking_speed_multiplier  # Increase cooking speed
+                else:
+                    cooking = emptybox_img
+                    progress = 0
+
+            
         
         # chef progress bar
         progressbar_font = pygame.font.Font('font/segoepr.ttf', 15)
@@ -385,7 +411,7 @@ def game_screen():
             
             if cooking != emptybox_img:
                 if progress <= 130:
-                    progress += 1
+                    progress += cooking_speed_multiplier
                 else:
                     cooking = emptybox_img
                     progress = 0
