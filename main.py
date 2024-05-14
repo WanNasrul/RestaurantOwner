@@ -280,7 +280,7 @@ def game_screen():
 
         current_time =  time.time()
 
-         # increase day every 30 seconds
+         # increase day every 120 seconds
         if current_time - increaseday >= 120:
             day += 1
             increaseday = current_time
