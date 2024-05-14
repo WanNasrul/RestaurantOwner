@@ -322,7 +322,7 @@ def game_screen():
                 waiterX += 3
             if keys[pygame.K_d] and waiter_rect.right > tablechair1_rect.left:
                 waiterX -= 3
-            
+
 
 
         # check for collision between waiter and table chair (2)
