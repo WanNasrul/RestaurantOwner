@@ -101,7 +101,7 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 #tablechair4_button = button.Button(600, 880, tablechair4_img, 0.6)
 
 # click the chef and cat
-fern_button = button.Button(508, 300, fern_img, 0.08)
+fern_button = button.Button(498, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
@@ -270,7 +270,6 @@ def game_screen():
     cooking = emptybox_img
     progress = 0
     FoodOnTable = emptybox_img
-    FoodOnTable2 = emptybox2_img
     waiterfood = emptybox_img
     CustomerFood = emptybox_img
 
@@ -357,11 +356,6 @@ def game_screen():
             if keys[pygame.K_d] and waiter_rect.right > tablechair2_rect.left:
                 waiterX -= 3
 
-            if CustomerFood2 == emptybox2_img:
-                CustomerFood2 = waiterfood2
-                waiterfood2 = emptybox2_img
-                cooking = emptybox2_img
-
 
         # check for collision between waiter and table chair (3) TABLE NEAR COUNTER
         if collision_detection(waiter_rect, tablechair3_rect):
@@ -433,7 +427,7 @@ def game_screen():
 
         customerplate1(customerplate1X,customerplate1Y, CustomerFood)
 
-        customerplate2(customerplate2X, customerplate2Y, CustomerFood2)
+        customerplate2(customerplate2X, customerplate2Y, CustomerFood)
 
         npc(npc1_x_pos, npc1_y_pos)
 
