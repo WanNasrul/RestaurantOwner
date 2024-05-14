@@ -92,7 +92,6 @@ steak_button = button.Button(1040, 250, steak_img, 1)
 # npc position
 npc1_x_pos = 1000
 
-
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
 start_button = button.Button(515, 350, start_img, 0.5)
@@ -174,7 +173,7 @@ def collision_detection(waiter_rect, table_rect):
     # Check if two rectangles collide while taking into account the waiter's position
     return waiter_rect.colliderect(table_rect)
 
-wait_duration = 2000  # 5000 milliseconds = 5 seconds
+wait_duration = 2000  # 2000 milliseconds = 2 seconds
 movement_timer = None
 npc_moving = False  # NPC should not move initially
 
@@ -207,7 +206,7 @@ def main_menu():
             click_sfx.play()
             click_sfx.play()
             movement_timer = pygame.time.get_ticks()  # Start the timer
-            npc_moving = False  # NPC should stay still initially
+            npc_moving = False  # NPC should stay still
             game_screen()
 
 
@@ -349,7 +348,7 @@ def game_screen():
                 npc_moving = True
 
         if npc_moving:
-            if npc1_x_pos >= 1000:
+            if npc1_x_pos == 1000:
                 npc1_y_pos += 1.5
 
                 if npc1_y_pos >= 250:
@@ -360,6 +359,7 @@ def game_screen():
                         npc1_x_pos = 400
                         movement_timer = pygame.time.get_ticks()
                         npc_moving = False
+                            
 
 
         # game font variables such as day count and money count
