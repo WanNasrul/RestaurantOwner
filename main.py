@@ -3,6 +3,7 @@ import button
 from sys import exit #import one thing
 import random
 import time
+import time
 
 # initialize pygame
 pygame.init()
@@ -60,6 +61,7 @@ pizza_img = pygame.image.load('gameasset/chef ui/pizza.png').convert_alpha()
 steak_img = pygame.image.load('gameasset/chef ui/steak.png').convert_alpha()
 progressbar_img = pygame.image.load('gameasset/chef ui/progressbar.png').convert_alpha()
 emptybox_img = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
+emptybox2_img = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
 # chef ui buttons
 xbutton_button = button.Button(1100, 70, xbutton_img, 1)
 chicken_button = button.Button(440, 250, chicken_img, 1)
@@ -100,7 +102,7 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 #tablechair4_button = button.Button(600, 880, tablechair4_img, 0.6)
 
 # click the chef and cat
-fern_button = button.Button(508, 300, fern_img, 0.08)
+fern_button = button.Button(498, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
@@ -155,7 +157,8 @@ def table3(x, y):
     tablechair3_height = int(tablechair3_img.get_height() * 1)
     tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
     screen.blit(tablechair3_resize, (x, y))
-
+    
+    # food on the counter (fahim) 
 def foodserve(x, y, FoodOnTable):
     foodserve_width = int(FoodOnTable.get_width() *0.5)
     foodserve_height = int(FoodOnTable.get_height() * 0.5)
@@ -240,6 +243,7 @@ def game_screen():
     money = 500
     day = 1
     increaseday = time.time()
+    increaseday = time.time()
 
     tablechair1X = 750
     tablechair1Y = 480
@@ -273,6 +277,7 @@ def game_screen():
     CustomerFood = emptybox_img
 
 
+
     #decoration
     purchasedmenu = False
     purchasedpiano = False
@@ -296,6 +301,12 @@ def game_screen():
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
 
+        current_time =  time.time()
+
+         # increase day every 120 seconds
+        if current_time - increaseday >= 15:
+            day += 1
+            increaseday = current_time
         current_time =  time.time()
 
          # increase day every 120 seconds
@@ -329,7 +340,7 @@ def game_screen():
         waiter_rect.topleft = (waiterX, waiterY)
 
 
-        # check for collision between waiter and table chair (1)
+        # check for collision between waiter and table chair (1) TABLE IN BETWEEN
         if collision_detection(waiter_rect, tablechair1_rect):
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < tablechair1_rect.bottom:
@@ -343,7 +354,7 @@ def game_screen():
 
 
 
-        # check for collision between waiter and table chair (2)
+        # check for collision between waiter and table chair (2) TABLE NEAR THE DOOR
         if collision_detection(waiter_rect, tablechair2_rect):
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < tablechair2_rect.bottom:
@@ -433,6 +444,8 @@ def game_screen():
 
         customerplate2(customerplate2X, customerplate2Y, CustomerFood)
 
+        customerplate2(customerplate2X, customerplate2Y, CustomerFood)
+
         npc(npc1_x_pos, npc1_y_pos)
 
         # Decoration bought items
@@ -459,6 +472,7 @@ def game_screen():
         if decorationbutton_button.draw(screen):
             click_sfx.play()
             rundecorationUI = True
+
 
         # food serve (part 1) ================================ #
         screen.blit(foodtrigger_scaled, foodtrigger_rect,) # foodtrigger
@@ -547,6 +561,8 @@ def game_screen():
             if waiterfood == emptybox_img:
                 waiterfood = FoodOnTable
                 FoodOnTable = emptybox_img
+
+        
 
         
         # food serve ================================ #
