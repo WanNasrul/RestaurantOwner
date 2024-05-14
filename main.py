@@ -234,11 +234,11 @@ def game_screen():
     money = 500
     day = 1
 
-    tablechair1X = 740
-    tablechair1Y = 405
+    tablechair1X = 750
+    tablechair1Y = 480
 
     tablechair2X = 750
-    tablechair2Y = 250
+    tablechair2Y = 280
 
     tablechair3X = 400
     tablechair3Y = 480
@@ -268,9 +268,9 @@ def game_screen():
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
-    tablechair1_rect = pygame.Rect(430, 480, 220, 15)
-    tablechair2_rect = pygame.Rect(760, 410, 220, 10)
-    tablechair3_rect = pygame.Rect(765, 255, 220, 10)
+    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 80)
+    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 80)
+    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 80)
 
     # food rect and surf
     foodtrigger_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
@@ -323,10 +323,6 @@ def game_screen():
             if keys[pygame.K_d] and waiter_rect.right > tablechair1_rect.left:
                 waiterX -= 3
             
-            if CustomerFood == emptybox_img:
-                CustomerFood = waiterfood
-                waiterfood = emptybox_img
-                cooking = emptybox_img
 
 
         # check for collision between waiter and table chair (2)
@@ -352,6 +348,11 @@ def game_screen():
                 waiterX += 3
             if keys[pygame.K_d] and waiter_rect.right > tablechair3_rect.left:
                 waiterX -= 3
+            
+            if CustomerFood == emptybox_img:
+                CustomerFood = waiterfood
+                waiterfood = emptybox_img
+                cooking = emptybox_img
 
 
 
@@ -507,8 +508,8 @@ def game_screen():
             screen.blit(pianoui_img, (635,170))
             
         # CHECK MOUSE POSITION
-        mouse_pos = pygame.mouse.get_pos()
-        print(mouse_pos)
+        # mouse_pos = pygame.mouse.get_pos()
+        # print(mouse_pos)
 
         # Decoration UI ================================= #
 
