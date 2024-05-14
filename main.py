@@ -425,6 +425,7 @@ def game_screen():
             shop_open()
 
         # insert shop code here
+        # insert idk
 
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
