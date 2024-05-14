@@ -285,6 +285,7 @@ def game_screen():
     npceatingtime = 0
     waitprogress = 0
     waitdelay = 0
+    npcnumber = 0
     randomfood = emptybox_img
     foodchoice = [chicken_img, fish_img, burger_img, pizza_img, steak_img]
 
@@ -301,11 +302,31 @@ def game_screen():
     foodtrigger_scaled.set_alpha(0)
     foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
 
+    # days progression
+
 
     while run:
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+        
+        if npcnumber == 1:
+            day += 1
+            npcnumber = 0
+            npc1_x_pos = 1000
+            npc1_y_pos = 100
+            npcfoodrequest = False
+            earnmoney = False
+            wrongfood = False
+            npcleave = False
+            npcwaittime = 0
+            npcqueuetime = 0
+            npceatingtime = 0
+            waitprogress = 0
+            waitdelay = 0
+            npcnumber = 0
+            randomfood = emptybox_img
+
 
         if fern_button.draw(screen) and runchefUI == False:
             cat_sfx.play()
@@ -483,6 +504,7 @@ def game_screen():
                     screen.blit(chatbubble_resize, (npc1_x_pos,npc1_y_pos - 100))
                     foodnpcreq(npc1_x_pos + 33,npc1_y_pos - 90, randomfood)
                     waitdelay += 1
+                    
 
                 # increase letter wait bar
                 # letter increase 1 (waitprogress) when waitdelay equals 4
@@ -497,18 +519,21 @@ def game_screen():
                     if npceatingtime >= 100:
                         money += 100
                         npc1_x_pos = -1000
+                        npcnumber += 1
                         CustomerFood = emptybox_img
                         earnmoney = True
 
                 if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
                     money -= 50
                     npc1_x_pos = -1000
+                    npcnumber += 1
                     CustomerFood = emptybox_img
                     wrongfood = True
 
                 if waitprogress >= 135 and CustomerFood == emptybox_img and npcleave == False:
                     money -= 50
                     npc1_x_pos = -1000
+                    npcnumber += 1
                     npcleave = True
         # npc movement ================================== #
 
