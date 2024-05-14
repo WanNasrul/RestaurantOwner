@@ -20,8 +20,6 @@ mainmenubg_rect = mainmenubg_surf.get_rect(topleft = (0,10))
 mainmenubg2_surf = pygame.image.load('gameasset/backgroundmainmenuanimateddark.png').convert_alpha()
 mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 
-
-# main menu images
 # main menu images
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
 bg_credit_menu = pygame.image.load('gameasset/credit.png').convert_alpha()
@@ -30,8 +28,6 @@ shoppic_img = pygame.image.load('gameasset/shop.jpg').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
-
-# game images
 
 # game images
 pause_img = pygame.image.load('gameasset/pause.png').convert_alpha()
@@ -49,24 +45,6 @@ tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 # Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
 # table_img = pygame.image.load('gameasset/table.png').convert_alpha()
-
-# chef ui images
-chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
-xbutton_img = pygame.image.load('gameasset/chef ui/xbutton.png').convert_alpha()
-chicken_img = pygame.image.load('gameasset/chef ui/chicken.png').convert_alpha()
-fish_img = pygame.image.load('gameasset/chef ui/fish.png').convert_alpha()
-burger_img = pygame.image.load('gameasset/chef ui/burger.png').convert_alpha()
-pizza_img = pygame.image.load('gameasset/chef ui/pizza.png').convert_alpha()
-steak_img = pygame.image.load('gameasset/chef ui/steak.png').convert_alpha()
-progressbar_img = pygame.image.load('gameasset/chef ui/progressbar.png').convert_alpha()
-emptybox_img = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
-# chef ui buttons
-xbutton_button = button.Button(1100, 70, xbutton_img, 1)
-chicken_button = button.Button(440, 250, chicken_img, 1)
-fish_button = button.Button(590, 250, fish_img, 1)
-burger_button = button.Button(740, 250, burger_img, 1)
-pizza_button = button.Button(890, 250, pizza_img, 1)
-steak_button = button.Button(1040, 250, steak_img, 1)
 
 # npc position
 npc1_x_pos = 1000
@@ -88,6 +66,21 @@ fish_button = button.Button(590, 250, fish_img, 1)
 burger_button = button.Button(740, 250, burger_img, 1)
 pizza_button = button.Button(890, 250, pizza_img, 1)
 steak_button = button.Button(1040, 250, steak_img, 1)
+
+# decoration ui images
+decorationbutton_img = pygame.image.load('gameasset/decoration ui/decorationbutton.png').convert_alpha()
+decorationuibackground_img = pygame.image.load('gameasset/decoration ui/decorationuibackground.png').convert_alpha()
+buymenu_img = pygame.image.load('gameasset/decoration ui/decorationbuybutton.png').convert_alpha()
+buypiano_img = pygame.image.load('gameasset/decoration ui/decorationbuybutton.png').convert_alpha()
+menudecorationui_img = pygame.image.load('gameasset/decoration ui/menudecorationui.png').convert_alpha()
+pianoui_img = pygame.image.load('gameasset/decoration ui/pianoui.png').convert_alpha()
+menudecoration_img = pygame.image.load('gameasset/decoration ui/menudecoration.png').convert_alpha()
+piano_img = pygame.image.load('gameasset/decoration ui/piano.png').convert_alpha()
+
+# decoration ui buttons
+decorationbutton_button = button.Button(600, 600, decorationbutton_img, 1)
+buymenu_button = button.Button(475, 400, buymenu_img, 1)
+buypiano_button = button.Button(680, 400, buypiano_img, 1)
 
 # npc position
 npc1_x_pos = 1000
@@ -238,7 +231,7 @@ def game_screen():
     run = True
 
     # default money and day value
-    money = 0   
+    money = 500
     day = 1
 
     tablechair1X = 740
@@ -261,11 +254,16 @@ def game_screen():
     customerplate1Y = 490
 
     runchefUI = False
+    rundecorationUI = False
     cooking = emptybox_img
     progress = 0
     FoodOnTable = emptybox_img
     waiterfood = emptybox_img
     CustomerFood = emptybox_img
+
+    #decoration
+    purchasedmenu = False
+    purchasedpiano = False
 
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
@@ -390,17 +388,15 @@ def game_screen():
             click_sfx.play()
             shop_open()
 
-
         # insert shop code here
 
-        
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
         screen.blit(daycycle_surf,daycycle_rect)
         screen.blit(money_surf,money_rect)
     
         # testing, add 12 money every 1 frame
-        money += 12
+        # money += 0
 
         table1(tablechair1X,tablechair1Y)
 
@@ -412,7 +408,12 @@ def game_screen():
 
         npc(npc1_x_pos, npc1_y_pos)
 
+        # Decoration bought items
+        if purchasedmenu == True:
+            screen.blit(menudecoration_img, (336,236))
 
+        if purchasedpiano == True:
+            screen.blit(piano_img, (680,15))
 
 
         #table4(tablechair4X,tablechair4Y)
@@ -428,6 +429,9 @@ def game_screen():
             click_sfx.play()
             runchefUI = True
 
+        if decorationbutton_button.draw(screen):
+            click_sfx.play()
+            rundecorationUI = True
         # food serve (part 1) ================================ #
         screen.blit(foodtrigger_scaled, foodtrigger_rect,) # foodtrigger
         foodserve(foodserveX,foodserveY,FoodOnTable)
@@ -477,13 +481,37 @@ def game_screen():
             screen.blit(progressbar_img, (605,515))
             screen.blit(progressbar_surf, progressbar_rect)
             pygame.draw.rect(screen,'red',progressbar_rect)
+        # Chef UI ====================================== #
 
+        # Decoration UI ================================= #
+        if rundecorationUI == True:
+            screen.blit(decorationuibackground_img, (410,65))
+
+            if xbutton_button.draw(screen):
+                click_sfx.play()
+                rundecorationUI = False
+            if buymenu_button.draw(screen) and money >= 100 and purchasedmenu == False:
+                click_sfx.play()
+                money -= 100
+                purchasedmenu = True
+                
+
+
+            if buypiano_button.draw(screen) and money >= 200 and purchasedpiano == False:
+                click_sfx.play()
+                money -= 200
+                purchasedpiano = True
+
+
+            screen.blit(menudecorationui_img, (430,170))
+            screen.blit(pianoui_img, (635,170))
             
         # CHECK MOUSE POSITION
-        # mouse_pos = pygame.mouse.get_pos()
-        # print(mouse_pos)
+        mouse_pos = pygame.mouse.get_pos()
+        print(mouse_pos)
 
-        # Chef UI ====================================== #
+        # Decoration UI ================================= #
+
 
         # food serve (part 2) ================================ #
 
