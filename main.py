@@ -2,6 +2,7 @@ import pygame
 import button
 from sys import exit #import one thing
 import random
+import time
 
 # initialize pygame
 pygame.init()
@@ -46,9 +47,7 @@ tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
 # table_img = pygame.image.load('gameasset/table.png').convert_alpha()
 
-# npc position
-npc1_x_pos = 1000
-npc1_y_pos = 100
+
 # chef ui images
 chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
 xbutton_img = pygame.image.load('gameasset/chef ui/xbutton.png').convert_alpha()
@@ -82,10 +81,6 @@ decorationbutton_button = button.Button(600, 600, decorationbutton_img, 1)
 buymenu_button = button.Button(475, 400, buymenu_img, 1)
 buypiano_button = button.Button(680, 400, buypiano_img, 1)
 
-# npc position
-npc1_x_pos = 1000
-
-
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
 start_button = button.Button(515, 350, start_img, 0.5)
@@ -103,14 +98,15 @@ fern_button = button.Button(498, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
+# npc images
+chatbubble_img = pygame.image.load('gameasset/chatbubble.png').convert_alpha()
+chatbubble_resize = pygame.transform.scale(chatbubble_img, (int(chatbubble_img.get_width() * 0.03), int(chatbubble_img.get_height() * 0.03)))
 
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
-
-
 
 # text
 # daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
@@ -166,6 +162,18 @@ def customerplate1(x, y, CustomerFood):
     customerplate1_height = int(CustomerFood.get_height() *0.5)
     customerplate1_resize = pygame.transform.scale(CustomerFood, (customerplate1_width, customerplate1_height))
     screen.blit(customerplate1_resize, (x, y))
+
+def foodnpcreq(x,y, randomfood):
+    foodnpcreq_width = int(randomfood.get_width() *0.5)
+    foodnpcreq_height = int(randomfood.get_height() *0.5)
+    foodnpcreq_resize = pygame.transform.scale(randomfood, (foodnpcreq_width, foodnpcreq_height))
+    screen.blit(foodnpcreq_resize, (x,y))
+
+# def customerfoodrequest1(x, y, CustomerFood):
+#     customerfoodrequest1_width = int(CustomerFood.get_width() *0.5)
+#     customerfoodrequest1_height = int(CustomerFood.get_height() *0.5)
+#     customerfoodrequest1_resize = pygame.transform.scale(CustomerFood, (customerfoodrequest1_width, customerfoodrequest1_height))
+#     screen.blit(customerfoodrequest1_resize, (x, y))
 
 
 def collision_detection(waiter_rect, table_rect):
@@ -226,7 +234,6 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-
     global npc1_x_pos, npc1_img, npc1_y_pos
     run = True
 
@@ -253,6 +260,9 @@ def game_screen():
     customerplate1X = 495
     customerplate1Y = 490
 
+    npc1_x_pos = 1000
+    npc1_y_pos = 100
+
     runchefUI = False
     rundecorationUI = False
     cooking = emptybox_img
@@ -265,6 +275,19 @@ def game_screen():
     purchasedmenu = False
     purchasedpiano = False
 
+    #npc
+    npcfoodrequest = False
+    earnmoney = False
+    wrongfood = False
+    npcleave = False
+    npcwaittime = 0
+    npcqueuetime = 0
+    npceatingtime = 0
+    waitprogress = 0
+    waitdelay = 0
+    randomfood = emptybox_img
+    foodchoice = [chicken_img, fish_img, burger_img, pizza_img, steak_img]
+
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
@@ -274,7 +297,7 @@ def game_screen():
 
     # food rect and surf
     foodtrigger_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
-    foodtrigger_scaled = pygame.transform.scale(foodtrigger_surf, (foodtrigger_surf.get_width() // 2, foodtrigger_surf.get_height() // 2))
+    foodtrigger_scaled = pygame.transform.scale(foodtrigger_surf, (foodtrigger_surf.get_width() * 0.5, foodtrigger_surf.get_height() * 0.5))
     foodtrigger_scaled.set_alpha(0)
     foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
 
@@ -283,7 +306,6 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
-
 
         if fern_button.draw(screen) and runchefUI == False:
             cat_sfx.play()
@@ -349,30 +371,16 @@ def game_screen():
             if keys[pygame.K_d] and waiter_rect.right > tablechair3_rect.left:
                 waiterX -= 3
             
-            if CustomerFood == emptybox_img:
+            if CustomerFood == emptybox_img and npcfoodrequest == True:
                 CustomerFood = waiterfood
                 waiterfood = emptybox_img
                 cooking = emptybox_img
 
 
-
-        npc1_x_pos -= 1.5
-        if npc1_x_pos <= 650: 
-            npc1_x_pos = 651
-            npc1_y_pos += 1.5
-
-            if npc1_y_pos >= 250:
-                npc1_y_pos = 250  
-
-                if npc1_y_pos == 250:
-                    npc1_y_pos = 425
-                    npc1_x_pos = 400
-                    npc
-
         # game font variables such as day count and money count
-        daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
+        daycycle_font = pygame.font.Font('font/segoepr.ttf', 30)
         daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
-        daycycle_rect = daycycle_surf.get_rect(topleft=(495,600))
+        daycycle_rect = daycycle_surf.get_rect(topleft=(490,620))
 
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
         money_surf = money_font.render(str(money), True, 'darkred')
@@ -419,6 +427,8 @@ def game_screen():
 
         #table4(tablechair4X,tablechair4Y)
 
+        
+        
         # Chef UI ====================================== #
         
         # chef progress bar
@@ -438,7 +448,69 @@ def game_screen():
         foodserve(foodserveX,foodserveY,FoodOnTable)
         waiter(waiterX, waiterY, WaiterDirection)
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
+        
         # food serve ================================ #
+
+        # npc movement ================================== #
+        waitbar_font = pygame.font.Font('font/segoepr.ttf', 5)
+        waitbar_surf = waitbar_font.render('.'*waitprogress, False, (64,64,64))
+        waitbar_rect = waitbar_surf.get_rect(midleft = (npc1_x_pos,npc1_y_pos - 120))
+        
+        
+        if npcfoodrequest == False:
+            npcqueuetime +=1
+            if npcqueuetime >= 100:
+                npc1_x_pos -= 1.5
+                if npc1_x_pos <= 650: 
+                    npc1_x_pos = 651
+                    npc1_y_pos += 1.5
+
+                    if npc1_y_pos >= 340: 
+                        npc1_y_pos = 435
+                        npc1_x_pos = 595
+                        npcfoodrequest = True
+
+        if npcfoodrequest == True and not npc1_x_pos == -1000 and not npc1_y_pos == -1000:
+            npcwaittime += 1
+            if npcwaittime >= 50 and randomfood == emptybox_img:
+                randomfood = random.choice(foodchoice)
+
+            if randomfood != emptybox_img:
+
+                if  CustomerFood == emptybox_img:
+                    screen.blit(waitbar_surf, waitbar_rect)
+                    pygame.draw.rect(screen,'red',waitbar_rect)
+                    screen.blit(chatbubble_resize, (npc1_x_pos,npc1_y_pos - 100))
+                    foodnpcreq(npc1_x_pos + 33,npc1_y_pos - 90, randomfood)
+                    waitdelay += 1
+
+                # increase letter wait bar
+                # letter increase 1 (waitprogress) when waitdelay equals 4
+                if waitdelay >= 4:
+                    waitprogress += 1
+                    waitdelay = 0
+                    
+                
+                if  CustomerFood == randomfood and earnmoney == False:
+                    npceatingtime += 1
+
+                    if npceatingtime >= 100:
+                        money += 100
+                        npc1_x_pos = -1000
+                        CustomerFood = emptybox_img
+                        earnmoney = True
+
+                if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
+                    money -= 50
+                    npc1_x_pos = -1000
+                    CustomerFood = emptybox_img
+                    wrongfood = True
+
+                if waitprogress >= 135 and CustomerFood == emptybox_img and npcleave == False:
+                    money -= 50
+                    npc1_x_pos = -1000
+                    npcleave = True
+        # npc movement ================================== #
 
         if runchefUI == True:
             
@@ -506,6 +578,7 @@ def game_screen():
 
             screen.blit(menudecorationui_img, (430,170))
             screen.blit(pianoui_img, (635,170))
+        
             
         # CHECK MOUSE POSITION
         # mouse_pos = pygame.mouse.get_pos()
@@ -518,7 +591,10 @@ def game_screen():
 
         if foodtrigger_rect.colliderect(waiter_rect):
             if waiterfood == emptybox_img:
+                # Food that the waiter is carrying
                 waiterfood = FoodOnTable
+
+                # Food on top of counter
                 FoodOnTable = emptybox_img
 
         # food serve ================================ #
