@@ -39,9 +39,9 @@ chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/npc1.png').convert_alpha()
 tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
-# Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
-# Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
-# table_img = pygame.image.load('gameasset/table.png').convert_alpha()
+Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
+Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
+table_img = pygame.image.load('gameasset/table.png').convert_alpha()
 
 # chef ui images
 chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
@@ -99,6 +99,7 @@ fern_button = button.Button(508, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
+
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
@@ -118,12 +119,15 @@ def npc(x, y):
     screen.blit(npc1_img, (x, y))
 
 
-def waiter(x, y):
+def waiter(x, y, WaiterDirection):
     waiter_width = int(waiter_img.get_width() * 1)
     waiter_height = int(waiter_img.get_height() * 1)
     waiter_resize = pygame.transform.scale(waiter_img, (waiter_width, waiter_height))
     waiter_flip = pygame.transform.flip(waiter_resize, True, False)
-    screen.blit(waiter_flip, (x, y))
+    if WaiterDirection == 'right':
+        screen.blit(waiter_resize, (x, y))
+    if WaiterDirection == 'left':
+        screen.blit(waiter_flip, (x, y))
 
 def table1(x, y):
     tablechair1_width = int(tablechair1_img.get_width() * 1)
@@ -132,10 +136,10 @@ def table1(x, y):
     screen.blit(tablechair1_resize, (x, y))
 
 #def table2(x, y):
-  #  tablechair2_width = int(tablechair2_img.get_width() * 1)
-  #  tablechair2_height = int(tablechair2_img.get_height() * 1)
-   # tablechair2_resize = pygame.transform.scale(tablechair2_img, (tablechair2_width, tablechair2_height))
-    #screen.blit(tablechair2_resize, (x, y))
+   #tablechair2_width = int(tablechair2_img.get_width() * 1)
+   #tablechair2_height = int(tablechair2_img.get_height() * 1)
+   #tablechair2_resize = pygame.transform.scale(tablechair2_img, (tablechair2_width, tablechair2_height))
+   #screen.blit(tablechair2_resize, (x, y))
 
 #def table3(x, y):
     #tablechair3_width = int(tablechair3_img.get_width() * 1)
@@ -143,11 +147,18 @@ def table1(x, y):
     #tablechair3_resize = pygame.transform.scale(tablechair3_img, (tablechair3_width, tablechair3_height))
     #screen.blit(tablechair3_resize, (x, y))
 
-def foodserve(x, y):
-    foodserve_width = int(chicken_img.get_width() *0.5)
-    foodserve_height = int(chicken_img.get_height() * 0.5)
-    foodserve_resize = pygame.transform.scale(chicken_img, (foodserve_width, foodserve_height))
+def foodserve(x, y, FoodOnTable):
+    foodserve_width = int(FoodOnTable.get_width() *0.5)
+    foodserve_height = int(FoodOnTable.get_height() * 0.5)
+    foodserve_resize = pygame.transform.scale(FoodOnTable, (foodserve_width, foodserve_height))
     screen.blit(foodserve_resize, (x, y))
+
+def customerplate1(x, y, CustomerFood):
+    customerplate1_width = int(CustomerFood.get_width() *0.5)
+    customerplate1_height = int(CustomerFood.get_height() *0.5)
+    customerplate1_resize = pygame.transform.scale(CustomerFood, (customerplate1_width, customerplate1_height))
+    screen.blit(customerplate1_resize, (x, y))
+
 
 def collision_detection(waiter_rect, table_rect):
 
@@ -164,8 +175,6 @@ def collision_detection(waiter_rect, table_rect):
 
 
 def main_menu():
-
-    # default value for background intial position
     
     run = True
     while run:
@@ -213,7 +222,7 @@ def game_screen():
     run = True
 
     # default money and day value
-    money = 0   
+    money = 500
     day = 1
 
     waiterX = 450
@@ -271,9 +280,11 @@ def game_screen():
             if waiterY < 520:
                 waiterY += 3
         if keys[pygame.K_a]:
+            WaiterDirection = 'right'
             if waiterX > 381:
                 waiterX -= 3
         if keys[pygame.K_d]:
+            WaiterDirection = 'left'
             if waiterX < 1045:
                 waiterX += 3
 
@@ -383,7 +394,7 @@ def game_screen():
             
             screen.blit(chefuibackground_img, (410,65))
             # close chef UI
-            # kinda not efficient code for now, I'll optimize it later
+            # kinda not efficient code for now, I'll optimize it later  
             if xbutton_button.draw(screen):
                 click_sfx.play()
                 runchefUI = False
@@ -413,6 +424,7 @@ def game_screen():
                 if progress <= 130:
                     progress += cooking_speed_multiplier
                 else:
+                    FoodOnTable = cooking
                     cooking = emptybox_img
                     progress = 0
 
@@ -430,7 +442,17 @@ def game_screen():
         # mouse_pos = pygame.mouse.get_pos()
         # print(mouse_pos)
 
-        # Chef UI ====================================== #
+        # Decoration UI ================================= #
+
+
+        # food serve (part 2) ================================ #
+
+        #if foodtrigger_rect.colliderect(waiter_rect):
+            if waiterfood == emptybox_img:
+                waiterfood = FoodOnTable
+                FoodOnTable = emptybox_img
+
+        # food serve ================================ #
 
 
         for event in pygame.event.get():
@@ -442,8 +464,8 @@ def game_screen():
         clock.tick(60)
 
 def credit_menu():
-    run = True
-    while run :
+    RunCredit = True
+    while RunCredit :
 
         screen.fill((255, 255, 255))
         screen.blit(bg_credit_menu, (0, 0))
@@ -452,7 +474,7 @@ def credit_menu():
             click_sfx.play()
             print('game paused')
             # insert pause code here
-            run = False
+            RunCredit = False
 
         
 
