@@ -58,7 +58,6 @@ pizza_img = pygame.image.load('gameasset/chef ui/pizza.png').convert_alpha()
 steak_img = pygame.image.load('gameasset/chef ui/steak.png').convert_alpha()
 progressbar_img = pygame.image.load('gameasset/chef ui/progressbar.png').convert_alpha()
 emptybox_img = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
-transparentbox_img = pygame.image.load('gameasset/transparentbox.png').convert_alpha()
 # chef ui buttons
 xbutton_button = button.Button(1100, 70, xbutton_img, 1)
 chicken_button = button.Button(440, 250, chicken_img, 1)
@@ -274,7 +273,7 @@ def game_screen():
     cooking = emptybox_img
     progress = 0
     FoodOnTable = emptybox_img
-    waiterfood = transparentbox_img # food on top of the waiter's head
+    waiterfood = emptybox_img
     CustomerFood = emptybox_img
     chefcookingtime = 0
 
@@ -411,7 +410,7 @@ def game_screen():
             
             if CustomerFood == emptybox_img and npcfoodrequest == True:
                 CustomerFood = waiterfood
-                waiterfood = transparentbox_img
+                waiterfood = emptybox_img
                 cooking = emptybox_img
 
 
@@ -641,7 +640,7 @@ def game_screen():
         # food serve (part 2) ================================ #
 
         if foodtrigger_rect.colliderect(waiter_rect):
-            if waiterfood == transparentbox_img:
+            if waiterfood == emptybox_img:
                 # Food that the waiter is carrying
                 waiterfood = FoodOnTable
 
