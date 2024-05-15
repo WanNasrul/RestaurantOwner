@@ -66,6 +66,21 @@ burger_button = button.Button(740, 250, burger_img, 1)
 pizza_button = button.Button(890, 250, pizza_img, 1)
 steak_button = button.Button(1040, 250, steak_img, 1)
 
+#shop img
+cheficon_img =  pygame.image.load('gameasset\ShopUI\ShopUI\cheficon.png').convert_alpha()
+chefborder_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopcolumn.png').convert_alpha()
+star_img = pygame.image.load('gameasset\ShopUI\ShopUI\star.png').convert_alpha()
+upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/upgrade.png').convert_alpha()
+starupgrade_img = pygame.image.load('gameasset\ShopUI\ShopUI\starupgraded.png').convert_alpha()
+shopbackground_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopbackground.png').convert_alpha()
+
+# shop ui buttons 
+xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
+upgrade_button1 = button.Button(1050, 150, upgradebutton_img, 1)
+upgrade_button2 = button.Button(1050,315, upgradebutton_img,1)
+upgrade_button3 = button.Button(1050,475, upgradebutton_img,1)
+
+
 # decoration ui images
 decorationbutton_img = pygame.image.load('gameasset/decoration ui/decorationbutton.png').convert_alpha()
 decorationuibackground_img = pygame.image.load('gameasset/decoration ui/decorationuibackground.png').convert_alpha()
@@ -80,27 +95,6 @@ piano_img = pygame.image.load('gameasset/decoration ui/piano.png').convert_alpha
 decorationbutton_button = button.Button(600, 600, decorationbutton_img, 1)
 buymenu_button = button.Button(475, 400, buymenu_img, 1)
 buypiano_button = button.Button(680, 400, buypiano_img, 1)
-
-
-#shop img
-cheficon_img =  pygame.image.load('gameasset\ShopUI\ShopUI\cheficon.png').convert_alpha()
-chefborder_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopcolumn.png').convert_alpha()
-star_img = pygame.image.load('gameasset\ShopUI\ShopUI\star.png').convert_alpha()
-upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/upgrade.png').convert_alpha()
-starupgrade_img = pygame.image.load('gameasset\ShopUI\ShopUI\starupgraded.png').convert_alpha()
-shopbackground_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopbackground.png').convert_alpha()
-
-
-# shop ui buttons 
-xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
-upgrade_button1 = button.Button(1050, 150, upgradebutton_img, 1)
-upgrade_button2 = button.Button(1050,315, upgradebutton_img,1)
-upgrade_button3 = button.Button(1050,475, upgradebutton_img,1)
-
-
-# npc position
-npc1_x_pos = 1000
-
 
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
@@ -259,12 +253,11 @@ def main_menu():
         clock.tick(60)
 
 def game_screen():
-
-    global npc1_x_pos, npc1_img, npc1_y_pos, money
+    global npc1_x_pos, npc1_img, npc1_y_pos
     run = True
 
     # default money and day value
-    money = 0
+    money = 100
     day = 1
     daytransition = False
     daytransitiontick = 0
@@ -289,22 +282,10 @@ def game_screen():
     customerplate1X = 495
     customerplate1Y = 490
 
-    chef = star_img
-    chef2 = star_img
-    chef3 = star_img
-    waiter1 = star_img
+    npc1_x_pos = 1000
+    npc1_y_pos = 100
 
-    cooking_speed_multiplier = 1
-    
-   
-    waiter_speed = 3
-
-
-    runShopUI = False
-
-    
-
-
+    # chef UI
     runchefUI = False
     rundecorationUI = False
     cooking = emptybox_img
@@ -315,7 +296,13 @@ def game_screen():
     chefcookingtime = 0
 
     # shop ui 
+    runShopUI = False
     waiter_speed = 2
+    chef = star_img
+    chef2 = star_img
+    waiter1 = star_img
+    chefcookingtime = 1
+
 
     #decoration
     purchasedmenu = False
@@ -356,15 +343,38 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+        
+
+        # BLACK SCREEN TRANSITION
+        if npcnumber == 1:
+            daytransition = True
+            resetday = True
+
+        # RESET DAY 
+        if resetday == True:
+            day += 1
+            npcnumber = 0
+            npc1_x_pos = 1000
+            npc1_y_pos = 100
+            npcfoodrequest = False
+            earnmoney = False
+            wrongfood = False
+            npcleave = False
+            npcwaittime = 0
+            npcqueuetime = 0
+            npceatingtime = 0
+            waitprogress = 0
+            waitdelay = 0
+            npcnumber = 0
+            npcdisgustedwait = 0
+            randomfood = emptybox_img
+            resetday = False  
 
         
 
 
         if fern_button.draw(screen) and runchefUI == False:
             cat_sfx.play()
-
-
-        
 
 
         
@@ -376,20 +386,16 @@ def game_screen():
         if keys[pygame.K_w]:
             if waiterY > 0:
                 waiterY -= waiter_speed
-                waiterY -= waiter_speed
         if keys[pygame.K_s]:
             if waiterY < 520:
-                waiterY += waiter_speed
                 waiterY += waiter_speed
         if keys[pygame.K_a]:
             WaiterDirection = 'right'
             if waiterX > 381:
                 waiterX -= waiter_speed
-                waiterX -= waiter_speed
         if keys[pygame.K_d]:
             WaiterDirection = 'left'
             if waiterX < 1045:
-                waiterX += waiter_speed
                 waiterX += waiter_speed
 
         # update waiter Rect object position
@@ -401,15 +407,11 @@ def game_screen():
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < tablechair1_rect.bottom:
                 waiterY += waiter_speed
-                waiterY += waiter_speed
             if keys[pygame.K_s] and waiter_rect.bottom > tablechair1_rect.top:
-                waiterY -= waiter_speed
                 waiterY -= waiter_speed
             if keys[pygame.K_a] and waiter_rect.left < tablechair1_rect.right:
                 waiterX += waiter_speed
-                waiterX += waiter_speed
             if keys[pygame.K_d] and waiter_rect.right > tablechair1_rect.left:
-                waiterX -= waiter_speed
                 waiterX -= waiter_speed
 
 
@@ -419,15 +421,11 @@ def game_screen():
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < tablechair2_rect.bottom:
                 waiterY += waiter_speed
-                waiterY += waiter_speed
             if keys[pygame.K_s] and waiter_rect.bottom > tablechair2_rect.top:
-                waiterY -= waiter_speed
                 waiterY -= waiter_speed
             if keys[pygame.K_a] and waiter_rect.left < tablechair2_rect.right:
                 waiterX += waiter_speed
-                waiterX += waiter_speed
             if keys[pygame.K_d] and waiter_rect.right > tablechair2_rect.left:
-                waiterX -= waiter_speed
                 waiterX -= waiter_speed
 
         # check for collision between waiter and table chair (3)
@@ -435,15 +433,11 @@ def game_screen():
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < tablechair3_rect.bottom:
                 waiterY += waiter_speed
-                waiterY += waiter_speed
             if keys[pygame.K_s] and waiter_rect.bottom > tablechair3_rect.top:
-                waiterY -= waiter_speed
                 waiterY -= waiter_speed
             if keys[pygame.K_a] and waiter_rect.left < tablechair3_rect.right:
                 waiterX += waiter_speed
-                waiterX += waiter_speed
             if keys[pygame.K_d] and waiter_rect.right > tablechair3_rect.left:
-                waiterX -= waiter_speed
                 waiterX -= waiter_speed
             
             if CustomerFood == emptybox_img and npcfoodrequest == True:
@@ -451,21 +445,6 @@ def game_screen():
                 waiterfood = emptybox_img
                 cooking = emptybox_img
 
-
-        npc1_x_pos -= 1.5
-        if npc1_x_pos <= 650: 
-            npc1_x_pos = 651
-            npc1_y_pos += 1.5
-
-            if npc1_y_pos >= 250:
-                npc1_y_pos = 250  
-
-                if npc1_y_pos == 250:
-                    npc1_y_pos = 425
-                    npc1_x_pos = 400
-                    npc
-
-        
 
         # game font variables such as day count and money count
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 30)
@@ -483,10 +462,7 @@ def game_screen():
             run = False
 
 
-        
-        
-
-        # insert shop code here
+    
 
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
@@ -495,7 +471,6 @@ def game_screen():
     
         # testing, add 12 money every 1 frame
         # money += 0
-        
         
 
         table1(tablechair1X,tablechair1Y)
@@ -519,6 +494,8 @@ def game_screen():
         #table4(tablechair4X,tablechair4Y)
         
 
+        
+        
         # Chef UI ====================================== #
         
         # chef progress bar
@@ -541,8 +518,78 @@ def game_screen():
         
         # food serve ================================ #
 
+        # npc movement ================================== #
+        waitbar_font = pygame.font.Font('font/segoepr.ttf', 5)
+        waitbar_surf = waitbar_font.render('.'*waitprogress, False, (64,64,64))
+        waitbar_rect = waitbar_surf.get_rect(midleft = (npc1_x_pos,npc1_y_pos - 120))
         
+        
+        if npcfoodrequest == False:
+            npcqueuetime +=1
+            if npcqueuetime >= 150:
+                npc1_x_pos -= 1.5
+                if npc1_x_pos <= 650:  
+                    npc1_x_pos = 651
+                    npc1_y_pos += 1.5
 
+                    if npc1_y_pos >= 340: 
+                        npc1_y_pos = 435
+                        npc1_x_pos = 595
+                        npcfoodrequest = True
+
+        if npcfoodrequest == True and not npc1_x_pos == -1000 and not npc1_y_pos == -1000:
+            npcwaittime += 1
+            if npcwaittime >= 50 and randomfood == emptybox_img:
+                randomfood = random.choice(foodchoice)
+
+            if randomfood != emptybox_img:
+
+                if  CustomerFood == emptybox_img:
+                    screen.blit(waitbar_surf, waitbar_rect)
+                    pygame.draw.rect(screen,'red',waitbar_rect)
+                    screen.blit(chatbubble_resize, (npc1_x_pos,npc1_y_pos - 100))
+                    foodnpcreq(npc1_x_pos + 33,npc1_y_pos - 90, randomfood)
+                    waitdelay += 1
+                    
+
+                # increase letter wait bar
+                # letter increase 1 (waitprogress) when waitdelay equals 4
+                if waitdelay >= 10:
+                    waitprogress += 1
+                    waitdelay = 0
+                
+                # Customer gets the right food
+                if  CustomerFood == randomfood and earnmoney == False:
+                    npceatingtime += 1
+
+                    if npceatingtime >= 100:
+                        money += 100
+                        npc1_x_pos = -1000
+                        npcnumber += 1
+                        CustomerFood = emptybox_img
+                        earnmoney = True
+                
+                # Customer gets the wrong food
+                if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
+                    npcdisgustedwait += 1
+                    screen.blit(wrong_scaled, (npc1_x_pos + 5,npc1_y_pos - 40))
+
+                    if npcdisgustedwait >= 100:
+                        money -= 50
+                        npc1_x_pos = -1000
+                        npcnumber += 1
+                        CustomerFood = emptybox_img
+                        wrongfood = True
+                
+                # Customer wait time runs out
+                if waitprogress >= 135 and CustomerFood == emptybox_img and npcleave == False:
+                    money -= 50
+                    npc1_x_pos = -1000
+                    npcnumber += 1
+                    npcleave = True
+        # npc movement ================================== #
+
+        # insert shop code here
         if shop_button.draw(screen):
             click_sfx.play()
             runShopUI = True 
@@ -571,8 +618,7 @@ def game_screen():
                  click_sfx.play()
                  chef = starupgrade_img
                  money -= 100
-                 cooking_speed_multiplier = 2
-
+                 chefcookingtime = 3
 
             if upgrade_button2.draw(screen) and chef2 == star_img and money>= 100:
                  click_sfx.play()
@@ -585,28 +631,7 @@ def game_screen():
                  waiter1 = starupgrade_img
                  money -= 100
 
-        if cooking!= emptybox_img and progress >= 130:
-        # Award coins to the player when food is successfully served
-            money += 100  # Adjust the amount of coins as needed
-        # Optionally, limit the maximum amount of money
-        if money > 10000:
-            money = 10000  # Adjust the maximum money value as needed
-
-
-        if cooking != emptybox_img:
-                if progress <= 130:
-                    progress += cooking_speed_multiplier
-                    
-                    
-                else:
-                    FoodOnTable = cooking
-                    cooking = emptybox_img
-                    progress = 0
-
-            
-            
-
- 
+    
 
         if runchefUI == True:
             
@@ -637,26 +662,31 @@ def game_screen():
             if steak_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = steak_img
+
             
             if cooking != emptybox_img:
                 if progress <= 130:
-                    progress += cooking_speed_multiplier
+                    progress += chefcookingtime
+
+                    if chefcookingtime >= 5:
+                        progress += chefcookingtime
+                        chefcookingtime = 0       
                 else:
                     FoodOnTable = cooking
                     cooking = emptybox_img
                     progress = 0
+                
+
+            
 
 
-
-
- 
             screen.blit(cooking, (450,480))
             screen.blit(progressbar_img, (605,515))
             screen.blit(progressbar_surf, progressbar_rect)
             pygame.draw.rect(screen,'red',progressbar_rect)
         # Chef UI ====================================== #
 
-    
+       
         # Decoration UI ================================= #
         if rundecorationUI == True:
             screen.blit(decorationuibackground_img, (410,65))
@@ -700,8 +730,18 @@ def game_screen():
 
         # food serve ================================ #
 
-    # Define a function to handle the upgrade process
-
+        # Day reset black =============================== #
+        if daytransition == True:
+            screen.fill((0,0,0))
+            transition_font = pygame.font.Font('font/segoepr.ttf', 60)
+            transition_surf = transition_font.render(f"Day {day}", True, 'white')
+            transition_rect = money_surf.get_rect(center=(590,340))
+            screen.blit(transition_surf, transition_rect)
+            daytransitiontick += 1
+            if daytransitiontick >= 50:
+                daytransitiontick = 0
+                daytransition = False
+        # Day reset black =============================== #
 
 
         for event in pygame.event.get():
@@ -713,17 +753,6 @@ def game_screen():
         pygame.display.update()
         clock.tick(60)
 
-
-
-
-
-    
-
-
-
-
-
-    
 
 def credit_menu():
     RunCredit = True
