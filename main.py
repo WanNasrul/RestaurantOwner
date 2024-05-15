@@ -101,11 +101,12 @@ chef_button = button.Button(200, 215, chef_img, 1)
 # npc images
 chatbubble_img = pygame.image.load('gameasset/chatbubble.png').convert_alpha()
 chatbubble_resize = pygame.transform.scale(chatbubble_img, (int(chatbubble_img.get_width() * 0.03), int(chatbubble_img.get_height() * 0.03)))
+wrong_img = pygame.image.load('gameasset/wrong.png').convert_alpha()
+wrong_scaled = pygame.transform.scale(wrong_img, (int(wrong_img.get_width() * 0.05), int(wrong_img.get_height() * 0.05)))
 
 # sound effects
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
-click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
 
 # text
@@ -238,8 +239,11 @@ def game_screen():
     run = True
 
     # default money and day value
-    money = 500
+    money = 100
     day = 1
+    daytransition = False
+    daytransitiontick = 0
+    resetday = False
 
     tablechair1X = 750
     tablechair1Y = 480
@@ -263,6 +267,7 @@ def game_screen():
     npc1_x_pos = 1000
     npc1_y_pos = 100
 
+    # chef UI
     runchefUI = False
     rundecorationUI = False
     cooking = emptybox_img
@@ -270,6 +275,7 @@ def game_screen():
     FoodOnTable = emptybox_img
     waiterfood = emptybox_img
     CustomerFood = emptybox_img
+    chefcookingtime = 0
 
     #decoration
     purchasedmenu = False
@@ -283,6 +289,7 @@ def game_screen():
     npcwaittime = 0
     npcqueuetime = 0
     npceatingtime = 0
+    npcdisgustedwait = 0
     waitprogress = 0
     waitdelay = 0
     npcnumber = 0
@@ -310,7 +317,14 @@ def game_screen():
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
         
+
+        # BLACK SCREEN TRANSITION
         if npcnumber == 1:
+            daytransition = True
+            resetday = True
+
+        # RESET DAY 
+        if resetday == True:
             day += 1
             npcnumber = 0
             npc1_x_pos = 1000
@@ -325,7 +339,9 @@ def game_screen():
             waitprogress = 0
             waitdelay = 0
             npcnumber = 0
+            npcdisgustedwait = 0
             randomfood = emptybox_img
+            resetday = False  
 
 
         if fern_button.draw(screen) and runchefUI == False:
@@ -480,9 +496,9 @@ def game_screen():
         
         if npcfoodrequest == False:
             npcqueuetime +=1
-            if npcqueuetime >= 100:
+            if npcqueuetime >= 150:
                 npc1_x_pos -= 1.5
-                if npc1_x_pos <= 650: 
+                if npc1_x_pos <= 650:  
                     npc1_x_pos = 651
                     npc1_y_pos += 1.5
 
@@ -508,11 +524,11 @@ def game_screen():
 
                 # increase letter wait bar
                 # letter increase 1 (waitprogress) when waitdelay equals 4
-                if waitdelay >= 4:
+                if waitdelay >= 10:
                     waitprogress += 1
                     waitdelay = 0
-                    
                 
+                # Customer gets the right food
                 if  CustomerFood == randomfood and earnmoney == False:
                     npceatingtime += 1
 
@@ -522,14 +538,20 @@ def game_screen():
                         npcnumber += 1
                         CustomerFood = emptybox_img
                         earnmoney = True
-
+                
+                # Customer gets the wrong food
                 if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
-                    money -= 50
-                    npc1_x_pos = -1000
-                    npcnumber += 1
-                    CustomerFood = emptybox_img
-                    wrongfood = True
+                    npcdisgustedwait += 1
+                    screen.blit(wrong_scaled, (npc1_x_pos + 5,npc1_y_pos - 40))
 
+                    if npcdisgustedwait >= 100:
+                        money -= 50
+                        npc1_x_pos = -1000
+                        npcnumber += 1
+                        CustomerFood = emptybox_img
+                        wrongfood = True
+                
+                # Customer wait time runs out
                 if waitprogress >= 135 and CustomerFood == emptybox_img and npcleave == False:
                     money -= 50
                     npc1_x_pos = -1000
@@ -569,7 +591,10 @@ def game_screen():
             
             if cooking != emptybox_img:
                 if progress <= 130:
-                    progress += 1
+                    chefcookingtime += 1
+                    if chefcookingtime >= 5:
+                        progress += 1
+                        chefcookingtime = 0
                 else:
                     FoodOnTable = cooking
                     cooking = emptybox_img
@@ -623,6 +648,19 @@ def game_screen():
                 FoodOnTable = emptybox_img
 
         # food serve ================================ #
+
+        # Day reset black =============================== #
+        if daytransition == True:
+            screen.fill((0,0,0))
+            transition_font = pygame.font.Font('font/segoepr.ttf', 60)
+            transition_surf = transition_font.render(f"Day {day}", True, 'white')
+            transition_rect = money_surf.get_rect(center=(590,340))
+            screen.blit(transition_surf, transition_rect)
+            daytransitiontick += 1
+            if daytransitiontick >= 50:
+                daytransitiontick = 0
+                daytransition = False
+        # Day reset black =============================== #
 
 
         for event in pygame.event.get():
