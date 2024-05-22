@@ -828,6 +828,6 @@ def credit_menu():
      #   pass
 
 # call the main menu
-main_menu()
+main_menu() 
 
 pygame.quit()
