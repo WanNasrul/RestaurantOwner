@@ -70,9 +70,9 @@ pizza_button = button.Button(890, 250, pizza_img, 1)
 steak_button = button.Button(1040, 250, steak_img, 1)
 
 #shopui2
-shopui2background_img = pygame.image.load('gameasset\shopui2\shopuibackground.png').convert_alpha()
-shopdecoration_img = pygame.image.load('gameasset\shopui2\shopdecoration.png').convert_alpha()
-shopupgrade_img = pygame.image.load('gameasset\shopui2\shopupgrade.png').convert_alpha()
+shopui2background_img = pygame.image.load('gameasset/shopui2/shopuibackground.png').convert_alpha()
+shopdecoration_img = pygame.image.load('gameasset/shopui2/shopdecoration.png').convert_alpha()
+shopupgrade_img = pygame.image.load('gameasset/shopui2/shopupgrade.png').convert_alpha()
 
 #shopui2 buttons
 shopdecoration_button = button.Button(430, 270, shopdecoration_img, 1)
@@ -80,12 +80,12 @@ shopupgrade_button = button.Button(680, 270, shopupgrade_img, 1)
 xshopui2_button = button.Button(810, 180, xbutton_img, 1)
 
 #shop img
-cheficon_img =  pygame.image.load('gameasset\ShopUI\ShopUI\cheficon.png').convert_alpha()
-chefborder_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopcolumn.png').convert_alpha()
-star_img = pygame.image.load('gameasset\ShopUI\ShopUI\star.png').convert_alpha()
+cheficon_img =  pygame.image.load('gameasset/ShopUI/ShopUI/cheficon.png').convert_alpha()
+chefborder_img = pygame.image.load('gameasset/ShopUI/ShopUI/shopcolumn.png').convert_alpha()
+star_img = pygame.image.load('gameasset/ShopUI/ShopUI/star.png').convert_alpha()
 upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/upgrade.png').convert_alpha()
-starupgrade_img = pygame.image.load('gameasset\ShopUI\ShopUI\starupgraded.png').convert_alpha()
-shopbackground_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopbackground.png').convert_alpha()
+starupgrade_img = pygame.image.load('gameasset/ShopUI/ShopUI/starupgraded.png').convert_alpha()
+shopbackground_img = pygame.image.load('gameasset/ShopUI/ShopUI/shopbackground.png').convert_alpha()
 
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
