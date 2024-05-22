@@ -374,11 +374,6 @@ def game_screen():
                 cooking = emptybox_img
 
 
-            if CustomerFood == emptybox_img:
-                CustomerFood = waiterfood
-                waiterfood = emptybox_img
-                cooking = emptybox_img
-
 
         # check for collision between waiter and table chair (3)
         if collision_detection(waiter_rect, tablechair3_rect):
