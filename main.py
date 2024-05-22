@@ -4,6 +4,7 @@ from sys import exit #import one thing
 import random
 import time
 
+#test#
 # initialize pygame
 pygame.init()
 
