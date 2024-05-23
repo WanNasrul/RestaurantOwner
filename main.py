@@ -2,7 +2,7 @@ import pygame
 import button
 from sys import exit #import one thing
 import random
-import time
+from pygame import mixer
 
 # initialize pygame
 pygame.init()
@@ -20,6 +20,10 @@ mainmenubg_surf = pygame.image.load('gameasset/backgroundmainmenuanimated.png').
 mainmenubg_rect = mainmenubg_surf.get_rect(topleft = (0,10))
 mainmenubg2_surf = pygame.image.load('gameasset/backgroundmainmenuanimateddark.png').convert_alpha()
 mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
+
+# background music
+mixer.music.load('gameasset/backgroundmusic.mp3')
+mixer.music.play(-1)
 
 # main menu images
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
@@ -42,7 +46,10 @@ npc1_img = pygame.image.load('gameasset/casher.png').convert_alpha()
 tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+
+# coin 
 coin_img = pygame.image.load('gameasset/coins.png').convert_alpha()
+coin_scaled = pygame.transform.scale(coin_img, (int(coin_img.get_width() * 0.05), int(coin_img.get_height() * 0.05)))
 
 # Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
@@ -353,6 +360,7 @@ def game_screen():
     randomfood = emptybox_img
     foodchoice = [chicken_img, fish_img, burger_img, pizza_img, steak_img]
 
+
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
@@ -368,11 +376,17 @@ def game_screen():
 
     # days progression
 
+    # coins position
+    coinX = 500
+    coinY = 490
+    coin_displayed = False
+    coin_display_time = 0
 
     while run:
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
+
         
 
         # BLACK SCREEN TRANSITION
@@ -469,6 +483,7 @@ def game_screen():
                 CustomerFood = waiterfood
                 waiterfood = emptybox_img
                 cooking = emptybox_img
+
 
 
         # game font variables such as day count and money count
@@ -587,6 +602,7 @@ def game_screen():
                 # Customer gets the right food
                 if  CustomerFood == randomfood and earnmoney == False:
                     npceatingtime += 1
+                    screen.blit(coin_scaled, (coinX, coinY))
 
                     if npceatingtime >= 100:
                         money += 100 + 100*incomemultiplier/100
@@ -594,6 +610,8 @@ def game_screen():
                         npcnumber += 1
                         CustomerFood = emptybox_img
                         earnmoney = True
+
+
                 
                 # Customer gets the wrong food
                 if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
@@ -649,6 +667,7 @@ def game_screen():
             #screen.blit(chef3, (810,155))
             screen.blit(chef2, (610,315))
             screen.blit(waiter1, (610,475))
+
             
             
             if xshopbutton_button.draw(screen) :
@@ -782,17 +801,18 @@ def game_screen():
 
         # food serve ================================ #
 
+
         # Day reset black =============================== #
-        # if daytransition == True:
-        #     screen.fill((0,0,0))
-        #     transition_font = pygame.font.Font('font/segoepr.ttf', 60)
-        #     transition_surf = transition_font.render(f"Day {day}", True, 'white')
-        #     transition_rect = money_surf.get_rect(center=(590,340))
-        #     screen.blit(transition_surf, transition_rect)
-        #     daytransitiontick += 1
-        #     if daytransitiontick >= 50:
-        #         daytransitiontick = 0
-        #        daytransition = False
+        if daytransition == True:
+        #      screen.fill((0,0,0))
+        #      transition_font = pygame.font.Font('font/segoepr.ttf', 60)
+        #      transition_surf = transition_font.render(f"Day {day}", True, 'white')
+        #      transition_rect = money_surf.get_rect(center=(590,340))
+        #      screen.blit(transition_surf, transition_rect)
+              daytransitiontick += 1
+              if daytransitiontick >= 50:
+                  daytransitiontick = 0
+                  daytransition = False
         # Day reset black =============================== #
 
 
