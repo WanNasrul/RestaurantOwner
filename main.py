@@ -40,6 +40,7 @@ chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/casher.png').convert_alpha()
 npc2_img = pygame.image.load('gameasset/casher.png').convert_alpha()
+npc3_img = pygame.image.load('gameasset/casher.png').convert_alpha()
 tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
@@ -125,6 +126,7 @@ cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
 
+
 # text
 # daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
 # daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
@@ -145,6 +147,12 @@ def npc2(x, y):
     npc2_height = int(npc1_img.get_height() * 1)
     npc2_resize= pygame.transform.scale(npc2_img, (npc2_width, npc2_height))
     screen.blit(npc2_resize, (x, y))
+
+def npc3(x, y):
+    npc3_width = int(npc1_img.get_width() * 1)
+    npc3_height = int(npc1_img.get_height() * 1)
+    npc3_resize= pygame.transform.scale(npc3_img, (npc3_width, npc3_height))
+    screen.blit(npc3_resize, (x, y))
 
 def waiter(x, y, WaiterDirection):
     waiter_width = int(waiter_img.get_width() * 1)
@@ -192,6 +200,12 @@ def customerplate2(x, y, CustomerFood2):
     customerplate2_resize = pygame.transform.scale(CustomerFood2, (customerplate2_width, customerplate2_height))
     screen.blit(customerplate2_resize, (x, y))
 
+def customerplate3(x, y, CustomerFood3):
+    customerplate3_width = int(CustomerFood3.get_width() *0.5)
+    customerplate3_height = int(CustomerFood3.get_height() *0.5)
+    customerplate3_resize = pygame.transform.scale(CustomerFood3, (customerplate3_width, customerplate3_height))
+    screen.blit(customerplate3_resize, (x, y))
+
 
 def foodnpcreq(x,y, randomfood):
     foodnpcreq_width = int(randomfood.get_width() *0.5)
@@ -204,6 +218,13 @@ def foodnpcreq2(x,y, randomfood):
     foodnpcreq2_height = int(randomfood.get_height() *0.5)
     foodnpcreq2_resize = pygame.transform.scale(randomfood, (foodnpcreq2_width, foodnpcreq2_height))
     screen.blit(foodnpcreq2_resize, (x,y))
+
+def foodnpcreq3(x,y, randomfood):
+    foodnpcreq3_width = int(randomfood.get_width() *0.5)
+    foodnpcreq3_height = int(randomfood.get_height() *0.5)
+    foodnpcreq3_resize = pygame.transform.scale(randomfood, (foodnpcreq3_width, foodnpcreq3_height))
+    screen.blit(foodnpcreq3_resize, (x,y))
+
 
 
 def collision_detection(waiter_rect, table_rect):
@@ -295,11 +316,17 @@ def game_screen():
     customerplate2X = 845
     customerplate2Y = 490
 
+    customerplate3X = 845
+    customerplate3Y = 290
+
     npc1_x_pos = 1000
     npc1_y_pos = 100
 
     npc2_x_pos = 1000
     npc2_y_pos = 100
+
+    npc3_x_pos = 1000
+    npc3_y_pos = 100
 
     # chef UI
     runchefUI = False
@@ -310,6 +337,7 @@ def game_screen():
     waiterfood = emptybox_img
     CustomerFood = emptybox_img
     CustomerFood2 = emptybox_img
+    CustomerFood3 = emptybox_img
     chefcookingtime = 0
 
     # shop ui 
@@ -328,6 +356,7 @@ def game_screen():
     #npc
     npcfoodrequest = False
     npcfoodrequest2 = False
+    npcfoodrequest3 = False
     earnmoney = False
     wrongfood = False
     npcleave = False
@@ -337,11 +366,11 @@ def game_screen():
     npcdisgustedwait = 0
     waitprogress = 0
     waitprogress2 = 0
+    waitprogress3 = 0
     waitdelay = 0
     npcnumber = 0
     randomfood = emptybox_img
     foodchoice = [chicken_img, fish_img, burger_img, pizza_img, steak_img]
-    
 
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
@@ -357,6 +386,7 @@ def game_screen():
     foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
 
     # days progression
+
 
 
     while run:
@@ -379,43 +409,59 @@ def game_screen():
             npc1_y_pos = 100
             npc2_x_pos = 1000
             npc2_y_pos = 100
+            npc3_x_pos = 1000
+            npc3_y_pos = 100
 
             npcfoodrequest = False
             npcfoodrequest2 = False
+            npcfoodrequest3 = False
 
             earnmoney = False
             earnmoney2 = False
+            earnmoney3 = False
 
             wrongfood = False
             wrongfood2 = False
+            wrongfood3 = False
 
             npcleave = False
             npcleave2 = False
+            npcleave3 = False
 
             npcwaittime= 0
             npcwaittime2 = 0
+            npcwaittime3 = 0
 
             npcqueuetime = 0
             npcqueuetime2 = 0
+            npcqueuetime3 = 0
 
             npceatingtime = 0
             npceatingtime2 = 0
+            npceatingtime3 = 0
 
             waitprogress = 0
             waitprogress2 = 0
+            waitprogress3 = 0
 
             waitdelay = 0
             waitdelay2 = 0
+            waitdelay3 = 0
 
             npcnumber = 0
 
             npcdisgustedwait = 0
             npcdisgustedwait2 = 0
+            npcdisgustedwait3 = 0
 
             randomfood = emptybox_img
             randomfood2 = emptybox_img
+            randomfood3 = emptybox_img
 
             npcappeartime = 0
+            npcappeartime3 = 0
+
+            npctptime = 0
 
             resetday = False  
 
@@ -480,7 +526,10 @@ def game_screen():
                 waiterX += waiter_speed
             if keys[pygame.K_d] and waiter_rect.right > tablechair2_rect.left:
                 waiterX -= waiter_speed
-
+            if CustomerFood3 == emptybox_img and npcfoodrequest3 == True:
+                CustomerFood3 = waiterfood
+                waiterfood = emptybox_img
+                cooking = emptybox_img
 
         # check for collision between waiter and table chair (3)
         if collision_detection(waiter_rect, tablechair3_rect):
@@ -538,12 +587,19 @@ def game_screen():
 
         customerplate2(customerplate2X,customerplate2Y, CustomerFood2)
 
+        customerplate3(customerplate3X,customerplate3Y, CustomerFood3)
+
         npc(npc1_x_pos, npc1_y_pos)
 
         if day >= 2:
             npcappeartime +=1
-            if npcappeartime >= 500:
+            if npcappeartime >= 600:
                 npc2(npc2_x_pos,npc2_y_pos)
+        
+        if day >= 3:
+            npcappeartime3 +=1
+            if npcappeartime3 >= 1100:
+                npc3(npc3_x_pos,npc3_y_pos)
 
 
         # Decoration bought items
@@ -589,6 +645,10 @@ def game_screen():
         waitbar_font2 = pygame.font.Font('font/segoepr.ttf', 5)
         waitbar_surf2 = waitbar_font2.render('.'*waitprogress2, False, (64,64,64))
         waitbar_rect2 = waitbar_surf2.get_rect(midleft = (npc2_x_pos,npc2_y_pos - 120))
+
+        waitbar_font3 = pygame.font.Font('font/segoepr.ttf', 5)
+        waitbar_surf3 = waitbar_font3.render('.'*waitprogress3, False, (64,64,64))
+        waitbar_rect3 = waitbar_surf3.get_rect(midleft = (npc3_x_pos,npc3_y_pos - 120))
         
         
         if npcfoodrequest == False:
@@ -603,6 +663,7 @@ def game_screen():
                         npc1_y_pos = 435
                         npc1_x_pos = 595
                         npcfoodrequest = True
+
                         
 
         if npcfoodrequest == True and not npc1_x_pos == -1000 and not npc1_y_pos == -1000:
@@ -636,7 +697,7 @@ def game_screen():
                         npcnumber += 1
                         CustomerFood = emptybox_img
                         earnmoney = True
-                
+
                 # Customer gets the wrong food
                 if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
                     npcdisgustedwait += 1
@@ -655,11 +716,11 @@ def game_screen():
                     npc1_x_pos = -1000
                     npcnumber += 1
                     npcleave = True
-
+        #npc 2 ======================================#
         if day >= 2 and npcfoodrequest2 == False:
             npcqueuetime2 += 1
             
-            if npcqueuetime2 >= 600:
+            if npcqueuetime2 >= 700:
                 npc2_x_pos -= 1.5
                 if npc2_x_pos <= 650:  
                     npc2_x_pos = 651
@@ -673,7 +734,7 @@ def game_screen():
         if npcfoodrequest2 == True and not npc2_x_pos == -1000 and not npc2_y_pos == -1000:
             npcwaittime2 += 1
             if npcwaittime2 >= 50 and randomfood2 == emptybox_img:
-                randomfood2 = random.choice(foodchoice)
+                randomfood2 = random.choice (foodchoice)
 
             if randomfood2 != emptybox_img:
 
@@ -681,7 +742,7 @@ def game_screen():
                     screen.blit(waitbar_surf2, waitbar_rect2)
                     pygame.draw.rect(screen,'red',waitbar_rect2)
                     screen.blit(chatbubble_resize, (npc2_x_pos,npc2_y_pos - 100))
-                    foodnpcreq2(npc2_x_pos + 33,npc2_y_pos - 90, randomfood)
+                    foodnpcreq2(npc2_x_pos + 33,npc2_y_pos - 90, randomfood2)
                     waitdelay2 += 1
                         
 
@@ -720,6 +781,75 @@ def game_screen():
                     npc2_x_pos = -1000
                     npcnumber += 1
                     npcleave2 = True
+        
+    
+        #npc 3 =================================================================================#
+        if day >= 3 and npcfoodrequest3 == False:
+            npcqueuetime3 += 1
+            
+            if npcqueuetime3 >= 1200:
+                npc3_x_pos -= 1.5
+                if npc3_x_pos <= 650:  
+                    npc3_x_pos = 651
+                    npc3_y_pos += 1.5
+
+                    if npc3_y_pos >= 240: 
+                        npc3_y_pos = 230
+                        npc3_x_pos = 950
+                        npcfoodrequest3 = True
+
+        if npcfoodrequest3 == True and not npc3_x_pos == -1000 and not npc3_y_pos == -1000:
+            npcwaittime3 += 1
+            if npcwaittime3 >= 50 and randomfood3 == emptybox_img:
+                randomfood3 = random.choice (foodchoice)
+
+            if randomfood3 != emptybox_img:
+
+                if  CustomerFood3 == emptybox_img:
+                    screen.blit(waitbar_surf3, waitbar_rect3)
+                    pygame.draw.rect(screen,'red',waitbar_rect3)
+                    screen.blit(chatbubble_resize, (npc3_x_pos,npc3_y_pos - 100))
+                    foodnpcreq2(npc3_x_pos + 33,npc3_y_pos - 90, randomfood3)
+                    waitdelay3 += 1
+                        
+
+                # increase letter wait bar
+                # letter increase 1 (waitprogress) when waitdelay equals 4
+                if waitdelay3 >= 10:
+                    waitprogress3 += 1
+                    waitdelay3 = 0
+                    
+                # Customer gets the right food
+                if  CustomerFood3 == randomfood3 and earnmoney3 == False:
+                    npceatingtime3 += 1
+
+                    if npceatingtime3 >= 100:
+                        money += 100
+                        npc3_x_pos = -1000
+                        npcnumber += 1
+                        CustomerFood3 = emptybox_img
+                        earnmoney3 = True
+                    
+                    # Customer gets the wrong food
+                if CustomerFood3 != randomfood3 and wrongfood3 == False and CustomerFood3 != emptybox_img:
+                    npcdisgustedwait3 += 1
+                    screen.blit(wrong_scaled, (npc3_x_pos + 5,npc3_y_pos - 40))
+
+                    if npcdisgustedwait3 >= 100:
+                        money -= 50
+                        npc3_x_pos = -1000
+                        npcnumber += 1
+                        CustomerFood3 = emptybox_img
+                        wrongfood3 = True
+                    
+                    # Customer wait time runs out
+                if waitprogress3 >= 135 and CustomerFood3 == emptybox_img and npcleave3 == False:
+                    money -= 50
+                    npc3_x_pos = -1000
+                    npcnumber += 1
+                    npcleave3 = True
+
+        
 
         # npc movement ================================== #
 
