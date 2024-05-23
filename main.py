@@ -613,6 +613,7 @@ def game_screen():
                         earnmoney = True
 
 
+
                 
                 # Customer gets the wrong food
                 if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
