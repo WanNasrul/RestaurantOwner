@@ -24,6 +24,7 @@ mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 # background music
 mixer.music.load('gameasset/backgroundmusic.mp3')
 mixer.music.play(-1)
+mixer.music.set_volume(0.05)
 
 # main menu images
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
