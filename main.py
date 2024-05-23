@@ -42,6 +42,7 @@ npc1_img = pygame.image.load('gameasset/casher.png').convert_alpha()
 tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+coin_img = pygame.image.load('gameasset/coins.png').convert_alpha()
 
 # Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
@@ -210,11 +211,12 @@ def foodnpcreq(x,y, randomfood):
     foodnpcreq_resize = pygame.transform.scale(randomfood, (foodnpcreq_width, foodnpcreq_height))
     screen.blit(foodnpcreq_resize, (x,y))
 
-# def customerfoodrequest1(x, y, CustomerFood):
-#     customerfoodrequest1_width = int(CustomerFood.get_width() *0.5)
-#     customerfoodrequest1_height = int(CustomerFood.get_height() *0.5)
-#     customerfoodrequest1_resize = pygame.transform.scale(CustomerFood, (customerfoodrequest1_width, customerfoodrequest1_height))
-#     screen.blit(customerfoodrequest1_resize, (x, y))
+
+def customerfoodrequest1(x, y, CustomerFood):
+     customerfoodrequest1_width = int(CustomerFood.get_width() *0.5)
+     customerfoodrequest1_height = int(CustomerFood.get_height() *0.5)
+     customerfoodrequest1_resize = pygame.transform.scale(CustomerFood, (customerfoodrequest1_width, customerfoodrequest1_height))
+     screen.blit(customerfoodrequest1_resize, (x, y))
 
 
 def collision_detection(waiter_rect, table_rect):
@@ -781,16 +783,16 @@ def game_screen():
         # food serve ================================ #
 
         # Day reset black =============================== #
-        if daytransition == True:
-            screen.fill((0,0,0))
-            transition_font = pygame.font.Font('font/segoepr.ttf', 60)
-            transition_surf = transition_font.render(f"Day {day}", True, 'white')
-            transition_rect = money_surf.get_rect(center=(590,340))
-            screen.blit(transition_surf, transition_rect)
-            daytransitiontick += 1
-            if daytransitiontick >= 50:
-                daytransitiontick = 0
-                daytransition = False
+        # if daytransition == True:
+        #     screen.fill((0,0,0))
+        #     transition_font = pygame.font.Font('font/segoepr.ttf', 60)
+        #     transition_surf = transition_font.render(f"Day {day}", True, 'white')
+        #     transition_rect = money_surf.get_rect(center=(590,340))
+        #     screen.blit(transition_surf, transition_rect)
+        #     daytransitiontick += 1
+        #     if daytransitiontick >= 50:
+        #         daytransitiontick = 0
+        #        daytransition = False
         # Day reset black =============================== #
 
 
