@@ -348,7 +348,7 @@ def game_screen():
     npcdisgustedwait = 0
     waitprogress = 0
     waitdelay = 0
-    npcnumber = 0
+    npccooldown = 0
     randomfood = emptybox_img
     foodchoice = [chicken_img, fish_img, burger_img, pizza_img, steak_img]
 
@@ -375,14 +375,13 @@ def game_screen():
         
 
         # BLACK SCREEN TRANSITION
-        if npcnumber == 1:
+        if npccooldown == 1:
             daytransition = True
             resetday = True
 
         # RESET DAY 
         if resetday == True:
             day += 1
-            npcnumber = 0
             npc1_x_pos = 1000
             npc1_y_pos = 100
             npcfoodrequest = False
@@ -394,7 +393,7 @@ def game_screen():
             npceatingtime = 0
             waitprogress = 0
             waitdelay = 0
-            npcnumber = 0
+            npccooldown = 0
             npcdisgustedwait = 0
             randomfood = emptybox_img
             resetday = False  
@@ -590,7 +589,7 @@ def game_screen():
                     if npceatingtime >= 100:
                         money += 100 + 100*incomemultiplier/100
                         npc1_x_pos = -1000
-                        npcnumber += 1
+                        npccooldown += 1
                         CustomerFood = emptybox_img
                         earnmoney = True
                 
@@ -602,7 +601,7 @@ def game_screen():
                     if npcdisgustedwait >= 100:
                         money -= 50
                         npc1_x_pos = -1000
-                        npcnumber += 1
+                        npccooldown += 1
                         CustomerFood = emptybox_img
                         wrongfood = True
                 
@@ -610,8 +609,10 @@ def game_screen():
                 if waitprogress >= 135 and CustomerFood == emptybox_img and npcleave == False:
                     money -= 50
                     npc1_x_pos = -1000
-                    npcnumber += 1
+                    npccooldown += 1
                     npcleave = True
+
+                
         # npc movement ================================== #
 
         # insert shop code here
