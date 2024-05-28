@@ -665,13 +665,6 @@ def game_screen():
                     npc1_x_pos = -1000
                     npccooldown += 1
                     npcleave = True
-
-
-
-                # if npccooldown >= 1:
-                #     npccooldown += 1
-                #     screen.blit(coin_scaled, (coinX, coinY))
-
                     
         # npc movement ================================== #
 
