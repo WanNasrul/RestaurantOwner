@@ -45,10 +45,13 @@ tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 
-# Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
-# Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
-# table_img = pygame.image.load('gameasset/table.png').convert_alpha()
-
+#waiter
+waiterstand_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
+waiterwalk1_img = pygame.image.load('gameasset/waiterwalk1.png').convert_alpha()
+waiterwalk2_img = pygame.image.load('gameasset/waiterwalk2.png').convert_alpha()
+waiter_walk = [waiterwalk1_img,waiterwalk2_img]
+waiter_index = 0
+waiter_img = waiter_walk[waiter_index]
 
 # chef ui images
 chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
@@ -60,6 +63,7 @@ pizza_img = pygame.image.load('gameasset/chef ui/pizza.png').convert_alpha()
 steak_img = pygame.image.load('gameasset/chef ui/steak.png').convert_alpha()
 progressbar_img = pygame.image.load('gameasset/chef ui/progressbar.png').convert_alpha()
 emptybox_img = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
+
 # chef ui buttons
 xbutton_button = button.Button(1100, 70, xbutton_img, 1)
 chicken_button = button.Button(440, 250, chicken_img, 1)
@@ -67,6 +71,16 @@ fish_button = button.Button(590, 250, fish_img, 1)
 burger_button = button.Button(740, 250, burger_img, 1)
 pizza_button = button.Button(890, 250, pizza_img, 1)
 steak_button = button.Button(1040, 250, steak_img, 1)
+
+#shopui2
+shopui2background_img = pygame.image.load('gameasset/shopui2/shopuibackground.png').convert_alpha()
+shopdecoration_img = pygame.image.load('gameasset/shopui2/shopdecoration.png').convert_alpha()
+shopupgrade_img = pygame.image.load('gameasset/shopui2/shopupgrade.png').convert_alpha()
+
+#shopui2 buttons
+shopdecoration_button = button.Button(430, 270, shopdecoration_img, 1)
+shopupgrade_button = button.Button(680, 270, shopupgrade_img, 1)
+xshopui2_button = button.Button(810, 180, xbutton_img, 1)
 
 #shop img
 cheficon_img =  pygame.image.load('gameasset\ShopUI\ShopUI\cheficon.png').convert_alpha()
@@ -84,19 +98,30 @@ upgrade_button3 = button.Button(1050,475, upgradebutton_img,1)
 
 
 # decoration ui images
-decorationbutton_img = pygame.image.load('gameasset/decoration ui/decorationbutton.png').convert_alpha()
 decorationuibackground_img = pygame.image.load('gameasset/decoration ui/decorationuibackground.png').convert_alpha()
-buymenu_img = pygame.image.load('gameasset/decoration ui/decorationbuybutton.png').convert_alpha()
-buypiano_img = pygame.image.load('gameasset/decoration ui/decorationbuybutton.png').convert_alpha()
-menudecorationui_img = pygame.image.load('gameasset/decoration ui/menudecorationui.png').convert_alpha()
-pianoui_img = pygame.image.load('gameasset/decoration ui/pianoui.png').convert_alpha()
-menudecoration_img = pygame.image.load('gameasset/decoration ui/menudecoration.png').convert_alpha()
+
 piano_img = pygame.image.load('gameasset/decoration ui/piano.png').convert_alpha()
+pianoui_img = pygame.image.load('gameasset/decoration ui/pianoui.png').convert_alpha()
+buypiano_img = pygame.image.load('gameasset/decoration ui/decorationbuybutton.png').convert_alpha()
+
+
+menudecoration_img = pygame.image.load('gameasset/decoration ui/menudecoration.png').convert_alpha()
+menudecorationui_img = pygame.image.load('gameasset/decoration ui/menudecorationui.png').convert_alpha()
+buymenu_img = pygame.image.load('gameasset/decoration ui/decorationbuybutton.png').convert_alpha()
+
+carpet_img = pygame.image.load('gameasset/decoration ui/carpet.png').convert_alpha()
+carpetui_img = pygame.image.load('gameasset/decoration ui/carpetui.png').convert_alpha()
+buycarpet_img = pygame.image.load('gameasset/decoration ui/decorationbuybutton.png').convert_alpha()
+
+flowers_img = pygame.image.load('gameasset/decoration ui/flowers.png').convert_alpha()
+flowersui_img = pygame.image.load('gameasset/decoration ui/flowersui.png').convert_alpha()
+buyflowers_img = pygame.image.load('gameasset/decoration ui/decorationbuybutton.png').convert_alpha()
 
 # decoration ui buttons
-decorationbutton_button = button.Button(600, 600, decorationbutton_img, 1)
-buymenu_button = button.Button(475, 400, buymenu_img, 1)
-buypiano_button = button.Button(680, 400, buypiano_img, 1)
+buymenu_button = button.Button(430+45, 170+125, buymenu_img, 1)
+buypiano_button = button.Button(635+45, 170+125, buypiano_img, 1)
+buycarpet_button = button.Button(430+45, 400+125, buycarpet_img, 1)
+buyflowers_button = button.Button(635+45, 400+125, buyflowers_img, 1)
 
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
@@ -105,15 +130,10 @@ credit_button = button.Button(515, 450, credit_img, 0.5)
 exit_button = button.Button(515, 550, exit_img, 0.5)
 pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
-#tablechair1_button = button.Button(900, 830, tablechair1_img, 0.6)
-#tablechair2_button = button.Button(900, 680, tablechair2_img, 0.6)
-#tablechair3_button = button.Button(600, 680, tablechair3_img, 0.6)
-#tablechair4_button = button.Button(600, 880, tablechair4_img, 0.6)
 
 # click the chef and cat
 fern_button = button.Button(498, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
-# waiter_button = button.Button(450, 215, waiter_img, 1)
 
 # npc images
 chatbubble_img = pygame.image.load('gameasset/chatbubble.png').convert_alpha()
@@ -163,6 +183,19 @@ def waiter(x, y, WaiterDirection):
         screen.blit(waiter_resize, (x, y))
     if WaiterDirection == 'left':
         screen.blit(waiter_flip, (x, y))
+
+def waiter_animation(keys):
+    global waiter_img, waiter_index
+    
+    if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
+        waiter_index += 0.1
+        if waiter_index >= len(waiter_walk):
+            waiter_index = 0
+        waiter_img = waiter_walk[int(waiter_index)]
+        print("hello")
+
+    else:
+        waiter_img = waiterstand_img
 
 def table1(x, y):
     tablechair1_width = int(tablechair1_img.get_width() * 1)
@@ -288,7 +321,8 @@ def game_screen():
     run = True
 
     # default money and day value
-    money = 100
+    money = 10000
+    incomemultiplier = 0
     day = 1
     daytransition = False
     daytransitiontick = 0
@@ -330,7 +364,7 @@ def game_screen():
 
     npc1reset = True
     npc2reset = True
-    npc3reset = True
+    npc3reset = True    
 
     # chef UI
     runchefUI = False
@@ -352,10 +386,14 @@ def game_screen():
     waiter1 = star_img
     chefcookingtime = 1
 
+    # shopui2
+    runShopUI2 = False
 
     #decoration
     purchasedmenu = False
     purchasedpiano = False
+    purchasedcarpet = False
+    purchasedflowers = False
 
     #npc
     npcfoodrequest = False
@@ -573,16 +611,15 @@ def game_screen():
 # NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
 
 
-        if fern_button.draw(screen) and runchefUI == False:
+        if fern_button.draw(screen) and runchefUI == False and runShopUI == True and runShopUI2 == True:
             cat_sfx.play()
 
-
-        
 
         # get the state of all keyboard keys
         keys = pygame.key.get_pressed()
 
         # update waiter position based on key presses
+        waiter_animation(keys)
         if keys[pygame.K_w]:
             if waiterY > 0:
                 waiterY -= waiter_speed
@@ -669,9 +706,7 @@ def game_screen():
             print('game paused')
             # insert pause code here
             run = False
-
-
-    
+            
 
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
@@ -681,6 +716,18 @@ def game_screen():
         # testing, add 12 money every 1 frame
         # money += 0
         
+        # Decoration bought items
+        if purchasedmenu == True:
+            screen.blit(menudecoration_img, (336,236))
+
+        if purchasedpiano == True:
+            screen.blit(piano_img, (680,15))
+
+        if purchasedcarpet == True:
+            screen.blit(carpet_img, (400,270))
+
+        if purchasedflowers == True:
+            screen.blit(flowers_img, (1065,300))
 
         table1(tablechair1X,tablechair1Y)
 
@@ -709,15 +756,6 @@ def game_screen():
             if npcappeartime3 >= 1100:
                 npc3(npc3_x_pos,npc3_y_pos)
 
-
-        # Decoration bought items
-        if purchasedmenu == True:
-            screen.blit(menudecoration_img, (336,236))
-
-        if purchasedpiano == True:
-            screen.blit(piano_img, (680,15))
-
-
         #table4(tablechair4X,tablechair4Y)
         
         
@@ -732,15 +770,11 @@ def game_screen():
             click_sfx.play()
             runchefUI = True
 
-        if decorationbutton_button.draw(screen):
-            click_sfx.play()
-            rundecorationUI = True
         # food serve (part 1) ================================ #
         screen.blit(foodtrigger_scaled, foodtrigger_rect,) # foodtrigger
         foodserve(foodserveX,foodserveY,FoodOnTable)
         waiter(waiterX, waiterY, WaiterDirection)
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
-        
         # food serve ================================ #
 
         # npc movement ================================== #
@@ -798,7 +832,7 @@ def game_screen():
                     npceatingtime += 1
 
                     if npceatingtime >= 100:
-                        money += 100
+                        money += 100*incomemultiplier/100
                         npc1_x_pos = -1000
                         npcnumber += 1
                         CustomerFood = emptybox_img
@@ -872,7 +906,7 @@ def game_screen():
                     npceatingtime2 += 1
 
                     if npceatingtime2 >= 100:
-                        money += 100
+                        money += 100*incomemultiplier/100
                         npc2_x_pos = -1000
                         npcnumber += 1
                         CustomerFood2 = emptybox_img
@@ -946,7 +980,7 @@ def game_screen():
                     npceatingtime3 += 1
 
                     if npceatingtime3 >= 100:
-                        money += 100
+                        money += 100*incomemultiplier/100
                         npc3_x_pos = -1000
                         npcnumber += 1
                         CustomerFood3 = emptybox_img
@@ -983,7 +1017,22 @@ def game_screen():
         # insert shop code here
         if shop_button.draw(screen):
             click_sfx.play()
-            runShopUI = True 
+            runShopUI2 = True 
+
+        if runShopUI2 == True:
+            screen.blit(shopui2background_img, (410,175))
+
+            if xshopui2_button.draw(screen):
+                click_sfx.play()
+                runShopUI2 = False
+            if shopdecoration_button.draw(screen):
+                click_sfx.play()
+                rundecorationUI = True
+                runShopUI2 = False
+            if shopupgrade_button.draw(screen):
+                click_sfx.play()
+                runShopUI = True
+                runShopUI2 = False
 
         if runShopUI == True:
 
@@ -1022,8 +1071,8 @@ def game_screen():
                  waiter1 = starupgrade_img
                  money -= 100
 
-    
 
+    
         if runchefUI == True:
             
             screen.blit(chefuibackground_img, (410,65))
@@ -1079,22 +1128,38 @@ def game_screen():
         if rundecorationUI == True:
             screen.blit(decorationuibackground_img, (410,65))
 
-            if xbutton_button.draw(screen):
-                click_sfx.play()
-                rundecorationUI = False
-            if buymenu_button.draw(screen) and money >= 100 and purchasedmenu == False:
-                click_sfx.play()
-                money -= 100
-                purchasedmenu = True
-
-            if buypiano_button.draw(screen) and money >= 200 and purchasedpiano == False:
-                click_sfx.play()
-                money -= 200
-                purchasedpiano = True
-
 
             screen.blit(menudecorationui_img, (430,170))
             screen.blit(pianoui_img, (635,170))
+            screen.blit(carpetui_img, (430,400))
+            screen.blit(flowersui_img, (635,400))
+
+            if xbutton_button.draw(screen):
+                click_sfx.play()
+                rundecorationUI = False
+            if buymenu_button.draw(screen) and money >= 250 and purchasedmenu == False:
+                click_sfx.play()
+                money -= 250
+                incomemultiplier += 5
+                purchasedmenu = True
+                
+            if buypiano_button.draw(screen) and money >= 500 and purchasedpiano == False:
+                click_sfx.play()
+                money -= 500
+                incomemultiplier += 10
+                purchasedpiano = True
+            
+            if buycarpet_button.draw(screen) and money >= 1000 and purchasedcarpet == False:
+                click_sfx.play()
+                money -= 1000
+                incomemultiplier += 12
+                purchasedcarpet = True
+
+            if buyflowers_button.draw(screen) and money >= 375 and purchasedflowers == False:
+                click_sfx.play()
+                money -= 375
+                incomemultiplier += 8
+                purchasedflowers = True
         
             
         # CHECK MOUSE POSITION
