@@ -146,7 +146,7 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 #tablechair4_button = button.Button(600, 880, tablechair4_img, 0.6)
 
 # click the chef and cat
-fern_button = button.Button(498, 300, fern_img, 0.08)
+fern_button = button.Button(508, 300, fern_img, 0.08)
 chef_button = button.Button(200, 215, chef_img, 1)
 # waiter_button = button.Button(450, 215, waiter_img, 1)
 
@@ -217,19 +217,11 @@ def customerplate1(x, y, CustomerFood):
     customerplate1_resize = pygame.transform.scale(CustomerFood, (customerplate1_width, customerplate1_height))
     screen.blit(customerplate1_resize, (x, y))
 
-def foodnpcreq(x,y, randomfood):
-    foodnpcreq_width = int(randomfood.get_width() *0.5)
-    foodnpcreq_height = int(randomfood.get_height() *0.5)
-    foodnpcreq_resize = pygame.transform.scale(randomfood, (foodnpcreq_width, foodnpcreq_height))
-    screen.blit(foodnpcreq_resize, (x,y))
-
-
-def customerfoodrequest1(x, y, CustomerFood):
-     customerfoodrequest1_width = int(CustomerFood.get_width() *0.5)
-     customerfoodrequest1_height = int(CustomerFood.get_height() *0.5)
-     customerfoodrequest1_resize = pygame.transform.scale(CustomerFood, (customerfoodrequest1_width, customerfoodrequest1_height))
-     screen.blit(customerfoodrequest1_resize, (x, y))
-
+def customerplate2(x, y, CustomerFood):
+    customerplate2_width = int(CustomerFood.get_width() *0.5)
+    customerplate2_height = int(CustomerFood.get_height() *0.5)
+    customerplate2_resize = pygame.transform.scale(CustomerFood, (customerplate2_width, customerplate2_height))
+    screen.blit(customerplate2_resize, (x, y))
 
 def collision_detection(waiter_rect, table_rect):
 
@@ -391,6 +383,9 @@ def game_screen():
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
+    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 80)
+    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 200, 10)
+    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 235, 10)
     tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 152, 20)
     tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 282, 30)
     tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 50)
@@ -550,6 +545,8 @@ def game_screen():
 
 
 
+        # insert shop code here
+        # insert idk
 
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
