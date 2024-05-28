@@ -67,18 +67,22 @@ pizza_button = button.Button(890, 250, pizza_img, 1)
 steak_button = button.Button(1040, 250, steak_img, 1)
 
 #shop img
-cheficon_img =  pygame.image.load('gameasset\ShopUI\ShopUI\cheficon.png').convert_alpha()
-chefborder_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopcolumn.png').convert_alpha()
-star_img = pygame.image.load('gameasset\ShopUI\ShopUI\star.png').convert_alpha()
-upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/upgrade.png').convert_alpha()
-starupgrade_img = pygame.image.load('gameasset\ShopUI\ShopUI\starupgraded.png').convert_alpha()
-shopbackground_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopbackground.png').convert_alpha()
+cheficon_img =  pygame.image.load('gameasset/upgrade shop remaster/chefupgrade.png').convert_alpha()
+waitericon_img =  pygame.image.load('gameasset/upgrade shop remaster/waiterupgrade.png').convert_alpha()
+star_img = pygame.image.load('gameasset/upgrade shop remaster/star.png').convert_alpha()
+upgradebutton_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebuy.png').convert_alpha()
+starupgrade_img = pygame.image.load('gameasset/upgrade shop remaster/starupgraded.png').convert_alpha()
+shopbackground_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebackground.png').convert_alpha()
 
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
 upgrade_button1 = button.Button(1050, 150, upgradebutton_img, 1)
 upgrade_button2 = button.Button(1050,315, upgradebutton_img,1)
 upgrade_button3 = button.Button(1050,475, upgradebutton_img,1)
+upgrade_button4 = button.Button(1050, 150, upgradebutton_img, 1)
+upgrade_button5 = button.Button(1050,315, upgradebutton_img,1)
+upgrade_button6 = button.Button(1050,475, upgradebutton_img,1)
+
 
 
 # decoration ui images
@@ -257,7 +261,7 @@ def game_screen():
     run = True
 
     # default money and day value
-    money = 100
+    money = 300
     day = 1
     daytransition = False
     daytransitiontick = 0
@@ -300,7 +304,13 @@ def game_screen():
     waiter_speed = 2
     chef = star_img
     chef2 = star_img
+    chef3 = star_img 
+    chef4 = star_img
     waiter1 = star_img
+    waiter2 = star_img
+    chef_upgrade_purchased = False
+   
+
     chefcookingtime = 1
 
 
@@ -593,43 +603,68 @@ def game_screen():
         if shop_button.draw(screen):
             click_sfx.play()
             runShopUI = True 
+            
 
         if runShopUI == True:
 
             
             screen.blit(shopbackground_img, (410,25))
-            screen.blit(chefborder_img, (435,125))
-            screen.blit(cheficon_img, (450,135))
-            screen.blit(chefborder_img, (435,285))
-            screen.blit(cheficon_img, (450,295))
-            screen.blit(chefborder_img, (435,445))
-            screen.blit(cheficon_img, (450,455))
+            screen.blit(cheficon_img, (440,135))
+            screen.blit(waitericon_img, (440,295))
+            screen.blit(cheficon_img, (440,450))
             screen.blit(chef, (610,155))
-            #screen.blit(chef3, (810,155))
+            screen.blit(chef3, (810,155))
             screen.blit(chef2, (610,315))
+            screen.blit(chef4, (810,315))
             screen.blit(waiter1, (610,475))
+            screen.blit(waiter2, (810,475))
             
             
             if xshopbutton_button.draw(screen) :
                 click_sfx.play()
                 runShopUI = False
 
-            if upgrade_button1.draw(screen) and chef == star_img and money>= 100 :
+            if upgrade_button1.draw(screen) and chef == star_img and money>= 150 :
                  click_sfx.play()
                  chef = starupgrade_img
-                 money -= 100
-                 chefcookingtime = 3
+                 money -= 150
+                 chefcookingtime = 2
+                 chef_upgrade_purchased = True 
 
-            if upgrade_button2.draw(screen) and chef2 == star_img and money>= 100:
+            if upgrade_button2.draw(screen) and chef2 == star_img and money>= 250:
                  click_sfx.play()
                  chef2 = starupgrade_img
-                 money -= 100
+                 money -= 250
                  waiter_speed = 6
-                 
-            if upgrade_button3.draw(screen) and waiter1 == star_img and money >= 100 :
-                 click_sfx.play()
-                 waiter1 = starupgrade_img
-                 money -= 100
+        
+            if upgrade_button4.draw(screen) and chef3 == star_img and money >= 300:
+                click_sfx.play()
+                chef3 = starupgrade_img
+                money -= 300
+                chefcookingtime = 3
+
+            if upgrade_button5.draw(screen) and chef4 == star_img and money >= 300:
+                click_sfx.play()
+                chef4 = starupgrade_img
+                money -= 300
+                waiter_speed = 7
+                
+            if upgrade_button3.draw(screen) and waiter1 == star_img and money >= 150 :
+                click_sfx.play()
+                waiter1 = starupgrade_img
+                money -= 150
+
+            if upgrade_button6.draw(screen) and waiter2 == star_img and money >= 300 :
+                click_sfx.play()
+                waiter2 = starupgrade_img
+                money -= 300
+
+            if chef_upgrade_purchased:
+                upgrade_button1.disabled = True
+
+
+
+            
 
     
 
