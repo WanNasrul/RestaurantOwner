@@ -611,7 +611,7 @@ def game_screen():
 # NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
 
 
-        if fern_button.draw(screen) and runchefUI == False and runShopUI == True and runShopUI2 == True:
+        if fern_button.draw(screen) and runchefUI == False:
             cat_sfx.play()
 
 
