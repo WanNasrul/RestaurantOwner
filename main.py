@@ -247,6 +247,11 @@ def casher(x, y):
     casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
     screen.blit(casher_resize, (x, y))
 
+def piano(x, y):
+    piano_width = int(piano_img.get_width() * 1)
+    piano_height = int(piano_img.get_height() * 1)
+    piano_resize = pygame.transform.scale(piano_img, (piano_width, piano_height))
+    screen.blit(piano_resize, (x, y))
 
 def main_menu():
     
@@ -330,6 +335,9 @@ def game_screen():
     npc1_x_pos = 1000
     npc1_y_pos = 100
 
+    pianoX = 680
+    pianoY = 15
+
     # chef UI
     runchefUI = False
     rundecorationUI = False
@@ -383,9 +391,12 @@ def game_screen():
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
-    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 80)
-    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 80)
-    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 80)
+    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 152, 20)
+    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 282, 30)
+    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 50)
+
+    # rect object for deco
+    piano_rect = pygame.Rect(pianoX, pianoY, 160, 40)
 
     # food rect and surf
     foodtrigger_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
@@ -505,6 +516,7 @@ def game_screen():
                 waiterfood = emptybox_img
                 cooking = emptybox_img
 
+        # check for collision between waiter and counter
         if collision_detection(waiter_rect, casher_rect):
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < casher_rect.bottom:
@@ -516,6 +528,9 @@ def game_screen():
             if keys[pygame.K_d] and waiter_rect.right > casher_rect.left:
                 waiterX -= waiter_speed
 
+
+
+    
 
 
         # game font variables such as day count and money count
@@ -550,6 +565,17 @@ def game_screen():
 
         if purchasedpiano == True:
             screen.blit(piano_img, (680,15))
+        # check for collision between waiter and piano
+            if collision_detection(waiter_rect, piano_rect):
+                # If collision is detected, prevent waiter from moving in that direction
+                    if keys[pygame.K_w] and waiter_rect.top < piano_rect.bottom:
+                        waiterY += waiter_speed
+                    if keys[pygame.K_s] and waiter_rect.bottom > piano_rect.top:
+                        waiterY -= waiter_speed
+                    if keys[pygame.K_a] and waiter_rect.left < piano_rect.right:
+                        waiterX += waiter_speed
+                    if keys[pygame.K_d] and waiter_rect.right > piano_rect.left:
+                        waiterX -= waiter_speed
 
         if purchasedcarpet == True:
             screen.blit(carpet_img, (400,270))
@@ -635,12 +661,12 @@ def game_screen():
                 if  CustomerFood == randomfood:
                     npceatingtime += 1
 
-                    if npceatingtime >= 250:
+                    if npceatingtime >= 200:
                         npc1_x_pos = -1000
                         npccooldown += 1
                         CustomerFood = emptybox_img
                     else:
-                        if npceatingtime >= 65 and earnmoney == False:  # during npc eating time the coin will appear
+                        if npceatingtime >= 105 and earnmoney == False:  # during npc eating time the coin will appear
                             if coin_button.draw(screen):
                                 money += 100 + 100*incomemultiplier/100
                                 earnmoney = True
