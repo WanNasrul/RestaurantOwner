@@ -223,6 +223,12 @@ def customerplate2(x, y, CustomerFood):
     customerplate2_resize = pygame.transform.scale(CustomerFood, (customerplate2_width, customerplate2_height))
     screen.blit(customerplate2_resize, (x, y))
 
+def foodnpcreq(x,y, randomfood):
+    foodnpcreq_width = int(randomfood.get_width() *0.5)
+    foodnpcreq_height = int(randomfood.get_height() *0.5)
+    foodnpcreq_resize = pygame.transform.scale(randomfood, (foodnpcreq_width, foodnpcreq_height))
+    screen.blit(foodnpcreq_resize, (x,y))
+
 def collision_detection(waiter_rect, table_rect):
 
     # print("waiter_rect:", waiter_rect)
