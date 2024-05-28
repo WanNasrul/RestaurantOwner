@@ -38,11 +38,18 @@ moneycounter_img = pygame.image.load('gameasset/moneycounter.png').convert_alpha
 daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
 fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
-waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/casher.png').convert_alpha()
 tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+
+# waiter
+waiterstand_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
+waiterwalk1_img = pygame.image.load('gameasset/waiterwalk1.png').convert_alpha()
+waiterwalk2_img = pygame.image.load('gameasset/waiterwalk2.png').convert_alpha()
+waiter_walk = [waiterwalk1_img,waiterwalk2_img]
+waiter_index = 0
+waiter_img = waiter_walk[waiter_index]
 
 # Rchair1_img = pygame.image.load('gameasset/Rchair.png').convert_alpha()
 # Lchair1_img = pygame.image.load('gameasset/Lchair.png').convert_alpha()
@@ -174,6 +181,19 @@ def waiter(x, y, WaiterDirection):
         screen.blit(waiter_resize, (x, y))
     if WaiterDirection == 'left':
         screen.blit(waiter_flip, (x, y))
+
+def waiter_animation(keys):
+    global waiter_img, waiter_index
+    
+    if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
+        waiter_index += 0.1
+        if waiter_index >= len(waiter_walk):
+            waiter_index = 0
+        waiter_img = waiter_walk[int(waiter_index)]
+        print("hello")
+
+    else:
+        waiter_img = waiterstand_img
 
 def table1(x, y):
     tablechair1_width = int(tablechair1_img.get_width() * 1)
@@ -405,6 +425,7 @@ def game_screen():
         # get the state of all keyboard keys
         keys = pygame.key.get_pressed()
 
+        waiter_animation(keys)
         # update waiter position based on key presses
         if keys[pygame.K_w]:
             if waiterY > 0:
