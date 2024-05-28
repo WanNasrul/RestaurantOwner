@@ -328,6 +328,10 @@ def game_screen():
     npc3_x_pos = 1000
     npc3_y_pos = 100
 
+    npc1reset = True
+    npc2reset = True
+    npc3reset = True
+
     # chef UI
     runchefUI = False
     rundecorationUI = False
@@ -371,6 +375,7 @@ def game_screen():
     npcnumber = 0
     randomfood = emptybox_img
     foodchoice = [chicken_img, fish_img, burger_img, pizza_img, steak_img]
+    npcappeartime1 = 0
 
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
@@ -386,8 +391,6 @@ def game_screen():
     foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
 
     # days progression
-
-
 
     while run:
         # game screen code here
@@ -458,14 +461,116 @@ def game_screen():
             randomfood2 = emptybox_img
             randomfood3 = emptybox_img
 
-            npcappeartime = 0
+            npcappeartime1 = 0
+            npcappeartime2 = 0
             npcappeartime3 = 0
 
-            npctptime = 0
+            npc1reset = True
+            npc2reset = True
+            npc3reset = True
 
             resetday = False  
 
+# NPC 1 RESET --------------------------------------------------------------------------------------------------------------#
+        if npc1reset == False:
+
+            npc1_x_pos = 1000
+            npc1_y_pos = 100
+
+            npcfoodrequest = False
+
+            earnmoney = False
+
+            wrongfood = False
+
+            npcleave = False
+
+            npcwaittime= 0
+
+            npcqueuetime = 0
+
+            npceatingtime = 0
+
+            waitprogress = 0
+
+            waitdelay = 0
+
+            npcdisgustedwait = 0
+
+            randomfood = emptybox_img
+
+            npc1reset = True  
+
+            npcappeartime1 = 0
+# NPC 1 RESET --------------------------------------------------------------------------------------------------------------#
+
+# NPC 2 RESET --------------------------------------------------------------------------------------------------------------#
+        if npc2reset == False:
+
+            npc2_x_pos = 1000
+            npc2_y_pos = 100
+
+            npcfoodrequest2 = False
+
+            earnmoney2 = False
+
+            wrongfood2 = False
+
+            npcleave2 = False
+
+            npcwaittime2 = 0
+
+            npcqueuetime2 = 500
+
+            npceatingtime2 = 0
+
+            waitprogress2 = 0
+
+            waitdelay2 = 0
+
+            npcdisgustedwait2 = 0
+
+            randomfood2 = emptybox_img
+
+            npcappeartime2 = 500
+            
+            npc2reset = True  
+# NPC 2 RESET --------------------------------------------------------------------------------------------------------------#
+
+# NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
         
+        if npc3reset == False:
+
+            npc3_x_pos = 1000
+            npc3_y_pos = 100
+
+            npcfoodrequest3 = False
+
+            earnmoney3 = False
+
+            wrongfood3 = False
+
+            npcleave3 = False
+
+            npcwaittime3 = 0
+
+            npcqueuetime3 = 1000
+
+            npceatingtime3 = 0
+
+            waitprogress3 = 0
+
+            waitdelay3 = 0
+
+            npcdisgustedwait3 = 0
+
+            randomfood3 = emptybox_img
+
+            npcappeartime3 = 1000
+            
+            npc3reset = True  
+
+# NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
 
 
         if fern_button.draw(screen) and runchefUI == False:
@@ -589,11 +694,14 @@ def game_screen():
 
         customerplate3(customerplate3X,customerplate3Y, CustomerFood3)
 
-        npc(npc1_x_pos, npc1_y_pos)
+        if day >= 1:
+            npcappeartime1 += 1
+            if npcappeartime1 >= 150:
+                npc(npc1_x_pos, npc1_y_pos)
 
         if day >= 2:
-            npcappeartime +=1
-            if npcappeartime >= 600:
+            npcappeartime2 +=1
+            if npcappeartime2 >= 600:
                 npc2(npc2_x_pos,npc2_y_pos)
         
         if day >= 3:
@@ -611,8 +719,6 @@ def game_screen():
 
 
         #table4(tablechair4X,tablechair4Y)
-        
-
         
         
         # Chef UI ====================================== #
@@ -653,7 +759,7 @@ def game_screen():
         
         if npcfoodrequest == False:
             npcqueuetime +=1
-            if npcqueuetime >= 150:
+            if npcqueuetime >= 250:
                 npc1_x_pos -= 1.5
                 if npc1_x_pos <= 650:  
                     npc1_x_pos = 651
@@ -698,6 +804,11 @@ def game_screen():
                         CustomerFood = emptybox_img
                         earnmoney = True
 
+                        if day >= 4 and npc1_x_pos == -1000:
+                            npc1reset = False
+                                
+
+
                 # Customer gets the wrong food
                 if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
                     npcdisgustedwait += 1
@@ -706,16 +817,20 @@ def game_screen():
                     if npcdisgustedwait >= 100:
                         money -= 50
                         npc1_x_pos = -1000
-                        npcnumber += 1
                         CustomerFood = emptybox_img
-                        wrongfood = True
-                
+                        wrongfood = True   
+                    
+                        if day >= 1 and npc1_x_pos == -1000:
+                            npc1reset = False
+
                 # Customer wait time runs out
                 if waitprogress >= 135 and CustomerFood == emptybox_img and npcleave == False:
                     money -= 50
                     npc1_x_pos = -1000
-                    npcnumber += 1
                     npcleave = True
+                    
+                    if day >= 1 and  npc1_x_pos == -1000:
+                        npc1reset = False
         #npc 2 ======================================#
         if day >= 2 and npcfoodrequest2 == False:
             npcqueuetime2 += 1
@@ -762,6 +877,9 @@ def game_screen():
                         npcnumber += 1
                         CustomerFood2 = emptybox_img
                         earnmoney2 = True
+
+                        if day >= 5 and npc2_x_pos == -1000:
+                            npc2reset = False
                     
                     # Customer gets the wrong food
                 if CustomerFood2 != randomfood2 and wrongfood2 == False and CustomerFood2 != emptybox_img:
@@ -771,16 +889,20 @@ def game_screen():
                     if npcdisgustedwait2 >= 100:
                         money -= 50
                         npc2_x_pos = -1000
-                        npcnumber += 1
                         CustomerFood2 = emptybox_img
                         wrongfood2 = True
+
+                        if npc2_x_pos == -1000:
+                            npc2reset = False
                     
-                    # Customer wait time runs out
+                # Customer wait time runs out
                 if waitprogress2 >= 135 and CustomerFood2 == emptybox_img and npcleave2 == False:
                     money -= 50
                     npc2_x_pos = -1000
-                    npcnumber += 1
                     npcleave2 = True
+                    
+                    if npc2_x_pos == -1000:
+                        npc2reset = False
         
     
         #npc 3 =================================================================================#
@@ -829,6 +951,9 @@ def game_screen():
                         npcnumber += 1
                         CustomerFood3 = emptybox_img
                         earnmoney3 = True
+                        
+                        if day >= 6 and npc3_x_pos == -1000:
+                            npc3reset = False
                     
                     # Customer gets the wrong food
                 if CustomerFood3 != randomfood3 and wrongfood3 == False and CustomerFood3 != emptybox_img:
@@ -838,18 +963,20 @@ def game_screen():
                     if npcdisgustedwait3 >= 100:
                         money -= 50
                         npc3_x_pos = -1000
-                        npcnumber += 1
                         CustomerFood3 = emptybox_img
                         wrongfood3 = True
+
+                        if npc3_x_pos == -1000:
+                            npc3reset = False
                     
                     # Customer wait time runs out
                 if waitprogress3 >= 135 and CustomerFood3 == emptybox_img and npcleave3 == False:
                     money -= 50
                     npc3_x_pos = -1000
-                    npcnumber += 1
                     npcleave3 = True
 
-        
+                    if npc3_x_pos == -1000:
+                        npc3reset = False
 
         # npc movement ================================== #
 
@@ -1009,7 +1136,6 @@ def game_screen():
                 # saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
                 pygame.quit()
                 exit()
-
         pygame.display.update()
         clock.tick(60)
 
