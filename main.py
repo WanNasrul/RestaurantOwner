@@ -801,8 +801,8 @@ def game_screen():
 # NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
 
 
-        if fern_button.draw(screen) and runchefUI == False and runShopUI2 == True and rundecorationUI == True:
-            cat_sfx.play()
+        # if fern_button.draw(screen) and runchefUI == False and runShopUI2 == True and rundecorationUI == True:
+        #     cat_sfx.play()
 
 
         # get the state of all keyboard keys
