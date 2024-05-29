@@ -361,7 +361,6 @@ def tutorial():
             if dialogueopacity >= 255:
                 dialoguesequence += 1
         
-
         # ease out movement
         
         
@@ -802,7 +801,7 @@ def game_screen():
 # NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
 
 
-        if fern_button.draw(screen) and runchefUI == False:
+        if fern_button.draw(screen) and runchefUI == False and runShopUI2 == True and rundecorationUI == True:
             cat_sfx.play()
 
 
