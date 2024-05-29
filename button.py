@@ -24,6 +24,7 @@ class Button():
         #check mouseover and clicked condition
         #is the mouse cursor oclliding with the rectangle of the button
         if self.rect.collidepoint(pos):
+
         #     if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
         #         self.clicked = True 
         #         action = True
@@ -43,7 +44,6 @@ class Button():
                     self.clicked = False
                     self.test = False
 
-        # Opacity change ===============================
                 if event.type == pygame.MOUSEBUTTONDOWN and self.test == False:
                     self.image.set_alpha(128)
                     print("mousebuttondown")
