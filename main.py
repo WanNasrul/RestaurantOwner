@@ -284,7 +284,6 @@ def collision_detection(waiter_rect, table_rect):
     return waiter_rect.colliderect(table_rect)
 
 def easeOutSine(t):
-    import math
     return math.sin(t * math.pi / 2)
 
 def main_menu():
@@ -345,7 +344,7 @@ def tutorial():
     casheropacity = 0
 
     ease_out_sine = lambda x: (1 - math.cos(x * math.pi / 2))
-    easespeed = 1
+    easespeed = 3
 
     message = ""
     allowedtonext = False
@@ -358,7 +357,7 @@ def tutorial():
 
         #animate dialoguechat
         if dialogueopacity <= 255 and dialoguesequence == 0:
-            dialogueopacity += 0.5
+            dialogueopacity += 1.5
             if dialogueopacity >= 255:
                 dialoguesequence += 1
         
@@ -374,7 +373,7 @@ def tutorial():
 
             #waiter opacity
             if waiteropacity <= 255:
-                waiteropacity += 0.5
+                waiteropacity += 1
             
             #waiter ease out movement
             if ease_value >= 0.1:
@@ -396,8 +395,7 @@ def tutorial():
         if dialoguesequence == 4:
             allowedtonext = False
             message = ""
-            waiteropacity = 100
-
+            waiteropacity = 150
             if chefopacity <= 255:
                 chefopacity += 0.5
             
@@ -411,7 +409,7 @@ def tutorial():
         if dialoguesequence == 6 :
             allowedtonext = False
             message = ""
-            chefopacity = 100
+            chefopacity = 150
 
             if casheropacity <= 255:
                 casheropacity += 0.5
@@ -422,11 +420,11 @@ def tutorial():
 
         if dialoguesequence == 7:
             chefopacity = 255
-            casheropacity = 100
-            message = "CHEF: He/she is the owner of this restaurant, casher"
+            casheropacity = 150
+            message = "CHEF: The owner"
 
         if dialoguesequence == 8:
-            chefopacity = 100
+            chefopacity = 150
             casheropacity = 255
             message = "CASHER: Oh, I'm sorry... I am the casher"
 
@@ -437,7 +435,7 @@ def tutorial():
             message = "CASHER: But I am here to SUPERVISE you..."
 
         if dialoguesequence == 11:
-            casheropacity = 100
+            casheropacity = 150
             waiteropacity = 255
             message = "WAITER: Also, if you accidently chose the wrong food"
 
@@ -449,7 +447,7 @@ def tutorial():
 
         if dialoguesequence == 14:
             casheropacity = 255
-            waiteropacity = 100
+            waiteropacity = 150
             message = "CASHER: Blah blah blah, just do your best!"
         
         if dialoguesequence == 15:
