@@ -206,7 +206,6 @@ def waiter_animation(keys):
         if waiter_index >= len(waiter_walk):
             waiter_index = 0
         waiter_img = waiter_walk[int(waiter_index)]
-        print("hello")
 
     else:
         waiter_img = waiterstand_img
@@ -596,6 +595,10 @@ def game_screen():
     foodtrigger_scaled.set_alpha(0)
     foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
 
+    #trash
+    trashtrigger_surf = pygame.image.load('gameasset/trash.png').convert_alpha()
+    trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 60))
+
     # days progression
 
     while run:
@@ -871,7 +874,6 @@ def game_screen():
 
         if pause_button.draw(screen):
             click_sfx.play()
-            print('game paused')
             # insert pause code here
             run = False
             
@@ -938,12 +940,18 @@ def game_screen():
             click_sfx.play()
             runchefUI = True
 
+        #trashcan=============================================#
+        screen.blit(trashtrigger_surf, trashtrigger_rect,) # foodtrigger
+
         # food serve (part 1) ================================ #
         screen.blit(foodtrigger_scaled, foodtrigger_rect,) # foodtrigger
         foodserve(foodserveX,foodserveY,FoodOnTable)
         waiter(waiterX, waiterY, WaiterDirection)
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
         # food serve ================================ #
+
+
+
 
         # npc movement ================================== #
         waitbar_font = pygame.font.Font('font/segoepr.ttf', 5)
@@ -1000,7 +1008,7 @@ def game_screen():
                     npceatingtime += 1
 
                     if npceatingtime >= 100:
-                        money += 100*incomemultiplier/100
+                        money += 100 + 100*incomemultiplier/100
                         npc1_x_pos = -1000
                         npcnumber += 1
                         CustomerFood = emptybox_img
@@ -1074,7 +1082,7 @@ def game_screen():
                     npceatingtime2 += 1
 
                     if npceatingtime2 >= 100:
-                        money += 100*incomemultiplier/100
+                        money += 100 + 100*incomemultiplier/100
                         npc2_x_pos = -1000
                         npcnumber += 1
                         CustomerFood2 = emptybox_img
@@ -1148,7 +1156,7 @@ def game_screen():
                     npceatingtime3 += 1
 
                     if npceatingtime3 >= 100:
-                        money += 100*incomemultiplier/100
+                        money += 100+100*incomemultiplier/100
                         npc3_x_pos = -1000
                         npcnumber += 1
                         CustomerFood3 = emptybox_img
@@ -1328,11 +1336,6 @@ def game_screen():
                 money -= 375
                 incomemultiplier += 8
                 purchasedflowers = True
-        
-            
-        # CHECK MOUSE POSITION
-        # mouse_pos = pygame.mouse.get_pos()
-        # print(mouse_pos)
 
         # Decoration UI ================================= #
 
@@ -1348,6 +1351,10 @@ def game_screen():
                 FoodOnTable = emptybox_img
 
         # food serve ================================ #
+        if trashtrigger_rect.colliderect(waiter_rect):
+            if waiterfood != emptybox_img:
+                # Food that the waiter is carrying
+                waiterfood = emptybox_img
 
         # Day reset black =============================== #
         if daytransition == True:
@@ -1382,7 +1389,6 @@ def credit_menu():
 
         if pause_button.draw(screen):
             click_sfx.play()
-            print('game paused')
             # insert pause code here
             RunCredit = False
 
