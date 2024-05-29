@@ -1199,9 +1199,9 @@ def game_screen():
                 runShopUI = True
                 runShopUI2 = False
 
-        if runShopUI == True:
 
-            
+        if runShopUI == True :
+
             screen.blit(shopbackground_img, (410,25))
             screen.blit(chefborder_img, (435,125))
             screen.blit(cheficon_img, (450,135))
@@ -1219,22 +1219,23 @@ def game_screen():
                 click_sfx.play()
                 runShopUI = False
 
-            if upgrade_button1.draw(screen) and chef == star_img and money>= 100 :
+            if upgrade_button1.draw(screen) and chef == star_img and money>= 150 :
                  click_sfx.play()
                  chef = starupgrade_img
-                 money -= 100
+                 money -= 150
                  chefcookingtime = 3
 
-            if upgrade_button2.draw(screen) and chef2 == star_img and money>= 100:
+            if upgrade_button2.draw(screen) and chef2 == star_img and money>= 250:
                  click_sfx.play()
                  chef2 = starupgrade_img
-                 money -= 100
+                 money -= 250
                  waiter_speed = 6
                  
             if upgrade_button3.draw(screen) and waiter1 == star_img and money >= 100 :
                  click_sfx.play()
                  waiter1 = starupgrade_img
                  money -= 100
+
 
 
     
