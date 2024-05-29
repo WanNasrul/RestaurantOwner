@@ -22,12 +22,19 @@ class Button():
         #check mouseover and clicked condition
         #is the mouse cursor oclliding with the rectangle of the button
         if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                self.clicked = True
-                action = True
+        #     if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+        #         self.clicked = True 
+        #         action = True
+        # if pygame.mouse.get_pressed()[0] == 0:
+        #     self.clicked = False
 
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
+            for event in pygame.event.get():    
+                if event.type == pygame.MOUSEBUTTONUP and self.clicked == False:
+                    self.clicked = True
+                    action = True
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.clicked = False
+
 
         #draw button on screen
         surface.blit(self.image, (self.rect.x, self. rect.y))
