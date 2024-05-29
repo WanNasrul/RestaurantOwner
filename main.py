@@ -3,6 +3,7 @@ import button
 from sys import exit #import one thing
 import random
 import time
+import math
 
 # initialize pygame
 pygame.init()
@@ -29,6 +30,19 @@ shoppic_img = pygame.image.load('gameasset/shop.jpg').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
+
+# intro dialog
+
+waiterdialogue_img = pygame.image.load('gameasset/dialogue ui/waiterdialogue.png').convert_alpha()
+chefdialogue_img = pygame.image.load('gameasset/dialogue ui/chefdialogue.png').convert_alpha()
+casherdialogue_img = pygame.image.load('gameasset/dialogue ui/casherdialogue.png').convert_alpha()
+dialogue_img = pygame.image.load('gameasset/dialogue ui/dialogue.png').convert_alpha()
+nextdialogue_img = pygame.image.load('gameasset/dialogue ui/nextdialogue.png').convert_alpha()
+skipdialogue_img = pygame.image.load('gameasset/dialogue ui/skipdialogue.png').convert_alpha()
+
+nextdialogue_button = button.Button(1070, 620, nextdialogue_img, 1)
+skipdialogue_button = button.Button(100, 620, skipdialogue_img, 1)
+
 
 # game images
 pause_img = pygame.image.load('gameasset/pause.png').convert_alpha()
@@ -239,7 +253,6 @@ def customerplate3(x, y, CustomerFood3):
     customerplate3_resize = pygame.transform.scale(CustomerFood3, (customerplate3_width, customerplate3_height))
     screen.blit(customerplate3_resize, (x, y))
 
-
 def foodnpcreq(x,y, randomfood):
     foodnpcreq_width = int(randomfood.get_width() *0.5)
     foodnpcreq_height = int(randomfood.get_height() *0.5)
@@ -258,8 +271,6 @@ def foodnpcreq3(x,y, randomfood):
     foodnpcreq3_resize = pygame.transform.scale(randomfood, (foodnpcreq3_width, foodnpcreq3_height))
     screen.blit(foodnpcreq3_resize, (x,y))
 
-
-
 def collision_detection(waiter_rect, table_rect):
 
     # print("waiter_rect:", waiter_rect)
@@ -270,6 +281,9 @@ def collision_detection(waiter_rect, table_rect):
     # Check if two rectangles collide while taking into account the waiter's position
     return waiter_rect.colliderect(table_rect)
 
+def easeOutSine(t):
+    import math
+    return math.sin(t * math.pi / 2)
 
 def main_menu():
     
@@ -294,7 +308,7 @@ def main_menu():
 
         if start_button.draw(screen):
             click_sfx.play()
-            game_screen()
+            tutorial()
 
 
 
@@ -315,6 +329,157 @@ def main_menu():
                 exit()
         pygame.display.update()
         clock.tick(60)
+
+def tutorial():
+    RunTutorial = True
+    dialogueopacity = 0
+    dialoguesequence = 0
+
+    waiterdialogueX = 400
+    waiteropacity = 0
+
+    chefopacity = 0
+
+    casheropacity = 0
+
+    ease_out_sine = lambda x: (1 - math.cos(x * math.pi / 2))
+    easespeed = 1
+
+    message = ""
+    allowedtonext = False
+    
+    while RunTutorial:
+        screen.blit(bg_game_screen, (0, 0))
+        
+        message_font = pygame.font.Font('font/segoepr.ttf', 30)
+        message_img = message_font.render((message), True, 'darkred')
+
+        #animate dialoguechat
+        if dialogueopacity <= 255 and dialoguesequence == 0:
+            dialogueopacity += 0.5
+            if dialogueopacity >= 255:
+                dialoguesequence += 1
+        
+
+        # ease out movement
+        
+        
+        # waiter chat
+        if dialoguesequence == 1:
+            allowedtonext = False
+            # the amount that will add
+            ease_value = easespeed*ease_out_sine(waiterdialogueX / 400) # starts with 500/500 = 1
+
+            #waiter opacity
+            if waiteropacity <= 255:
+                waiteropacity += 0.5
+            
+            #waiter ease out movement
+            if ease_value >= 0.1:
+                waiterdialogueX -= ease_value
+            
+            if ease_value <= 0.1:
+                message = "WAITER: Oh hello, welcome to the Restaurant Owner!"
+                allowedtonext = True
+
+        if dialoguesequence == 2:
+            message = "WAITER: I believe that you are the new owner of this restaurant"
+            allowedtonext = True
+
+        if dialoguesequence == 3:
+            message = "WAITER: I am the waiter, you can control me by pressing W,A,S,D"
+            allowedtonext = True
+            ease_value = 0
+        
+        if dialoguesequence == 4:
+            allowedtonext = False
+            message = ""
+            waiteropacity = 100
+
+            if chefopacity <= 255:
+                chefopacity += 0.5
+            
+            if chefopacity >= 255 :
+                message = "CHEF: Nice to meet you, I am the chef"
+                allowedtonext = True
+
+        if dialoguesequence == 5:
+            message = "CHEF: You can click on me to cook some food"
+
+        if dialoguesequence == 6 :
+            allowedtonext = False
+            message = ""
+            chefopacity = 100
+
+            if casheropacity <= 255:
+                casheropacity += 0.5
+            
+            if casheropacity >= 255 :
+                message = "CASHER: Wait... who are you?"
+                allowedtonext = True
+
+        if dialoguesequence == 7:
+            chefopacity = 255
+            casheropacity = 100
+            message = "CHEF: He/she is the owner of this restaurant, casher"
+
+        if dialoguesequence == 8:
+            chefopacity = 100
+            casheropacity = 255
+            message = "CASHER: Oh, I'm sorry... I am the casher"
+
+        if dialoguesequence == 9:
+            message = "CASHER: I have no particular function in the game..."
+
+        if dialoguesequence == 10:
+            message = "CASHER: But I am here to SUPERVISE you..."
+
+        if dialoguesequence == 11:
+            message = "CASHER: Anyways, click 'next' to start the game!"
+
+        # display images
+
+        chefdialogue_img.set_alpha(int(chefopacity))
+        screen.blit(chefdialogue_img, (800,10))
+
+        waiterdialogue_img.set_alpha(int(waiteropacity))
+        screen.blit(waiterdialogue_img, (waiterdialogueX+100,70))
+
+        casherdialogue_img.set_alpha(int(casheropacity))
+        screen.blit(casherdialogue_img, (500,100))
+
+        dialogue_img.set_alpha(int(dialogueopacity))
+        screen.blit(dialogue_img, (68, 450))
+
+        screen.blit(message_img, (90,470))
+
+        # display skip and next button
+        if dialogueopacity >= 255:
+            if nextdialogue_button.draw(screen) and allowedtonext == True:
+                if dialoguesequence <= 10:
+                    click_sfx.play()
+                    dialoguesequence += 1
+                else:
+                    click_sfx.play()
+                    game_screen()
+                    RunTutorial = False
+
+            if skipdialogue_button.draw(screen):
+                click_sfx.play()
+                game_screen()
+                RunTutorial = False
+
+
+        # quitting
+        if pause_button.draw(screen):
+            click_sfx.play()
+            # insert pause code here
+            RunTutorial = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                RunTutorial = False
+        pygame.display.update()
 
 def game_screen():
     global npc1_x_pos, npc1_img, npc1_y_pos
@@ -1203,7 +1368,6 @@ def game_screen():
                 exit()
         pygame.display.update()
         clock.tick(60)
-
 
 def credit_menu():
     RunCredit = True
