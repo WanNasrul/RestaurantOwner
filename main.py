@@ -869,7 +869,7 @@ def game_screen():
         daycycle_rect = daycycle_surf.get_rect(topleft=(490,620))
 
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
-        money_surf = money_font.render(str(money), True, 'darkred')
+        money_surf = money_font.render(str(int(money)), True, 'darkred')
         money_rect = money_surf.get_rect(topleft=(165,598))
 
         if pause_button.draw(screen):
