@@ -437,7 +437,25 @@ def tutorial():
             message = "CASHER: But I am here to SUPERVISE you..."
 
         if dialoguesequence == 11:
-            message = "CASHER: Anyways, click 'next' to start the game!"
+            casheropacity = 100
+            waiteropacity = 255
+            message = "WAITER: Also, if you accidently chose the wrong food"
+
+        if dialoguesequence == 12:
+            message = "WAITER: You can throw food away by pressing SPACE near the trash"
+
+        if dialoguesequence == 13:
+            message = "WAITER: And press E to collect food on the counter table"
+
+        if dialoguesequence == 14:
+            casheropacity = 255
+            waiteropacity = 100
+            message = "CASHER: Blah blah blah, just do your best!"
+        
+        if dialoguesequence == 15:
+            waiteropacity = 255
+            chefopacity = 255
+            message = "EVERYONE: Good luck, fellow owner!"
 
         # display images
 
@@ -458,7 +476,7 @@ def tutorial():
         # display skip and next button
         if dialogueopacity >= 255:
             if nextdialogue_button.draw(screen) and allowedtonext == True:
-                if dialoguesequence <= 10:
+                if dialoguesequence <= 15-1:
                     click_sfx.play()
                     dialoguesequence += 1
                 else:
@@ -481,6 +499,8 @@ def tutorial():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RunTutorial = False
+                pygame.quit()
+                exit()
         pygame.display.update()
 
 def game_screen():
@@ -680,6 +700,8 @@ def game_screen():
 
             resetday = False  
 
+            FoodOnTable = emptybox_img
+
 # NPC 1 RESET --------------------------------------------------------------------------------------------------------------#
         if npc1reset == False:
 
@@ -869,7 +891,7 @@ def game_screen():
         daycycle_rect = daycycle_surf.get_rect(topleft=(490,620))
 
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
-        money_surf = money_font.render(str(money), True, 'darkred')
+        money_surf = money_font.render(str(int(money)), True, 'darkred')
         money_rect = money_surf.get_rect(topleft=(165,598))
 
         if pause_button.draw(screen):
@@ -1342,7 +1364,7 @@ def game_screen():
 
         # food serve (part 2) ================================ #
 
-        if foodtrigger_rect.colliderect(waiter_rect):
+        if foodtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_e]:
             if waiterfood == emptybox_img:
                 # Food that the waiter is carrying
                 waiterfood = FoodOnTable
@@ -1351,7 +1373,7 @@ def game_screen():
                 FoodOnTable = emptybox_img
 
         # food serve ================================ #
-        if trashtrigger_rect.colliderect(waiter_rect):
+        if trashtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_SPACE]:
             if waiterfood != emptybox_img:
                 # Food that the waiter is carrying
                 waiterfood = emptybox_img
