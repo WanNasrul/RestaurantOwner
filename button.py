@@ -14,6 +14,8 @@ class Button():
         #starts with each button not clicked
         self.clicked = False
 
+        self.clickedopacity1 = False
+
     def draw(self, surface):    
         action = False
         #get mouse position
@@ -22,12 +24,36 @@ class Button():
         #check mouseover and clicked condition
         #is the mouse cursor oclliding with the rectangle of the button
         if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                self.clicked = True
-                action = True
 
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
+        #     if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+        #         self.clicked = True 
+        #         action = True
+        # if pygame.mouse.get_pressed()[0] == 0:
+        #     self.clicked = False
+
+            for event in pygame.event.get():    
+                if event.type == pygame.MOUSEBUTTONUP and self.clicked == False:
+                    self.clicked = True
+                    self.clickedopacity1 = True
+                    self.image.set_alpha(256)
+                    action = True
+                    
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.clicked = False
+                    self.clickedopacity1 = False
+
+                if event.type == pygame.MOUSEBUTTONDOWN and self.clickedopacity1 == False:
+                    self.image.set_alpha(128)
+                    self.clickedopacity1 = False
+        else:
+            self.image.set_alpha(255)
+
+
+        # if self.clickedopacity == True and self.rect.collidepoint(pos) == False:
+        #     self.image.set_alpha(256)
+        #     self.clickedopacity = False
+        # Opacity change ===============================
+
 
         #draw button on screen
         surface.blit(self.image, (self.rect.x, self. rect.y))
