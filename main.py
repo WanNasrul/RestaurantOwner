@@ -1419,13 +1419,6 @@ def credit_menu():
                 RunCredit = False
         pygame.display.update()
 
-# test
-# def credits_menu():
-   # run = True
-   # while run:
-        # credits menu code here
-     #   pass
-
 # call the main menu
 main_menu()
 
