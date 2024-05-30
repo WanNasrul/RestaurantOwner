@@ -13,8 +13,8 @@ class Button():
         self.rect.topleft = (x, y)
         #starts with each button not clicked
         self.clicked = False
-        self.clickedopacity = False
-        self.test = False
+
+        self.clickedopacity1 = False
 
     def draw(self, surface):    
         action = False
@@ -34,20 +34,17 @@ class Button():
             for event in pygame.event.get():    
                 if event.type == pygame.MOUSEBUTTONUP and self.clicked == False:
                     self.clicked = True
-                    self.test = True
-                    print("mousebuttonup")
+                    self.clickedopacity1 = True
                     self.image.set_alpha(256)
-                    print(self.image)
                     action = True
                     
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.clicked = False
-                    self.test = False
+                    self.clickedopacity1 = False
 
-                if event.type == pygame.MOUSEBUTTONDOWN and self.test == False:
+                if event.type == pygame.MOUSEBUTTONDOWN and self.clickedopacity1 == False:
                     self.image.set_alpha(128)
-                    print("mousebuttondown")
-                    self.test = False
+                    self.clickedopacity1 = False
         else:
             self.image.set_alpha(255)
 
