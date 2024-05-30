@@ -50,9 +50,6 @@ tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 # npc position
 npc1_x_pos = 1000
 npc1_y_pos = 100
-# npc position
-npc1_x_pos = 1000
-npc1_y_pos = 100
 # chef ui images
 chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
 xbutton_img = pygame.image.load('gameasset/chef ui/xbutton.png').convert_alpha()
@@ -351,12 +348,9 @@ def game_screen():
         # If collision is detected, prevent waiter from moving in that direction
             if keys[pygame.K_w] and waiter_rect.top < tablechair2_rect.bottom:
                 waiterY += 3
-                waiterY += 3
             if keys[pygame.K_s] and waiter_rect.bottom > tablechair2_rect.top:
                 waiterY -= 3
-                waiterY -= 3
             if keys[pygame.K_a] and waiter_rect.left < tablechair2_rect.right:
-                waiterX += 3
                 waiterX += 3
             if keys[pygame.K_d] and waiter_rect.right > tablechair2_rect.left:
                 waiterX -= 3
