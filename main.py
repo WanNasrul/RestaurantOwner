@@ -3,6 +3,7 @@ import button
 from sys import exit #import one thing
 import random
 import time
+import math
 
 # initialize pygame
 pygame.init()
