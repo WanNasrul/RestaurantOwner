@@ -1566,7 +1566,7 @@ def game_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 # saveloadmanager.save_data() # <--- STOP HERE 7/5/24
-                save_game(money, day) 
+                # save_game(money, day) 
                 pygame.quit()
                 exit()
         pygame.display.update()
