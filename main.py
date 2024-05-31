@@ -100,12 +100,12 @@ shopupgrade_button = button.Button(680, 270, shopupgrade_img, 1)
 xshopui2_button = button.Button(810, 180, xbutton_img, 1)
 
 #shop img
-cheficon_img =  pygame.image.load('gameasset\ShopUI\ShopUI\cheficon.png').convert_alpha()
-chefborder_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopcolumn.png').convert_alpha()
-star_img = pygame.image.load('gameasset\ShopUI\ShopUI\star.png').convert_alpha()
+cheficon_img =  pygame.image.load('gameasset/ShopUI/ShopUI/cheficon.png').convert_alpha()
+chefborder_img = pygame.image.load('gameasset/ShopUI/ShopUI/shopcolumn.png').convert_alpha()
+star_img = pygame.image.load('gameasset/ShopUI/ShopUI/star.png').convert_alpha()
 upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/upgrade.png').convert_alpha()
-starupgrade_img = pygame.image.load('gameasset\ShopUI\ShopUI\starupgraded.png').convert_alpha()
-shopbackground_img = pygame.image.load('gameasset\ShopUI\ShopUI\shopbackground.png').convert_alpha()
+starupgrade_img = pygame.image.load('gameasset/ShopUI/ShopUI/starupgraded.png').convert_alpha()
+shopbackground_img = pygame.image.load('gameasset/ShopUI/ShopUI/shopbackground.png').convert_alpha()
 
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
