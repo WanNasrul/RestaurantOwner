@@ -4,6 +4,8 @@ from sys import exit #import one thing
 import random
 import time
 import math
+from pygame import mixer
+import pickle
 
 # initialize pygame
 pygame.init()
@@ -31,11 +33,16 @@ start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
 
+# background music
+mixer.music.load('gameasset/backgroundmusic.mp3')
+mixer.music.play(-1)
+mixer.music.set_volume(0.05)
+
 # intro dialog
 
 waiterdialogue_img = pygame.image.load('gameasset/dialogue ui/waiterdialogue.png').convert_alpha()
 chefdialogue_img = pygame.image.load('gameasset/dialogue ui/chefdialogue.png').convert_alpha()
-casherdialogue_img = pygame.image.load('gameasset/dialogue ui/casherdialogue.png').convert_alpha()
+cashierdialogue_img = pygame.image.load('gameasset/dialogue ui/cashierdialogue.png').convert_alpha()
 dialogue_img = pygame.image.load('gameasset/dialogue ui/dialogue.png').convert_alpha()
 nextdialogue_img = pygame.image.load('gameasset/dialogue ui/nextdialogue.png').convert_alpha()
 skipdialogue_img = pygame.image.load('gameasset/dialogue ui/skipdialogue.png').convert_alpha()
@@ -52,12 +59,14 @@ daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
 fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
 chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
-npc1_img = pygame.image.load('gameasset/casher.png').convert_alpha()
-npc2_img = pygame.image.load('gameasset/casher.png').convert_alpha()
-npc3_img = pygame.image.load('gameasset/casher.png').convert_alpha()
+npc1_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
+npc2_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
+npc3_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
 tablechair1_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
+vignette_img = pygame.image.load('gameasset/vignette.png').convert_alpha()
+casher_img = pygame.image.load('gameasset/cashercollision.png').convert_alpha()
 
 #waiter
 waiterstand_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
@@ -66,6 +75,7 @@ waiterwalk2_img = pygame.image.load('gameasset/waiterwalk2.png').convert_alpha()
 waiter_walk = [waiterwalk1_img,waiterwalk2_img]
 waiter_index = 0
 waiter_img = waiter_walk[waiter_index]
+
 
 # chef ui images
 chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
@@ -77,6 +87,7 @@ pizza_img = pygame.image.load('gameasset/chef ui/pizza.png').convert_alpha()
 steak_img = pygame.image.load('gameasset/chef ui/steak.png').convert_alpha()
 progressbar_img = pygame.image.load('gameasset/chef ui/progressbar.png').convert_alpha()
 emptybox_img = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
+emptybox_img.set_alpha(0)
 
 # chef ui buttons
 xbutton_button = button.Button(1100, 70, xbutton_img, 1)
@@ -173,6 +184,39 @@ click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
 
+# def save_game(money, day):
+#     game_state = {
+#         'money': money,
+#         'day': day
+#     }
+#     try:
+#         with open('save_file.pkl', 'wb') as f:
+#             pickle.dump(game_state, f)
+#     except FileNotFoundError:
+#         with open('save_file.pkl', 'wb') as f:
+#             pickle.dump(game_state, f)
+#             print("Save file created.")
+
+# def load_game():
+#     try:
+#         with open('save_file.pkl', 'rb') as f:
+#             game_state = pickle.load(f)
+#     except FileNotFoundError:
+#         with open('save_file.pkl', 'wb') as f:
+#             game_state = {}
+#             pickle.dump(game_state, f)
+#             print("Save file created.")
+#             return game_state
+#     if 'money' in game_state:
+#         money = game_state['money']
+#     else:
+#         money = 0
+#     if 'day' in game_state:
+#         day = game_state['day']
+#     else:
+#         day = 1
+#     return money, day
+    
 def npc(x, y):
     npc1_width = int(npc1_img.get_width() * 1)
     npc1_height = int(npc1_img.get_height() * 1)
@@ -209,7 +253,6 @@ def waiter_animation(keys):
         if waiter_index >= len(waiter_walk):
             waiter_index = 0
         waiter_img = waiter_walk[int(waiter_index)]
-        print("hello")
 
     else:
         waiter_img = waiterstand_img
@@ -244,10 +287,10 @@ def customerplate1(x, y, CustomerFood):
     customerplate1_resize = pygame.transform.scale(CustomerFood, (customerplate1_width, customerplate1_height))
     screen.blit(customerplate1_resize, (x, y))
 
-def customerplate2(x, y, CustomerFood2):
-    customerplate2_width = int(CustomerFood2.get_width() *0.5)
-    customerplate2_height = int(CustomerFood2.get_height() *0.5)
-    customerplate2_resize = pygame.transform.scale(CustomerFood2, (customerplate2_width, customerplate2_height))
+def customerplate2(x, y, CustomerFood22):
+    customerplate2_width = int(CustomerFood22.get_width() *0.5)
+    customerplate2_height = int(CustomerFood22.get_height() *0.5)
+    customerplate2_resize = pygame.transform.scale(CustomerFood22, (customerplate2_width, customerplate2_height))
     screen.blit(customerplate2_resize, (x, y))
 
 def customerplate3(x, y, CustomerFood3):
@@ -255,6 +298,7 @@ def customerplate3(x, y, CustomerFood3):
     customerplate3_height = int(CustomerFood3.get_height() *0.5)
     customerplate3_resize = pygame.transform.scale(CustomerFood3, (customerplate3_width, customerplate3_height))
     screen.blit(customerplate3_resize, (x, y))
+
 
 def foodnpcreq(x,y, randomfood):
     foodnpcreq_width = int(randomfood.get_width() *0.5)
@@ -274,6 +318,18 @@ def foodnpcreq3(x,y, randomfood):
     foodnpcreq3_resize = pygame.transform.scale(randomfood, (foodnpcreq3_width, foodnpcreq3_height))
     screen.blit(foodnpcreq3_resize, (x,y))
 
+def casher(x, y):
+    casher_width = int(casher_img.get_width() * 1)
+    casher_height = int(casher_img.get_height() * 1)
+    casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
+    screen.blit(casher_resize, (x, y))
+
+def piano(x, y):
+    piano_width = int(piano_img.get_width() * 1)
+    piano_height = int(piano_img.get_height() * 1)
+    piano_resize = pygame.transform.scale(piano_img, (piano_width, piano_height))
+    screen.blit(piano_resize, (x, y))
+
 def collision_detection(waiter_rect, table_rect):
 
     # print("waiter_rect:", waiter_rect)
@@ -285,14 +341,15 @@ def collision_detection(waiter_rect, table_rect):
     return waiter_rect.colliderect(table_rect)
 
 def easeOutSine(t):
-    import math
     return math.sin(t * math.pi / 2)
 
 def main_menu():
-    
+
+
     run = True
     while run:
 
+        
         screen.fill((255, 235, 216))
         # screen.blit(bg_main_menu, (0, 0)
         # moving main menu background
@@ -343,27 +400,38 @@ def tutorial():
 
     chefopacity = 0
 
-    casheropacity = 0
+    cashieropacity = 0
 
     ease_out_sine = lambda x: (1 - math.cos(x * math.pi / 2))
-    easespeed = 1
+    easespeed = 20
 
     message = ""
     allowedtonext = False
     
     while RunTutorial:
-        screen.blit(bg_game_screen, (0, 0))
+        screen.fill((255, 235, 216))
+        # screen.blit(bg_main_menu, (0, 0)
+        # moving main menu background
+        mainmenubg_rect.x -= 2
+        if mainmenubg_rect.left <= -743: 
+            mainmenubg_rect.left = 0
+        
+        mainmenubg2_rect.x -= 1
+        if mainmenubg2_rect.left <= -743: 
+            mainmenubg2_rect.left = 0
+
+        screen.blit(mainmenubg2_surf, mainmenubg2_rect)
+        screen.blit(mainmenubg_surf, mainmenubg_rect)
         
         message_font = pygame.font.Font('font/segoepr.ttf', 30)
         message_img = message_font.render((message), True, 'darkred')
 
         #animate dialoguechat
         if dialogueopacity <= 255 and dialoguesequence == 0:
-            dialogueopacity += 0.5
+            dialogueopacity += 8
             if dialogueopacity >= 255:
                 dialoguesequence += 1
         
-
         # ease out movement
         
         
@@ -375,13 +443,12 @@ def tutorial():
 
             #waiter opacity
             if waiteropacity <= 255:
-                waiteropacity += 0.5
+                waiteropacity += 5
             
             #waiter ease out movement
-            if ease_value >= 0.1:
+            if ease_value >= 1:
                 waiterdialogueX -= ease_value
-            
-            if ease_value <= 0.1:
+            if ease_value <= 1:
                 message = "WAITER: Oh hello, welcome to the Restaurant Owner!"
                 allowedtonext = True
 
@@ -397,10 +464,9 @@ def tutorial():
         if dialoguesequence == 4:
             allowedtonext = False
             message = ""
-            waiteropacity = 100
-
+            waiteropacity = 150
             if chefopacity <= 255:
-                chefopacity += 0.5
+                chefopacity += 5
             
             if chefopacity >= 255 :
                 message = "CHEF: Nice to meet you, I am the chef"
@@ -412,33 +478,51 @@ def tutorial():
         if dialoguesequence == 6 :
             allowedtonext = False
             message = ""
-            chefopacity = 100
+            chefopacity = 150
 
-            if casheropacity <= 255:
-                casheropacity += 0.5
+            if cashieropacity <= 255:
+                cashieropacity += 5
             
-            if casheropacity >= 255 :
-                message = "CASHER: Wait... who are you?"
+            if cashieropacity >= 255 :
+                message = "CASHIER: Wait... who are you?"
                 allowedtonext = True
 
         if dialoguesequence == 7:
             chefopacity = 255
-            casheropacity = 100
-            message = "CHEF: He/she is the owner of this restaurant, casher"
+            cashieropacity = 150
+            message = "CHEF: The owner"
 
         if dialoguesequence == 8:
-            chefopacity = 100
-            casheropacity = 255
-            message = "CASHER: Oh, I'm sorry... I am the casher"
+            chefopacity = 150
+            cashieropacity = 255
+            message = "CASHIER: Oh, I'm sorry... I am the cashier"
 
         if dialoguesequence == 9:
-            message = "CASHER: I have no particular function in the game..."
+            message = "CASHIER: I have no particular function in the game..."
 
         if dialoguesequence == 10:
-            message = "CASHER: But I am here to SUPERVISE you..."
+            message = "CASHIER: But I am here to SUPERVISE you..."
 
         if dialoguesequence == 11:
-            message = "CASHER: Anyways, click 'next' to start the game!"
+            cashieropacity = 150
+            waiteropacity = 255
+            message = "WAITER: Also, if you accidently chose the wrong food"
+
+        if dialoguesequence == 12:
+            message = "WAITER: You can throw food away by pressing SPACE near the trash"
+
+        if dialoguesequence == 13:
+            message = "WAITER: And press E to collect food on the counter table"
+
+        if dialoguesequence == 14:
+            cashieropacity = 255
+            waiteropacity = 150
+            message = "CASHIER: Blah blah blah, just do your best!"
+        
+        if dialoguesequence == 15:
+            waiteropacity = 255
+            chefopacity = 255
+            message = "EVERYONE: Good luck, fellow owner!"
 
         # display images
 
@@ -448,8 +532,8 @@ def tutorial():
         waiterdialogue_img.set_alpha(int(waiteropacity))
         screen.blit(waiterdialogue_img, (waiterdialogueX+100,70))
 
-        casherdialogue_img.set_alpha(int(casheropacity))
-        screen.blit(casherdialogue_img, (500,100))
+        cashierdialogue_img.set_alpha(int(cashieropacity))
+        screen.blit(cashierdialogue_img, (500,100))
 
         dialogue_img.set_alpha(int(dialogueopacity))
         screen.blit(dialogue_img, (68, 450))
@@ -459,7 +543,7 @@ def tutorial():
         # display skip and next button
         if dialogueopacity >= 255:
             if nextdialogue_button.draw(screen) and allowedtonext == True:
-                if dialoguesequence <= 10:
+                if dialoguesequence <= 15-1:
                     click_sfx.play()
                     dialoguesequence += 1
                 else:
@@ -482,15 +566,24 @@ def tutorial():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RunTutorial = False
+                pygame.quit()
+                exit()
         pygame.display.update()
+        clock.tick(60)
 
 def game_screen():
+    # money, day = load_game()
     global npc1_x_pos, npc1_img, npc1_y_pos
     run = True
 
     # default money and day value
     money = 10000
+    prev_money = money
+    amountchanged = ""
+    moneychangecolor = "darkred"
+    moneychangeopacity = 256
     incomemultiplier = 0
+
     day = 1
     daytransition = False
     daytransitiontick = 0
@@ -576,6 +669,14 @@ def game_screen():
     purchasedcarpet = False
     purchasedflowers = False
 
+    # casher collision
+    casherX = 472
+    casherY = 46
+
+    # deco collision
+    pianoX = 680
+    pianoY = 15
+
     #npc
     npcfoodrequest = False
     npcfoodrequest2 = False
@@ -608,6 +709,16 @@ def game_screen():
     foodtrigger_scaled = pygame.transform.scale(foodtrigger_surf, (foodtrigger_surf.get_width() * 0.5, foodtrigger_surf.get_height() * 0.5))
     foodtrigger_scaled.set_alpha(0)
     foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
+
+    #trash
+    trashtrigger_surf = pygame.image.load('gameasset/trash.png').convert_alpha()
+    trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 60))
+
+    # casher object
+    casher_rect = pygame.Rect(casherX, casherY, 80, 250)
+
+    # rect object for deco
+    piano_rect = pygame.Rect(pianoX, pianoY, 160, 40)
 
     # days progression
 
@@ -796,8 +907,8 @@ def game_screen():
 # NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
 
 
-        if fern_button.draw(screen) and runchefUI == False:
-            cat_sfx.play()
+        # if fern_button.draw(screen) and runchefUI == False and runShopUI2 == True and rundecorationUI == True:
+        #     cat_sfx.play()
 
 
         # get the state of all keyboard keys
@@ -875,6 +986,18 @@ def game_screen():
                 waiterfood = emptybox_img
                 cooking = emptybox_img
 
+        # check for collision between waiter and counter
+        if collision_detection(waiter_rect, casher_rect):
+        # If collision is detected, prevent waiter from moving in that direction
+            if keys[pygame.K_w] and waiter_rect.top < casher_rect.bottom:
+                waiterY += waiter_speed
+            if keys[pygame.K_s] and waiter_rect.bottom > casher_rect.top:
+                waiterY -= waiter_speed
+            if keys[pygame.K_a] and waiter_rect.left < casher_rect.right:
+                waiterX += waiter_speed
+            if keys[pygame.K_d] and waiter_rect.right > casher_rect.left:
+                waiterX -= waiter_speed
+
 
 
         # game font variables such as day count and money count
@@ -883,20 +1006,30 @@ def game_screen():
         daycycle_rect = daycycle_surf.get_rect(topleft=(490,620))
 
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
-        money_surf = money_font.render(str(money), True, 'darkred')
+        money_surf = money_font.render(str(int(money)), True, 'darkred')
         money_rect = money_surf.get_rect(topleft=(165,598))
+
+        moneychange_font = pygame.font.Font('font/segoepr.ttf', 40)
+        moneychange_surf = moneychange_font.render(amountchanged, True, moneychangecolor)
+        moneychange_surf.set_alpha(moneychangeopacity)
+        moneychange_rect = moneychange_surf.get_rect(topleft=(165,540))
+
+        pressE_font = pygame.font.Font('font/segoepr.ttf', 20)
+        pressE_surf = pressE_font.render("Press E to pick the food", True, "darkred")
+        pressE_rect = pressE_surf.get_rect(topleft=(waiterX-80,waiterY-30))
 
         if pause_button.draw(screen):
             click_sfx.play()
-            print('game paused')
             # insert pause code here
             run = False
             
-
+        # GUI
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
         screen.blit(daycycle_surf,daycycle_rect)
         screen.blit(money_surf,money_rect)
+        screen.blit(moneychange_surf,moneychange_rect)
+
     
         # testing, add 12 money every 1 frame
         # money += 0
@@ -905,8 +1038,21 @@ def game_screen():
         if purchasedmenu == True:
             screen.blit(menudecoration_img, (336,236))
 
+
         if purchasedpiano == True:
             screen.blit(piano_img, (680,15))
+        # check for collision between waiter and piano
+            if collision_detection(waiter_rect, piano_rect):
+                # If collision is detected, prevent waiter from moving in that direction
+                    if keys[pygame.K_w] and waiter_rect.top < piano_rect.bottom:
+                        waiterY += waiter_speed
+                    if keys[pygame.K_s] and waiter_rect.bottom > piano_rect.top:
+                        waiterY -= waiter_speed
+                    if keys[pygame.K_a] and waiter_rect.left < piano_rect.right:
+                        waiterX += waiter_speed
+                    if keys[pygame.K_d] and waiter_rect.right > piano_rect.left:
+                        waiterX -= waiter_speed
+        
 
         if purchasedcarpet == True:
             screen.blit(carpet_img, (400,270))
@@ -954,13 +1100,28 @@ def game_screen():
         if chef_button.draw(screen):
             click_sfx.play()
             runchefUI = True
+            runShopUI2 = False
+            rundecorationUI = False
+            runShopUI = False
+
+
+        #trashcan=============================================#
+        screen.blit(trashtrigger_surf, trashtrigger_rect,) # foodtrigger
 
         # food serve (part 1) ================================ #
         screen.blit(foodtrigger_scaled, foodtrigger_rect,) # foodtrigger
         foodserve(foodserveX,foodserveY,FoodOnTable)
+        
+        #hint to click E to get the food
+        if foodtrigger_rect.colliderect(waiter_rect) and FoodOnTable != emptybox_img:
+            screen.blit(pressE_surf,pressE_rect)
+
         waiter(waiterX, waiterY, WaiterDirection)
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
         # food serve ================================ #
+
+
+
 
         # npc movement ================================== #
         waitbar_font = pygame.font.Font('font/segoepr.ttf', 5)
@@ -1017,7 +1178,7 @@ def game_screen():
                     npceatingtime += 1
 
                     if npceatingtime >= 100:
-                        money += 100*incomemultiplier/100
+                        money += 100 + 100*incomemultiplier/100
                         npc1_x_pos = -1000
                         npcnumber += 1
                         CustomerFood = emptybox_img
@@ -1091,7 +1252,7 @@ def game_screen():
                     npceatingtime2 += 1
 
                     if npceatingtime2 >= 100:
-                        money += 100*incomemultiplier/100
+                        money += 100 + 100*incomemultiplier/100
                         npc2_x_pos = -1000
                         npcnumber += 1
                         CustomerFood2 = emptybox_img
@@ -1165,7 +1326,7 @@ def game_screen():
                     npceatingtime3 += 1
 
                     if npceatingtime3 >= 100:
-                        money += 100*incomemultiplier/100
+                        money += 100+100*incomemultiplier/100
                         npc3_x_pos = -1000
                         npcnumber += 1
                         CustomerFood3 = emptybox_img
@@ -1200,9 +1361,13 @@ def game_screen():
         # npc movement ================================== #
 
         # insert shop code here
-        if shop_button.draw(screen):
-            click_sfx.play()
-            runShopUI2 = True 
+        if rundecorationUI == False and runShopUI2 == False and runShopUI == False:
+            if shop_button.draw(screen):
+                click_sfx.play()
+                runShopUI2 = True 
+                runchefUI = False
+                rundecorationUI = False
+                runShopUI = False
 
         if runShopUI2 == True:
             screen.blit(shopui2background_img, (410,175))
@@ -1316,23 +1481,28 @@ def game_screen():
             if chicken_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = chicken_img
+                money -= 18
                 # if the player clicks on the food icon, it will be added to the cooking slot
 
             if fish_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = fish_img
+                money -= 12
 
             if burger_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = burger_img
+                money -= 30
 
             if pizza_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = pizza_img
+                money -= 35
                 
             if steak_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = steak_img
+                money -= 60
 
             
             if cooking != emptybox_img:
@@ -1368,41 +1538,43 @@ def game_screen():
             if xbutton_button.draw(screen):
                 click_sfx.play()
                 rundecorationUI = False
-            if buymenu_button.draw(screen) and money >= 250 and purchasedmenu == False:
-                click_sfx.play()
-                money -= 250
-                incomemultiplier += 5
-                purchasedmenu = True
-                
-            if buypiano_button.draw(screen) and money >= 500 and purchasedpiano == False:
-                click_sfx.play()
-                money -= 500
-                incomemultiplier += 10
-                purchasedpiano = True
-            
-            if buycarpet_button.draw(screen) and money >= 1000 and purchasedcarpet == False:
-                click_sfx.play()
-                money -= 1000
-                incomemultiplier += 12
-                purchasedcarpet = True
+            if purchasedmenu == False:
+                if buymenu_button.draw(screen) and money >= 250:
+                    click_sfx.play()
+                    money -= 250
+                    incomemultiplier += 5
+                    purchasedmenu = True
 
-            if buyflowers_button.draw(screen) and money >= 375 and purchasedflowers == False:
-                click_sfx.play()
-                money -= 375
-                incomemultiplier += 8
-                purchasedflowers = True
-        
+            if purchasedpiano == False:    
+                if buypiano_button.draw(screen) and money >= 500:
+                    click_sfx.play()
+                    money -= 500
+                    incomemultiplier += 10
+                    purchasedpiano = True
             
-        # CHECK MOUSE POSITION
-        # mouse_pos = pygame.mouse.get_pos()
-        # print(mouse_pos)
+            if purchasedcarpet == False:
+                if buycarpet_button.draw(screen) and money >= 1000:
+                    click_sfx.play()
+                    money -= 1000
+                    incomemultiplier += 12
+                    purchasedcarpet = True
+
+            if purchasedflowers == False:
+                if buyflowers_button.draw(screen) and money >= 375:
+                    click_sfx.play()
+                    money -= 375
+                    incomemultiplier += 8
+                    purchasedflowers = True
 
         # Decoration UI ================================= #
 
 
         # food serve (part 2) ================================ #
 
-        if foodtrigger_rect.colliderect(waiter_rect):
+        #hint to click E to get the food
+
+        if foodtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_e]:
+            
             if waiterfood == emptybox_img:
                 # Food that the waiter is carrying
                 waiterfood = FoodOnTable
@@ -1411,6 +1583,10 @@ def game_screen():
                 FoodOnTable = emptybox_img
 
         # food serve ================================ #
+        if trashtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_SPACE]:
+            if waiterfood != emptybox_img:
+                # Food that the waiter is carrying
+                waiterfood = emptybox_img
 
         # Day reset black =============================== #
         if daytransition == True:
@@ -1426,14 +1602,38 @@ def game_screen():
                 daytransition = False
         # Day reset black =============================== #
 
+        # detect if money is changed ==================== #
+        if money!= prev_money:
+            
+            # decrease money
+            if prev_money >= money:
+                amountchanged = f"-{int(prev_money-money)}"
+                moneychangecolor = "red"
+                moneychangeopacity = 256
+            
+            # increase money
+            if money >= prev_money:
+                amountchanged = f"+{int(money-prev_money)}"
+                moneychangecolor = "darkgreen"
+                moneychangeopacity = 256
+            prev_money = money
+        if moneychangeopacity >= 0:
+            moneychangeopacity -= 3
+        # detect if money is changed ==================== #
+        
+        
+        # vignette
+        screen.blit(vignette_img, (0,0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                # saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
+                # saveloadmanager.save_data() # <--- STOP HERE 7/5/24
+                # save_game(money, day) 
                 pygame.quit()
                 exit()
         pygame.display.update()
         clock.tick(60)
+
 
 def credit_menu():
     RunCredit = True
@@ -1444,7 +1644,6 @@ def credit_menu():
 
         if pause_button.draw(screen):
             click_sfx.play()
-            print('game paused')
             # insert pause code here
             RunCredit = False
 
