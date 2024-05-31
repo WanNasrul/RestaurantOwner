@@ -23,7 +23,7 @@ mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 
 # bg_main_menu = pygame.image.load('gameasset/backgroundmainmenu.png')
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
-bg_credit_menu = pygame.image.load('gameasset\credit.png').convert_alpha()
+bg_credit_menu = pygame.image.load('gameasset/credit.png').convert_alpha()
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
