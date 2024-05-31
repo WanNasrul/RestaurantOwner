@@ -5,6 +5,7 @@ import random
 import time
 import math
 from pygame import mixer
+import pickle
 
 # initialize pygame
 pygame.init()
@@ -182,6 +183,39 @@ click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
 # money_surf = money_font.render(str(money), True, 'darkred')
 # money_rect = daycycle_surf.get_rect(topleft=(170,590))
 
+# def save_game(money, day):
+#     game_state = {
+#         'money': money,
+#         'day': day
+#     }
+#     try:
+#         with open('save_file.pkl', 'wb') as f:
+#             pickle.dump(game_state, f)
+#     except FileNotFoundError:
+#         with open('save_file.pkl', 'wb') as f:
+#             pickle.dump(game_state, f)
+#             print("Save file created.")
+
+# def load_game():
+#     try:
+#         with open('save_file.pkl', 'rb') as f:
+#             game_state = pickle.load(f)
+#     except FileNotFoundError:
+#         with open('save_file.pkl', 'wb') as f:
+#             game_state = {}
+#             pickle.dump(game_state, f)
+#             print("Save file created.")
+#             return game_state
+#     if 'money' in game_state:
+#         money = game_state['money']
+#     else:
+#         money = 0
+#     if 'day' in game_state:
+#         day = game_state['day']
+#     else:
+#         day = 1
+#     return money, day
+    
 def npc(x, y):
     npc1_width = int(npc1_img.get_width() * 1)
     npc1_height = int(npc1_img.get_height() * 1)
@@ -309,10 +343,12 @@ def easeOutSine(t):
     return math.sin(t * math.pi / 2)
 
 def main_menu():
-    
+
+
     run = True
     while run:
 
+        
         screen.fill((255, 235, 216))
         # screen.blit(bg_main_menu, (0, 0)
         # moving main menu background
@@ -535,6 +571,7 @@ def tutorial():
         clock.tick(60)
 
 def game_screen():
+    # money, day = load_game()
     global npc1_x_pos, npc1_img, npc1_y_pos
     run = True
 
@@ -1382,23 +1419,28 @@ def game_screen():
             if chicken_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = chicken_img
+                money -= 18
                 # if the player clicks on the food icon, it will be added to the cooking slot
 
             if fish_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = fish_img
+                money -= 12
 
             if burger_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = burger_img
+                money -= 30
 
             if pizza_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = pizza_img
+                money -= 35
                 
             if steak_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = steak_img
+                money -= 60
 
             
             if cooking != emptybox_img:
@@ -1523,7 +1565,8 @@ def game_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                # saveloadmanager.save_data() # <--- STOP HERE 7/5/24 
+                # saveloadmanager.save_data() # <--- STOP HERE 7/5/24
+                save_game(money, day) 
                 pygame.quit()
                 exit()
         pygame.display.update()
