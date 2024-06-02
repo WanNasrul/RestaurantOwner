@@ -647,14 +647,23 @@ def game_screen():
     chef2 = star_img
     chef3 = star_img 
     chef4 = star_img
+    chef5 = star_img
+    chef6 = star_img
     waiter1 = star_img
     waiter2 = star_img
+    waiter3 = star_img
     chef_upgrade_purchased = False
     purchasechef1 = False
     purchasechef2 = False
+    purchasechef3 = False
     purchasewaiter1 = False
+    purchasewaiter2 = False
+    purchasewaiter3 = False
     upgradecooldownchef = 0
-    disableupgrade = False
+    disableupgradechef = False
+    disableupgradechef1 = False
+    disableupgradewaiter = False
+    upgradecooldownwaiter = 0
      
 
     chefcookingtime = 1
@@ -1020,8 +1029,8 @@ def game_screen():
 
         if pause_button.draw(screen):
             click_sfx.play()
-            # insert pause code here
             run = False
+            
             
         # GUI
         screen.blit(moneycounter_img, (30,530))
@@ -1391,13 +1400,16 @@ def game_screen():
             screen.blit(shopbackground_img, (410,25))
             screen.blit(cheficon_img, (440,135))
             screen.blit(waitericon_img, (440,295))
-            screen.blit(cheficon_img, (440,450))
+            # screen.blit(cheficon_img, (440,450))
             screen.blit(chef, (610,155))
+            screen.blit(chef2, (710,155))
             screen.blit(chef3, (810,155))
-            screen.blit(chef2, (610,315))
-            screen.blit(chef4, (810,315))
-            screen.blit(waiter1, (610,475))
-            screen.blit(waiter2, (810,475))
+            screen.blit(waiter1, (610,315))
+            screen.blit(waiter2, (710,315))
+            screen.blit(waiter3, (810,315))
+            # screen.blit(chef4, (610,475))
+            # screen.blit(chef5, (710,475))
+            # screen.blit(chef6, (810,475))
             
             
             if xshopbutton_button.draw(screen) :
@@ -1413,7 +1425,7 @@ def game_screen():
             
             if upgrade_button1.draw(screen):
 
-                if money >= 250 and purchasechef1 == False and disableupgrade == False :
+                if money >= 250 and purchasechef1 == False and disableupgradechef == False :
                     click_sfx.play()
                     chef = starupgrade_img
                     money -= 250
@@ -1421,24 +1433,42 @@ def game_screen():
                     purchasechef1 = True 
 
                 if purchasechef1 == True and upgradecooldownchef <= 1:
-                    disableupgrade = True
+                    disableupgradechef = True
                     upgradecooldownchef += 1
-                
-                if upgradecooldownchef == 2:
-                    disableupgrade = False
 
-                if money >= 450 and purchasechef2 == False and disableupgrade == False :
+                if upgradecooldownchef == 2:
+                    disableupgradechef = False
+
+                if money >= 450 and purchasechef2 == False and disableupgradechef == False :
                     click_sfx.play()
-                    chef3 = starupgrade_img
+                    chef2 = starupgrade_img
                     money -= 450
                     chefcookingtime = 3
                     purchasechef2 = True
 
-            # if upgrade_button2.draw(screen) and chef2 == star_img and money>= 250 and purchasewaiter1 == False:
-            #      click_sfx.play()
-            #      chef2 = starupgrade_img
-            #      money -= 250
-            #      waiter_speed = 6
+
+            if upgrade_button2.draw(screen):
+
+                if money >= 250 and purchasewaiter1 == False and disableupgradewaiter == False :
+                    click_sfx.play()
+                    waiter1 = starupgrade_img
+                    money -= 250
+                    waiter_speed = 4
+                    purchasewaiter1 =True
+
+                if purchasewaiter1== True and upgradecooldownwaiter <= 1:
+                    disableupgradewaiter = True
+                    upgradecooldownwaiter += 1
+                
+                if upgradecooldownwaiter == 2:
+                    disableupgradewaiter = False
+
+                if money >= 450 and purchasewaiter2 == False and disableupgradewaiter == False :
+                    click_sfx.play()
+                    waiter2 = starupgrade_img
+                    money -= 450
+                    waiter_speed = 6
+                    purchasewaiter2 = True
                 
         
             # if upgrade_button4.draw(screen) and chef3 == star_img and money >= 300:
@@ -1635,6 +1665,8 @@ def game_screen():
         clock.tick(60)
 
 
+
+
 def credit_menu():
     RunCredit = True
     while RunCredit :
@@ -1644,13 +1676,33 @@ def credit_menu():
 
         if pause_button.draw(screen):
             click_sfx.play()
-            # insert pause code here
             RunCredit = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RunCredit = False
         pygame.display.update()
+
+    
+
+        
+
+
+            
+        pygame.display.update()
+
+            
+        
+
+
+
+
+    # Update the display
+    pygame.display.flip()
+
+
+    # Cap the frame rate
+    clock.tick(60)
 
 # test
 # def credits_menu():
