@@ -33,10 +33,6 @@ start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
 
-# background music
-mixer.music.load('gameasset/backgroundmusic.mp3')
-mixer.music.play(-1)
-mixer.music.set_volume(0.05)
 
 # intro dialog
 
@@ -342,6 +338,8 @@ def collision_detection(waiter_rect, table_rect):
 def easeOutSine(t):
     return math.sin(t * math.pi / 2)
 
+
+
 def main_menu():
 
 
@@ -406,6 +404,13 @@ def tutorial():
 
     message = ""
     allowedtonext = False
+
+    # intro music
+    intromusic = ['gameasset/intro music.mp3', 'gameasset/intro music 2.mp3']
+    intromusic_file = random.choice(intromusic)
+    pygame.mixer.music.load(intromusic_file)
+    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.play(-1)
     
     while RunTutorial:
         screen.fill((255, 235, 216))
@@ -559,6 +564,7 @@ def tutorial():
         # quitting
         if pause_button.draw(screen):
             click_sfx.play()
+            pygame.mixer.music.stop()
             # insert pause code here
             RunTutorial = False
 
@@ -569,11 +575,22 @@ def tutorial():
                 exit()
         pygame.display.update()
         clock.tick(60)
+    pass
+
 
 def game_screen():
     # money, day = load_game()
     global npc1_x_pos, npc1_img, npc1_y_pos
     run = True
+    
+    # stop the intro music
+    pygame.mixer.music.stop()
+
+    # load and play bg music
+    background_music = 'gameasset/gameplay music.mp3'
+    pygame.mixer.music.load(background_music)
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
 
     # default money and day value
     money = 10000
@@ -1002,8 +1019,13 @@ def game_screen():
         pressE_surf = pressE_font.render("Press E to pick the food", True, "darkred")
         pressE_rect = pressE_surf.get_rect(topleft=(waiterX-80,waiterY-30))
 
+        pressSPACE_font = pygame.font.Font('font/segoepr.ttf', 20)
+        pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
+        pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX+80,waiterY+45))
+
         if pause_button.draw(screen):
             click_sfx.play()
+            pygame.mixer.music.stop()
             # insert pause code here
             run = False
             
@@ -1099,6 +1121,10 @@ def game_screen():
         #hint to click E to get the food
         if foodtrigger_rect.colliderect(waiter_rect) and FoodOnTable != emptybox_img:
             screen.blit(pressE_surf,pressE_rect)
+
+        #hint to click SPACE to throw away food
+        if trashtrigger_rect.colliderect(waiter_rect):
+            screen.blit(pressSPACE_surf,pressSPACE_rect)
 
         waiter(waiterX, waiterY, WaiterDirection)
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
@@ -1443,17 +1469,17 @@ def game_screen():
                 money -= 60
 
             
-            if cooking != emptybox_img:
-                if progress <= 130:
-                    progress += chefcookingtime
+        if cooking != emptybox_img:
+            if progress <= 130:
+                progress += chefcookingtime
 
-                    if chefcookingtime >= 5:
-                        progress += chefcookingtime
-                        chefcookingtime = 0       
-                else:
-                    FoodOnTable = cooking
-                    cooking = emptybox_img
-                    progress = 0
+                if chefcookingtime >= 5:
+                    progress += chefcookingtime
+                    chefcookingtime = 0       
+            else:
+                FoodOnTable = cooking
+                cooking = emptybox_img
+                progress = 0
                 
 
             screen.blit(cooking, (450,480))
