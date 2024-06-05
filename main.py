@@ -828,7 +828,21 @@ def game_screen():
             npcstop = False
 
             resetday = False
+
+            satisfyreset = False
+        
+        # if day == 4 and satisfyreset == False :
+        #     satisfy += 1
+        #     satisfyreset = True
             
+
+        # if day == 5 and satisfyreset == False:
+        #     satisfy += 2
+        #     satisfyreset = True
+
+        # if day >= 6 and satisfyreset == False:
+        #     satisfy += 3
+        #     satisfyreset = True
 
 
 
