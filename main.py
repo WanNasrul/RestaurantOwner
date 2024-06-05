@@ -1189,7 +1189,7 @@ def game_screen():
             screen.blit(pressE_surf,pressE_rect)
 
         #hint to click SPACE to throw away food
-        if trashtrigger_rect.colliderect(waiter_rect):
+        if trashtrigger_rect.colliderect(waiter_rect) and waiterfood != emptybox_img:
             screen.blit(pressSPACE_surf,pressSPACE_rect)
 
         waiter(waiterX, waiterY, WaiterDirection)
