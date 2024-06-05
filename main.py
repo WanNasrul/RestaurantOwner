@@ -326,11 +326,11 @@ def foodnpcreq3(x,y, randomfood):
     foodnpcreq3_resize = pygame.transform.scale(randomfood, (foodnpcreq3_width, foodnpcreq3_height))
     screen.blit(foodnpcreq3_resize, (x,y))
 
-def casher(x, y):
-    casher_width = int(casher_img.get_width() * 1)
-    casher_height = int(casher_img.get_height() * 1)
-    casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
-    screen.blit(casher_resize, (x, y))
+# def casher(x, y):
+#     casher_width = int(casher_img.get_width() * 1)
+#     casher_height = int(casher_img.get_height() * 1)
+#     casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
+#     screen.blit(casher_resize, (x, y))
 
 def piano(x, y):
     piano_width = int(piano_img.get_width() * 1)
@@ -718,24 +718,26 @@ def game_screen():
     npcstop = False
 
     # rect object for waiter
-    waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
+    waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height()-100)
     # rect object for table and chair
-    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 50)
-    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 50)
-    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 50)
+    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 80)
+    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 80)
+    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 80)
+
+    
 
     # food rect and surf
     foodtrigger_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
     foodtrigger_scaled = pygame.transform.scale(foodtrigger_surf, (foodtrigger_surf.get_width() * 0.5, foodtrigger_surf.get_height() * 0.5))
     foodtrigger_scaled.set_alpha(0)
-    foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
+    foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 255))
 
     #trash
     trashtrigger_surf = pygame.image.load('gameasset/trash.png').convert_alpha()
     trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 60))
 
     # casher object
-    casher_rect = pygame.Rect(casherX, casherY, 80, 250)
+    casher_rect = pygame.Rect(casherX, casherY, 80, 350)
 
     # rect object for deco
     piano_rect = pygame.Rect(pianoX, pianoY, 160, 40)
@@ -754,6 +756,7 @@ def game_screen():
                     click_sfx.play()
                     daytransition = True
                     resetday = True
+
 
         # RESET DAY 
         if resetday == True:
@@ -977,7 +980,15 @@ def game_screen():
                 waiterX += waiter_speed
 
         # update waiter Rect object position
-        waiter_rect.topleft = (waiterX, waiterY)
+        waiter_rect.bottomleft = (waiterX, waiterY+110)
+
+        # rectangle draw testing
+        # pygame.draw.rect(screen, 'red', waiter_rect, 2)
+
+        # pygame.draw.rect(screen, 'red', tablechair1_rect, 2)
+        # pygame.draw.rect(screen, 'red', tablechair2_rect, 2)
+        # pygame.draw.rect(screen, 'red', tablechair3_rect, 2)
+
 
 
         # check for collision between waiter and table chair (1)
