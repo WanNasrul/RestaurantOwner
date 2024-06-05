@@ -737,7 +737,6 @@ def game_screen():
     tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 50)
     tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 50)
     tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 50)
-    pygame.draw.rect(screen, (255, 0, 0), tablechair1_rect)
     # food rect and surf
     foodtrigger_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
     foodtrigger_scaled = pygame.transform.scale(foodtrigger_surf, (foodtrigger_surf.get_width() * 0.5, foodtrigger_surf.get_height() * 0.5))
