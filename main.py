@@ -28,15 +28,11 @@ mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
 bg_credit_menu = pygame.image.load('gameasset/credit.png').convert_alpha()
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
-shoppic_img = pygame.image.load('gameasset\shopui2\shopuibackground.png').convert_alpha()
+shoppic_img = pygame.image.load('gameasset/shopui2/shopuibackground.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
 
-# background music
-mixer.music.load('gameasset/backgroundmusic.mp3')
-mixer.music.play(-1)
-mixer.music.set_volume(0.50)
 
 # intro dialog
 
@@ -69,6 +65,8 @@ tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 vignette_img = pygame.image.load('gameasset/vignette.png').convert_alpha()
 casher_img = pygame.image.load('gameasset/cashercollision.png').convert_alpha()
+cashiernpc_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
+cashiernpc_flip = pygame.transform.flip(cashiernpc_img, True, False)
 
 #waiter
 waiterstand_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
@@ -337,11 +335,11 @@ def foodnpcreq3(x,y, randomfood):
     foodnpcreq3_resize = pygame.transform.scale(randomfood, (foodnpcreq3_width, foodnpcreq3_height))
     screen.blit(foodnpcreq3_resize, (x,y))
 
-def casher(x, y):
-    casher_width = int(casher_img.get_width() * 1)
-    casher_height = int(casher_img.get_height() * 1)
-    casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
-    screen.blit(casher_resize, (x, y))
+# def casher(x, y):
+#     casher_width = int(casher_img.get_width() * 1)
+#     casher_height = int(casher_img.get_height() * 1)
+#     casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
+#     screen.blit(casher_resize, (x, y))
 
 def piano(x, y):
     piano_width = int(piano_img.get_width() * 1)
@@ -361,6 +359,8 @@ def collision_detection(waiter_rect, table_rect):
 
 def easeOutSine(t):
     return math.sin(t * math.pi / 2)
+
+
 
 def main_menu():
 
@@ -426,6 +426,13 @@ def tutorial():
 
     message = ""
     allowedtonext = False
+
+    # intro music
+    intromusic = ['gameasset/intro music.mp3', 'gameasset/intro music 2.mp3']
+    intromusic_file = random.choice(intromusic)
+    pygame.mixer.music.load(intromusic_file)
+    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.play(-1)
     
     while RunTutorial:
         screen.fill((255, 235, 216))
@@ -576,10 +583,12 @@ def tutorial():
                 RunTutorial = False
 
 
-        # # quitting
-        # if pause_button.draw(screen):
-        #     click_sfx.play()
-        #     game_pause()
+        # quitting
+        if pause_button.draw(screen):
+            click_sfx.play()
+            pygame.mixer.music.stop()
+            # insert pause code here
+            RunTutorial = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -588,11 +597,22 @@ def tutorial():
                 exit()
         pygame.display.update()
         clock.tick(60)
+    pass
+
 
 def game_screen():
     # money, day = load_game()
     global npc1_x_pos, npc1_img, npc1_y_pos
     run = True
+    
+    # stop the intro music
+    pygame.mixer.music.stop()
+
+    # load and play bg music
+    background_music = 'gameasset/gameplay music.mp3'
+    pygame.mixer.music.load(background_music)
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
 
     # default money and day value
     money = 10000
@@ -732,24 +752,26 @@ def game_screen():
     npcstop = False
 
     # rect object for waiter
-    waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
+    waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height()-100)
     # rect object for table and chair
-    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 50)
-    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 50)
-    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 50)
+    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 80)
+    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 80)
+    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 80)
+
+    
 
     # food rect and surf
     foodtrigger_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
     foodtrigger_scaled = pygame.transform.scale(foodtrigger_surf, (foodtrigger_surf.get_width() * 0.5, foodtrigger_surf.get_height() * 0.5))
     foodtrigger_scaled.set_alpha(0)
-    foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
+    foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 255))
 
     #trash
     trashtrigger_surf = pygame.image.load('gameasset/trash.png').convert_alpha()
     trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 60))
 
     # casher object
-    casher_rect = pygame.Rect(casherX, casherY, 80, 250)
+    casher_rect = pygame.Rect(casherX, casherY, 80, 350)
 
     # rect object for deco
     piano_rect = pygame.Rect(pianoX, pianoY, 160, 40)
@@ -768,6 +790,7 @@ def game_screen():
                     click_sfx.play()
                     daytransition = True
                     resetday = True
+
 
         # RESET DAY 
         if resetday == True:
@@ -991,7 +1014,15 @@ def game_screen():
                 waiterX += waiter_speed
 
         # update waiter Rect object position
-        waiter_rect.topleft = (waiterX, waiterY)
+        waiter_rect.bottomleft = (waiterX, waiterY+110)
+
+        # rectangle draw testing
+        # pygame.draw.rect(screen, 'red', waiter_rect, 2)
+
+        # pygame.draw.rect(screen, 'red', tablechair1_rect, 2)
+        # pygame.draw.rect(screen, 'red', tablechair2_rect, 2)
+        # pygame.draw.rect(screen, 'red', tablechair3_rect, 2)
+
 
 
         # check for collision between waiter and table chair (1)
@@ -1081,9 +1112,16 @@ def game_screen():
         pressE_surf = pressE_font.render("Press E to pick the food", True, "darkred")
         pressE_rect = pressE_surf.get_rect(topleft=(waiterX-80,waiterY-30))
 
+        pressSPACE_font = pygame.font.Font('font/segoepr.ttf', 20)
+        pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
+        pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX+80,waiterY+45))
+
         if pause_button.draw(screen):
             click_sfx.play()
+            pygame.mixer.music.stop()
+            # insert pause code here
             game_pause()
+            run = False
             
             
         # GUI
@@ -1181,10 +1219,16 @@ def game_screen():
         if foodtrigger_rect.colliderect(waiter_rect) and FoodOnTable != emptybox_img:
             screen.blit(pressE_surf,pressE_rect)
 
+        #hint to click SPACE to throw away food
+        if trashtrigger_rect.colliderect(waiter_rect):
+            screen.blit(pressSPACE_surf,pressSPACE_rect)
+
         waiter(waiterX, waiterY, WaiterDirection)
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
         # food serve ================================ #
 
+        # cashier
+        screen.blit(cashiernpc_flip, (425,90))
 
 
 
@@ -1599,17 +1643,17 @@ def game_screen():
                 money -= 60
 
             
-            if cooking != emptybox_img:
-                if progress <= 130:
-                    progress += chefcookingtime
+        if cooking != emptybox_img:
+            if progress <= 130:
+                progress += chefcookingtime
 
-                    if chefcookingtime >= 5:
-                        progress += chefcookingtime
-                        chefcookingtime = 0       
-                else:
-                    FoodOnTable = cooking
-                    cooking = emptybox_img
-                    progress = 0
+                if chefcookingtime >= 5:
+                    progress += chefcookingtime
+                    chefcookingtime = 0       
+            else:
+                FoodOnTable = cooking
+                cooking = emptybox_img
+                progress = 0
                 
 
             screen.blit(cooking, (450,480))
