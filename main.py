@@ -65,6 +65,8 @@ tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 vignette_img = pygame.image.load('gameasset/vignette.png').convert_alpha()
 casher_img = pygame.image.load('gameasset/cashercollision.png').convert_alpha()
+cashiernpc_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
+cashiernpc_flip = pygame.transform.flip(cashiernpc_img, True, False)
 
 #waiter
 waiterstand_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
@@ -113,6 +115,19 @@ upgradebutton_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebu
 starupgrade_img = pygame.image.load('gameasset/upgrade shop remaster/starupgraded.png').convert_alpha()
 shopbackground_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebackground.png').convert_alpha()
 
+#pause img
+pausebackground_img = pygame.image.load('gameasset\pause ui\pausebackground.png').convert_alpha()
+music_img = pygame.image.load('gameasset\pause ui\music.png').convert_alpha()
+continue_img = pygame.image.load('gameasset/pause ui/resume.png').convert_alpha()
+pauseexit_img = pygame.image.load('gameasset\pause ui\exit.png').convert_alpha()
+click_img = pygame.image.load('gameasset/pause ui/sound.png').convert_alpha()
+reset_img = pygame.image.load('gameasset/pause ui/reset.png').convert_alpha()
+mute_img = pygame.image.load('gameasset\pause ui\musicmuted.png').convert_alpha()
+pause_mute = button.Button(440, 90, music_img, 1)
+pause_continue = button.Button(440,250, continue_img,1)
+pause_exit = button.Button(740,250, pauseexit_img,1)
+pause_click = button.Button(710,90, click_img,1)
+pause_reset = button.Button(590,250, reset_img,1)
 
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
@@ -320,11 +335,11 @@ def foodnpcreq3(x,y, randomfood):
     foodnpcreq3_resize = pygame.transform.scale(randomfood, (foodnpcreq3_width, foodnpcreq3_height))
     screen.blit(foodnpcreq3_resize, (x,y))
 
-def casher(x, y):
-    casher_width = int(casher_img.get_width() * 1)
-    casher_height = int(casher_img.get_height() * 1)
-    casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
-    screen.blit(casher_resize, (x, y))
+# def casher(x, y):
+#     casher_width = int(casher_img.get_width() * 1)
+#     casher_height = int(casher_img.get_height() * 1)
+#     casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
+#     screen.blit(casher_resize, (x, y))
 
 def piano(x, y):
     piano_width = int(piano_img.get_width() * 1)
@@ -568,12 +583,12 @@ def tutorial():
                 RunTutorial = False
 
 
-        # quitting
-        if pause_button.draw(screen):
-            click_sfx.play()
-            pygame.mixer.music.stop()
-            # insert pause code here
-            RunTutorial = False
+        # # quitting
+        # if pause_button.draw(screen):
+        #     click_sfx.play()
+        #     pygame.mixer.music.stop()
+        #     # insert pause code here
+        #     RunTutorial = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -651,6 +666,9 @@ def game_screen():
     npc2reset = True
     npc3reset = True    
 
+    # pause ui
+    runpauseUI = False
+
     # chef UI
     runchefUI = False
     rundecorationUI = False
@@ -684,6 +702,7 @@ def game_screen():
     purchasewaiter2 = False
     purchasewaiter3 = False
     upgradecooldownchef = 0
+    upgradecooldownchef1 = 0
     disableupgradechef = False
     disableupgradechef1 = False
     disableupgradewaiter = False
@@ -733,24 +752,26 @@ def game_screen():
     npcstop = False
 
     # rect object for waiter
-    waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
+    waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height()-100)
     # rect object for table and chair
-    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 50)
-    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 50)
-    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 50)
+    tablechair1_rect = pygame.Rect(tablechair1X, tablechair1Y, 252, 80)
+    tablechair2_rect = pygame.Rect(tablechair2X, tablechair2Y, 252, 80)
+    tablechair3_rect = pygame.Rect(tablechair3X, tablechair3Y, 252, 80)
+
+    
 
     # food rect and surf
     foodtrigger_surf = pygame.image.load('gameasset/chef ui/emptybox.png').convert_alpha()
     foodtrigger_scaled = pygame.transform.scale(foodtrigger_surf, (foodtrigger_surf.get_width() * 0.5, foodtrigger_surf.get_height() * 0.5))
     foodtrigger_scaled.set_alpha(0)
-    foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 205))
+    foodtrigger_rect = foodtrigger_scaled.get_rect(topleft = (550, 255))
 
     #trash
     trashtrigger_surf = pygame.image.load('gameasset/trash.png').convert_alpha()
     trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 60))
 
     # casher object
-    casher_rect = pygame.Rect(casherX, casherY, 80, 250)
+    casher_rect = pygame.Rect(casherX, casherY, 80, 350)
 
     # rect object for deco
     piano_rect = pygame.Rect(pianoX, pianoY, 160, 40)
@@ -769,6 +790,7 @@ def game_screen():
                     click_sfx.play()
                     daytransition = True
                     resetday = True
+
 
         # RESET DAY 
         if resetday == True:
@@ -992,7 +1014,15 @@ def game_screen():
                 waiterX += waiter_speed
 
         # update waiter Rect object position
-        waiter_rect.topleft = (waiterX, waiterY)
+        waiter_rect.bottomleft = (waiterX, waiterY+110)
+
+        # rectangle draw testing
+        # pygame.draw.rect(screen, 'red', waiter_rect, 2)
+
+        # pygame.draw.rect(screen, 'red', tablechair1_rect, 2)
+        # pygame.draw.rect(screen, 'red', tablechair2_rect, 2)
+        # pygame.draw.rect(screen, 'red', tablechair3_rect, 2)
+
 
 
         # check for collision between waiter and table chair (1)
@@ -1090,7 +1120,8 @@ def game_screen():
             click_sfx.play()
             pygame.mixer.music.stop()
             # insert pause code here
-            run = False
+            game_pause()
+            
             
             
         # GUI
@@ -1196,6 +1227,8 @@ def game_screen():
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
         # food serve ================================ #
 
+        # cashier
+        screen.blit(cashiernpc_flip, (425,90))
 
 
 
@@ -1497,51 +1530,53 @@ def game_screen():
             #      purchasechef1 = True 
             
             if upgrade_button1.draw(screen):
-
-                if money >= 250 and purchasechef1 == False and disableupgradechef == False :
+               
+                if money >= 150 and  purchasechef2 == True and purchasechef3 == False :
                     click_sfx.play()
-                    chef = starupgrade_img
-                    money -= 250
-                    chefcookingtime = 2
-                    purchasechef1 = True 
+                    chef3 = starupgrade_img
+                    money -= 150 
+                    chefcookingtime = 4
+                    purchasechef3 = True
 
-                if purchasechef1 == True and upgradecooldownchef <= 1:
-                    disableupgradechef = True
-                    upgradecooldownchef += 1
-
-                if upgradecooldownchef == 2:
-                    disableupgradechef = False
-
-                if money >= 450 and purchasechef2 == False and disableupgradechef == False :
+                if money >= 250 and purchasechef1 == True and purchasechef2 == False and purchasechef3 == False:
                     click_sfx.play()
                     chef2 = starupgrade_img
-                    money -= 450
+                    money -= 150
                     chefcookingtime = 3
                     purchasechef2 = True
 
-
+                if money >= 250 and purchasechef1 == False and purchasechef2 == False and purchasechef3 == False:
+                    click_sfx.play()
+                    chef = starupgrade_img
+                    money -= 150
+                    chefcookingtime = 2
+                    purchasechef1 = True 
+                    
+                
             if upgrade_button2.draw(screen):
 
-                if money >= 250 and purchasewaiter1 == False and disableupgradewaiter == False :
+                if money >= 250 and  purchasewaiter2 == True and purchasewaiter3 == False :
+                    click_sfx.play()
+                    waiter3 = starupgrade_img
+                    money -= 250
+                    waiter_speed = 6
+                    purchasewaiter3 = True
+
+                if money >= 250 and purchasewaiter1 == True and purchasewaiter2 == False and purchasewaiter3 == False :
+                    click_sfx.play()
+                    waiter2 = starupgrade_img
+                    money -= 250
+                    waiter_speed = 6
+                    purchasewaiter2 = True
+
+                if money >= 250 and purchasewaiter1 == False and purchasewaiter2 == False and purchasewaiter3 == False:
                     click_sfx.play()
                     waiter1 = starupgrade_img
                     money -= 250
                     waiter_speed = 4
                     purchasewaiter1 =True
 
-                if purchasewaiter1== True and upgradecooldownwaiter <= 1:
-                    disableupgradewaiter = True
-                    upgradecooldownwaiter += 1
                 
-                if upgradecooldownwaiter == 2:
-                    disableupgradewaiter = False
-
-                if money >= 450 and purchasewaiter2 == False and disableupgradewaiter == False :
-                    click_sfx.play()
-                    waiter2 = starupgrade_img
-                    money -= 450
-                    waiter_speed = 6
-                    purchasewaiter2 = True
                 
         
             # if upgrade_button4.draw(screen) and chef3 == star_img and money >= 300:
@@ -1738,7 +1773,59 @@ def game_screen():
         clock.tick(60)
 
 
+def game_pause ():
+    
+    global runpauseUI
+    
+    runpauseUI = True
 
+    music_playing = True
+
+    while runpauseUI:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE :
+                    runpauseUI = False
+                if event.key == pygame.K_ESCAPE:
+                    runpauseUI = False
+
+        # Draw the shop background
+        
+        screen.blit(pausebackground_img, (410, 25))
+
+
+        if pause_mute.draw(screen):
+            click_sfx.play()
+            if music_playing:
+                mixer.music.stop()  # Stop background music if playing
+            else:
+                mixer.music.play(-1)  # Play background music if stopped
+            music_playing = not music_playing  # Toggle music state
+
+        if pause_continue.draw(screen):
+            click_sfx.play()
+            runpauseUI = False 
+
+        if pause_exit.draw(screen):
+            click_sfx.play()
+            main_menu()
+
+        if pause_click.draw(screen):
+            click_sfx.play
+            click_sfx.stop()
+
+        if pause_reset.draw(screen):
+            click_sfx.play()
+            game_screen()
+
+        
+
+        pygame.display.update()
+        
+    
 
 def credit_menu():
     RunCredit = True
@@ -1755,8 +1842,11 @@ def credit_menu():
             if event.type == pygame.QUIT:
                 RunCredit = False
         pygame.display.update()
-            
+
+
         pygame.display.update()
+
+            
 
     # Update the display
     pygame.display.flip()
