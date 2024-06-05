@@ -1793,7 +1793,8 @@ def game_pause ():
                     runpauseUI = False
 
         # Draw the shop background
-        
+
+
         screen.blit(pausebackground_img, (410, 25))
 
 
@@ -1822,8 +1823,8 @@ def game_pause ():
             game_screen()
 
         
-
         pygame.display.update()
+        
         
     
 
