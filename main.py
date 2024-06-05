@@ -583,12 +583,12 @@ def tutorial():
                 RunTutorial = False
 
 
-        # quitting
-        if pause_button.draw(screen):
-            click_sfx.play()
-            pygame.mixer.music.stop()
-            # insert pause code here
-            RunTutorial = False
+        # # quitting
+        # if pause_button.draw(screen):
+        #     click_sfx.play()
+        #     pygame.mixer.music.stop()
+        #     # insert pause code here
+        #     RunTutorial = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -1121,7 +1121,7 @@ def game_screen():
             pygame.mixer.music.stop()
             # insert pause code here
             game_pause()
-            run = False
+            
             
             
         # GUI
@@ -1776,8 +1776,6 @@ def game_screen():
 def game_pause ():
     
     global runpauseUI
-
-    
     
     runpauseUI = True
 
@@ -1803,7 +1801,6 @@ def game_pause ():
             click_sfx.play()
             if music_playing:
                 mixer.music.stop()  # Stop background music if playing
-
             else:
                 mixer.music.play(-1)  # Play background music if stopped
             music_playing = not music_playing  # Toggle music state
