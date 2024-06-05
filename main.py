@@ -868,7 +868,10 @@ def game_screen():
 
             resetday = False
 
-            satisfyreset = False
+        # if day == 5:
+        #     waiter_img = fern_img
+
+        
         
         # if day == 4 and satisfyreset == False :
         #     satisfy += 1
@@ -1782,16 +1785,7 @@ def game_pause ():
     music_playing = True
 
     while runpauseUI:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE :
-                    runpauseUI = False
-                if event.key == pygame.K_ESCAPE:
-                    runpauseUI = False
-
+        
         # Draw the shop background
         
         screen.blit(pausebackground_img, (410, 25))
@@ -1821,9 +1815,18 @@ def game_pause ():
             click_sfx.play()
             game_screen()
 
-        
-
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE :
+                    runpauseUI = False
+                if event.key == pygame.K_ESCAPE:
+                    runpauseUI = False
+        clock.tick(60)
         pygame.display.update()
+    pass
         
     
 
@@ -1842,12 +1845,7 @@ def credit_menu():
             if event.type == pygame.QUIT:
                 RunCredit = False
         pygame.display.update()
-
-
-        pygame.display.update()
-
             
-
     # Update the display
     pygame.display.flip()
 
