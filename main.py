@@ -774,7 +774,7 @@ def game_screen():
     casher_rect = pygame.Rect(casherX, casherY, 80, 350)
 
     # rect object for deco
-    piano_rect = pygame.Rect(pianoX, pianoY, 160, 40)
+    piano_rect = pygame.Rect(pianoX, pianoY, 160, 133)
 
     # days progression
 
