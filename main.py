@@ -116,13 +116,13 @@ starupgrade_img = pygame.image.load('gameasset/upgrade shop remaster/starupgrade
 shopbackground_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebackground.png').convert_alpha()
 
 #pause img
-pausebackground_img = pygame.image.load('gameasset\pause ui\pausebackground.png').convert_alpha()
-music_img = pygame.image.load('gameasset\pause ui\music.png').convert_alpha()
+pausebackground_img = pygame.image.load('gameasset/pause ui/pausebackground.png').convert_alpha()
+music_img = pygame.image.load('gameasset/pause ui/music.png').convert_alpha()
 continue_img = pygame.image.load('gameasset/pause ui/resume.png').convert_alpha()
-pauseexit_img = pygame.image.load('gameasset\pause ui\exit.png').convert_alpha()
+pauseexit_img = pygame.image.load('gameasset/pause ui/exit.png').convert_alpha()
 click_img = pygame.image.load('gameasset/pause ui/sound.png').convert_alpha()
 reset_img = pygame.image.load('gameasset/pause ui/reset.png').convert_alpha()
-mute_img = pygame.image.load('gameasset\pause ui\musicmuted.png').convert_alpha()
+mute_img = pygame.image.load('gameasset/pause ui/musicmuted.png').convert_alpha()
 pause_mute = button.Button(440, 90, music_img, 1)
 pause_continue = button.Button(440,250, continue_img,1)
 pause_exit = button.Button(740,250, pauseexit_img,1)
@@ -1220,7 +1220,7 @@ def game_screen():
             screen.blit(pressE_surf,pressE_rect)
 
         #hint to click SPACE to throw away food
-        if trashtrigger_rect.colliderect(waiter_rect):
+        if trashtrigger_rect.colliderect(waiter_rect) and waiterfood != emptybox_img:
             screen.blit(pressSPACE_surf,pressSPACE_rect)
 
         waiter(waiterX, waiterY, WaiterDirection)
