@@ -28,7 +28,7 @@ mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
 bg_credit_menu = pygame.image.load('gameasset/credit.png').convert_alpha()
 title_img = pygame.image.load('gameasset/gametitle.png').convert_alpha()
-shoppic_img = pygame.image.load('gameasset/shop.jpg').convert_alpha()
+shoppic_img = pygame.image.load('gameasset/shopui2/shopuibackground.png').convert_alpha()
 start_img = pygame.image.load('gameasset/playbutton.png').convert_alpha()
 credit_img = pygame.image.load('gameasset/creditbutton.png').convert_alpha()
 exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
@@ -45,6 +45,8 @@ skipdialogue_img = pygame.image.load('gameasset/dialogue ui/skipdialogue.png').c
 
 nextdialogue_button = button.Button(1070, 620, nextdialogue_img, 1)
 skipdialogue_button = button.Button(100, 620, skipdialogue_img, 1)
+
+nextday_button = button.Button(1100, 440, nextdialogue_img, 1)
 
 
 # game images
@@ -104,21 +106,22 @@ shopupgrade_button = button.Button(680, 270, shopupgrade_img, 1)
 xshopui2_button = button.Button(810, 180, xbutton_img, 1)
 
 #shop img
-cheficon_img =  pygame.image.load('gameasset/ShopUI/ShopUI/cheficon.png').convert_alpha()
-chefborder_img = pygame.image.load('gameasset/ShopUI/ShopUI/shopcolumn.png').convert_alpha()
-star_img = pygame.image.load('gameasset/ShopUI/ShopUI/star.png').convert_alpha()
-upgradebutton_img = pygame.image.load('gameasset/ShopUI/ShopUI/upgrade.png').convert_alpha()
-starupgrade_img = pygame.image.load('gameasset/ShopUI/ShopUI/starupgraded.png').convert_alpha()
-shopbackground_img = pygame.image.load('gameasset/ShopUI/ShopUI/shopbackground.png').convert_alpha()
+cheficon_img =  pygame.image.load('gameasset/upgrade shop remaster/chefupgrade.png').convert_alpha()
+waitericon_img =  pygame.image.load('gameasset/upgrade shop remaster/waiterupgrade.png').convert_alpha()
+star_img = pygame.image.load('gameasset/upgrade shop remaster/star.png').convert_alpha()
+upgradebutton_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebuy.png').convert_alpha()
+starupgrade_img = pygame.image.load('gameasset/upgrade shop remaster/starupgraded.png').convert_alpha()
+shopbackground_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebackground.png').convert_alpha()
+
 
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
 upgrade_button1 = button.Button(1050, 150, upgradebutton_img, 1)
 upgrade_button2 = button.Button(1050,315, upgradebutton_img,1)
 upgrade_button3 = button.Button(1050,475, upgradebutton_img,1)
-
-
-
+upgrade_button4 = button.Button(1050, 150, upgradebutton_img, 1)
+upgrade_button5 = button.Button(1050,315, upgradebutton_img,1)
+upgrade_button6 = button.Button(1050,475, upgradebutton_img,1)
 
 # decoration ui images
 decorationuibackground_img = pygame.image.load('gameasset/decoration ui/decorationuibackground.png').convert_alpha()
@@ -168,6 +171,10 @@ wrong_scaled = pygame.transform.scale(wrong_img, (int(wrong_img.get_width() * 0.
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
+
+#customersleft image
+customersleft_img = pygame.image.load('gameasset/customersleft.png').convert_alpha()
+
 
 
 # text
@@ -601,6 +608,7 @@ def game_screen():
     incomemultiplier = 0
 
     day = 1
+    satisfy = day
     daytransition = False
     daytransitiontick = 0
     resetday = False
@@ -656,12 +664,34 @@ def game_screen():
     chefcookingtime = 0
 
     # shop ui 
+     
     runShopUI = False
     waiter_speed = 2
     chef = star_img
     chef2 = star_img
+    chef3 = star_img 
+    chef4 = star_img
+    chef5 = star_img
+    chef6 = star_img
     waiter1 = star_img
+    waiter2 = star_img
+    waiter3 = star_img
+    chef_upgrade_purchased = False
+    purchasechef1 = False
+    purchasechef2 = False
+    purchasechef3 = False
+    purchasewaiter1 = False
+    purchasewaiter2 = False
+    purchasewaiter3 = False
+    upgradecooldownchef = 0
+    disableupgradechef = False
+    disableupgradechef1 = False
+    disableupgradewaiter = False
+    upgradecooldownwaiter = 0
+     
+
     chefcookingtime = 1
+
 
     # shopui2
     runShopUI2 = False
@@ -700,6 +730,8 @@ def game_screen():
     foodchoice = [chicken_img, fish_img, burger_img, pizza_img, steak_img]
     npcappeartime1 = 0
 
+    npcstop = False
+
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height())
     # rect object for table and chair
@@ -732,13 +764,16 @@ def game_screen():
         
 
         # BLACK SCREEN TRANSITION
-        if npcnumber == day:
-            daytransition = True
-            resetday = True
+        if int(max(satisfy,0)) == 0:
+            if nextday_button.draw(screen):
+                    click_sfx.play()
+                    daytransition = True
+                    resetday = True
 
         # RESET DAY 
         if resetday == True:
             day += 1
+            satisfy = day
             npcnumber = 0
 
             npc1_x_pos = 1000
@@ -802,12 +837,34 @@ def game_screen():
             npc2reset = True
             npc3reset = True
 
-            resetday = False  
-
             FoodOnTable = emptybox_img
+            CustomerFood = emptybox_img
+            CustomerFood2 = emptybox_img
+            customerFood3 = emptybox_img
+
+            npcstop = False
+
+            resetday = False
+
+            satisfyreset = False
+        
+        # if day == 4 and satisfyreset == False :
+        #     satisfy += 1
+        #     satisfyreset = True
+            
+
+        # if day == 5 and satisfyreset == False:
+        #     satisfy += 2
+        #     satisfyreset = True
+
+        # if day >= 6 and satisfyreset == False:
+        #     satisfy += 3
+        #     satisfyreset = True
+
+
 
 # NPC 1 RESET --------------------------------------------------------------------------------------------------------------#
-        if npc1reset == False:
+        if npc1reset == False and npcstop == False:
 
             npc1_x_pos = 1000
             npc1_y_pos = 100
@@ -837,10 +894,12 @@ def game_screen():
             npc1reset = True  
 
             npcappeartime1 = 0
+
+
 # NPC 1 RESET --------------------------------------------------------------------------------------------------------------#
 
 # NPC 2 RESET --------------------------------------------------------------------------------------------------------------#
-        if npc2reset == False:
+        if npc2reset == False  and npcstop == False:
 
             npc2_x_pos = 1000
             npc2_y_pos = 100
@@ -874,7 +933,7 @@ def game_screen():
 
 # NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
         
-        if npc3reset == False:
+        if npc3reset == False and npcstop == False:
 
             npc3_x_pos = 1000
             npc3_y_pos = 100
@@ -948,7 +1007,7 @@ def game_screen():
             if keys[pygame.K_d] and waiter_rect.right > tablechair1_rect.left:
                 waiterX -= waiter_speed
 
-            if CustomerFood2 == emptybox_img and npcfoodrequest2 == True:
+            if CustomerFood2 == emptybox_img and npcfoodrequest2 == True and npc2_x_pos == 950:
                 CustomerFood2 = waiterfood
                 waiterfood = emptybox_img
                 cooking = emptybox_img
@@ -965,7 +1024,7 @@ def game_screen():
                 waiterX += waiter_speed
             if keys[pygame.K_d] and waiter_rect.right > tablechair2_rect.left:
                 waiterX -= waiter_speed
-            if CustomerFood3 == emptybox_img and npcfoodrequest3 == True:
+            if CustomerFood3 == emptybox_img and npcfoodrequest3 == True and npc3_x_pos == 950:
                 CustomerFood3 = waiterfood
                 waiterfood = emptybox_img
                 cooking = emptybox_img
@@ -982,7 +1041,7 @@ def game_screen():
             if keys[pygame.K_d] and waiter_rect.right > tablechair3_rect.left:
                 waiterX -= waiter_speed
             
-            if CustomerFood == emptybox_img and npcfoodrequest == True:
+            if CustomerFood == emptybox_img and npcfoodrequest == True and npc1_x_pos == 595:
                 CustomerFood = waiterfood
                 waiterfood = emptybox_img
                 cooking = emptybox_img
@@ -1005,6 +1064,10 @@ def game_screen():
         daycycle_font = pygame.font.Font('font/segoepr.ttf', 30)
         daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
         daycycle_rect = daycycle_surf.get_rect(topleft=(490,620))
+
+        customer_font = pygame.font.Font('font/segoepr.ttf', 40)
+        customer_surf = customer_font.render(str(max(satisfy,0)), True, 'darkred')
+        customer_rect = customer_surf.get_rect(topleft=(785,598))
 
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
         money_surf = money_font.render(str(int(money)), True, 'darkred')
@@ -1029,12 +1092,15 @@ def game_screen():
             # insert pause code here
             run = False
             
+            
         # GUI
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
+        screen.blit(customersleft_img, (580,586))
         screen.blit(daycycle_surf,daycycle_rect)
         screen.blit(money_surf,money_rect)
         screen.blit(moneychange_surf,moneychange_rect)
+        screen.blit(customer_surf, customer_rect)
 
     
         # testing, add 12 money every 1 frame
@@ -1146,7 +1212,9 @@ def game_screen():
         waitbar_surf3 = waitbar_font3.render('.'*waitprogress3, False, (64,64,64))
         waitbar_rect3 = waitbar_surf3.get_rect(midleft = (npc3_x_pos,npc3_y_pos - 120))
         
-        
+        if npcnumber == day:
+            npcstop = True
+
         if npcfoodrequest == False:
             npcqueuetime +=1
             if npcqueuetime >= 250:
@@ -1184,7 +1252,7 @@ def game_screen():
                     waitdelay = 0
                 
                 # Customer gets the right food
-                if  CustomerFood == randomfood and earnmoney == False:
+                if  CustomerFood == randomfood and earnmoney == False and not npc1_x_pos == -1000:
                     npceatingtime += 1
 
                     if npceatingtime >= 100:
@@ -1192,15 +1260,16 @@ def game_screen():
                         npc1_x_pos = -1000
                         npcnumber += 1
                         CustomerFood = emptybox_img
+                        satisfy -= 1
                         earnmoney = True
 
-                        if day >= 4 and npc1_x_pos == -1000:
+                        if day >= 4 and npc1_x_pos == -1000 and npcstop == False:
                             npc1reset = False
                                 
 
 
                 # Customer gets the wrong food
-                if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img:
+                if CustomerFood != randomfood and wrongfood == False and CustomerFood != emptybox_img and not npc1_x_pos == -1000:
                     npcdisgustedwait += 1
                     screen.blit(wrong_scaled, (npc1_x_pos + 5,npc1_y_pos - 40))
 
@@ -1214,7 +1283,7 @@ def game_screen():
                             npc1reset = False
 
                 # Customer wait time runs out
-                if waitprogress >= 135 and CustomerFood == emptybox_img and npcleave == False:
+                if waitprogress >= 135 and CustomerFood == emptybox_img and npcleave == False and not npc1_x_pos == -1000:
                     money -= 50
                     npc1_x_pos = -1000
                     npcleave = True
@@ -1258,7 +1327,7 @@ def game_screen():
                     waitdelay2 = 0
                     
                 # Customer gets the right food
-                if  CustomerFood2 == randomfood2 and earnmoney2 == False:
+                if  CustomerFood2 == randomfood2 and earnmoney2 == False and not npc2_x_pos == -1000:
                     npceatingtime2 += 1
 
                     if npceatingtime2 >= 100:
@@ -1266,13 +1335,14 @@ def game_screen():
                         npc2_x_pos = -1000
                         npcnumber += 1
                         CustomerFood2 = emptybox_img
+                        satisfy -= 1
                         earnmoney2 = True
 
                         if day >= 5 and npc2_x_pos == -1000:
                             npc2reset = False
                     
                     # Customer gets the wrong food
-                if CustomerFood2 != randomfood2 and wrongfood2 == False and CustomerFood2 != emptybox_img:
+                if CustomerFood2 != randomfood2 and wrongfood2 == False and CustomerFood2 != emptybox_img and not npc2_x_pos == -1000:
                     npcdisgustedwait2 += 1
                     screen.blit(wrong_scaled, (npc2_x_pos + 5,npc2_y_pos - 40))
 
@@ -1286,7 +1356,7 @@ def game_screen():
                             npc2reset = False
                     
                 # Customer wait time runs out
-                if waitprogress2 >= 135 and CustomerFood2 == emptybox_img and npcleave2 == False:
+                if waitprogress2 >= 135 and CustomerFood2 == emptybox_img and npcleave2 == False and not npc2_x_pos == -1000:
                     money -= 50
                     npc2_x_pos = -1000
                     npcleave2 = True
@@ -1332,7 +1402,7 @@ def game_screen():
                     waitdelay3 = 0
                     
                 # Customer gets the right food
-                if  CustomerFood3 == randomfood3 and earnmoney3 == False:
+                if  CustomerFood3 == randomfood3 and earnmoney3 == False and not npc3_x_pos == -1000:
                     npceatingtime3 += 1
 
                     if npceatingtime3 >= 100:
@@ -1340,13 +1410,14 @@ def game_screen():
                         npc3_x_pos = -1000
                         npcnumber += 1
                         CustomerFood3 = emptybox_img
+                        satisfy -= 1
                         earnmoney3 = True
                         
                         if day >= 6 and npc3_x_pos == -1000:
                             npc3reset = False
                     
                     # Customer gets the wrong food
-                if CustomerFood3 != randomfood3 and wrongfood3 == False and CustomerFood3 != emptybox_img:
+                if CustomerFood3 != randomfood3 and wrongfood3 == False and CustomerFood3 != emptybox_img and not npc3_x_pos == -1000:
                     npcdisgustedwait3 += 1
                     screen.blit(wrong_scaled, (npc3_x_pos + 5,npc3_y_pos - 40))
 
@@ -1360,13 +1431,14 @@ def game_screen():
                             npc3reset = False
                     
                     # Customer wait time runs out
-                if waitprogress3 >= 135 and CustomerFood3 == emptybox_img and npcleave3 == False:
+                if waitprogress3 >= 135 and CustomerFood3 == emptybox_img and npcleave3 == False and not npc3_x_pos == -1000:
                     money -= 50
                     npc3_x_pos = -1000
                     npcleave3 = True
 
                     if npc3_x_pos == -1000:
                         npc3reset = False
+            
 
         # npc movement ================================== #
 
@@ -1394,42 +1466,109 @@ def game_screen():
                 runShopUI = True
                 runShopUI2 = False
 
+
         if runShopUI == True:
 
             
             screen.blit(shopbackground_img, (410,25))
-            screen.blit(chefborder_img, (435,125))
-            screen.blit(cheficon_img, (450,135))
-            screen.blit(chefborder_img, (435,285))
-            screen.blit(cheficon_img, (450,295))
-            screen.blit(chefborder_img, (435,445))
-            screen.blit(cheficon_img, (450,455))
+            screen.blit(cheficon_img, (440,135))
+            screen.blit(waitericon_img, (440,295))
+            # screen.blit(cheficon_img, (440,450))
             screen.blit(chef, (610,155))
-            #screen.blit(chef3, (810,155))
-            screen.blit(chef2, (610,315))
-            screen.blit(waiter1, (610,475))
+            screen.blit(chef2, (710,155))
+            screen.blit(chef3, (810,155))
+            screen.blit(waiter1, (610,315))
+            screen.blit(waiter2, (710,315))
+            screen.blit(waiter3, (810,315))
+            # screen.blit(chef4, (610,475))
+            # screen.blit(chef5, (710,475))
+            # screen.blit(chef6, (810,475))
             
             
             if xshopbutton_button.draw(screen) :
                 click_sfx.play()
                 runShopUI = False
 
-            if upgrade_button1.draw(screen) and chef == star_img and money>= 100 :
-                 click_sfx.play()
-                 chef = starupgrade_img
-                 money -= 100
-                 chefcookingtime = 3
+            # if upgrade_button1.draw(screen) and chef == star_img and money>= 150 and purchasechef1 == False :
+            #      click_sfx.play()
+            #      chef = starupgrade_img
+            #      money -= 150
+            #      chefcookingtime = 2
+            #      purchasechef1 = True 
+            
+            if upgrade_button1.draw(screen):
 
-            if upgrade_button2.draw(screen) and chef2 == star_img and money>= 100:
-                 click_sfx.play()
-                 chef2 = starupgrade_img
-                 money -= 100
-                 waiter_speed = 6
-                 
-            if upgrade_button3.draw(screen) and waiter1 == star_img and money >= 100 :
-                 click_sfx.play()
-                 waiter1 = starupgrade_img
-                 money -= 100
+                if money >= 250 and purchasechef1 == False and disableupgradechef == False :
+                    click_sfx.play()
+                    chef = starupgrade_img
+                    money -= 250
+                    chefcookingtime = 2
+                    purchasechef1 = True 
+
+                if purchasechef1 == True and upgradecooldownchef <= 1:
+                    disableupgradechef = True
+                    upgradecooldownchef += 1
+
+                if upgradecooldownchef == 2:
+                    disableupgradechef = False
+
+                if money >= 450 and purchasechef2 == False and disableupgradechef == False :
+                    click_sfx.play()
+                    chef2 = starupgrade_img
+                    money -= 450
+                    chefcookingtime = 3
+                    purchasechef2 = True
+
+
+            if upgrade_button2.draw(screen):
+
+                if money >= 250 and purchasewaiter1 == False and disableupgradewaiter == False :
+                    click_sfx.play()
+                    waiter1 = starupgrade_img
+                    money -= 250
+                    waiter_speed = 4
+                    purchasewaiter1 =True
+
+                if purchasewaiter1== True and upgradecooldownwaiter <= 1:
+                    disableupgradewaiter = True
+                    upgradecooldownwaiter += 1
+                
+                if upgradecooldownwaiter == 2:
+                    disableupgradewaiter = False
+
+                if money >= 450 and purchasewaiter2 == False and disableupgradewaiter == False :
+                    click_sfx.play()
+                    waiter2 = starupgrade_img
+                    money -= 450
+                    waiter_speed = 6
+                    purchasewaiter2 = True
+                
+        
+            # if upgrade_button4.draw(screen) and chef3 == star_img and money >= 300:
+            #     click_sfx.play()
+            #     chef3 = starupgrade_img
+            #     money -= 300
+            #     chefcookingtime = 3
+
+            # if upgrade_button5.draw(screen) and chef4 == star_img and money >= 300:
+            #     click_sfx.play()
+            #     chef4 = starupgrade_img
+            #     money -= 300
+            #     waiter_speed = 7
+                
+            # if upgrade_button3.draw(screen) and waiter1 == star_img and money >= 150 :
+            #     click_sfx.play()
+            #     waiter1 = starupgrade_img
+            #     money -= 150
+
+            # if upgrade_button6.draw(screen) and waiter2 == star_img and money >= 300 :
+            #     click_sfx.play()
+            #     waiter2 = starupgrade_img
+            #     money -= 300
+
+            if chef_upgrade_purchased:
+                upgrade_button1.disabled = True
+
 
 
     
@@ -1599,6 +1738,8 @@ def game_screen():
         clock.tick(60)
 
 
+
+
 def credit_menu():
     RunCredit = True
     while RunCredit :
@@ -1608,13 +1749,21 @@ def credit_menu():
 
         if pause_button.draw(screen):
             click_sfx.play()
-            # insert pause code here
             RunCredit = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RunCredit = False
         pygame.display.update()
+            
+        pygame.display.update()
+
+    # Update the display
+    pygame.display.flip()
+
+
+    # Cap the frame rate
+    clock.tick(60)
 
 # test
 # def credits_menu():
