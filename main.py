@@ -67,6 +67,8 @@ tablechair2_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 tablechair3_img = pygame.image.load('gameasset/tablechair.png').convert_alpha()
 vignette_img = pygame.image.load('gameasset/vignette.png').convert_alpha()
 casher_img = pygame.image.load('gameasset/cashercollision.png').convert_alpha()
+cashiernpc_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
+cashiernpc_flip = pygame.transform.flip(cashiernpc_img, True, False)
 
 #waiter
 waiterstand_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
@@ -1129,6 +1131,8 @@ def game_screen():
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
         # food serve ================================ #
 
+        # cashier
+        screen.blit(cashiernpc_flip, (425,90))
 
 
 
