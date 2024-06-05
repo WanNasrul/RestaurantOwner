@@ -36,7 +36,7 @@ exit_img = pygame.image.load('gameasset/quitbutton.png').convert_alpha()
 # background music
 mixer.music.load('gameasset/backgroundmusic.mp3')
 mixer.music.play(-1)
-mixer.music.set_volume(0.05)
+mixer.music.set_volume(0.50)
 
 # intro dialog
 
@@ -115,6 +115,19 @@ upgradebutton_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebu
 starupgrade_img = pygame.image.load('gameasset/upgrade shop remaster/starupgraded.png').convert_alpha()
 shopbackground_img = pygame.image.load('gameasset/upgrade shop remaster/upgradebackground.png').convert_alpha()
 
+#pause img
+pausebackground_img = pygame.image.load('gameasset\pause ui\pausebackground.png').convert_alpha()
+music_img = pygame.image.load('gameasset\pause ui\music.png').convert_alpha()
+continue_img = pygame.image.load('gameasset/pause ui/resume.png').convert_alpha()
+pauseexit_img = pygame.image.load('gameasset\pause ui\exit.png').convert_alpha()
+click_img = pygame.image.load('gameasset/pause ui/sound.png').convert_alpha()
+reset_img = pygame.image.load('gameasset/pause ui/reset.png').convert_alpha()
+mute_img = pygame.image.load('gameasset\pause ui\musicmuted.png').convert_alpha()
+pause_mute = button.Button(440, 90, music_img, 1)
+pause_continue = button.Button(440,250, continue_img,1)
+pause_exit = button.Button(740,250, pauseexit_img,1)
+pause_click = button.Button(710,90, click_img,1)
+pause_reset = button.Button(590,250, reset_img,1)
 
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
@@ -557,11 +570,10 @@ def tutorial():
                 RunTutorial = False
 
 
-        # quitting
-        if pause_button.draw(screen):
-            click_sfx.play()
-            # insert pause code here
-            RunTutorial = False
+        # # quitting
+        # if pause_button.draw(screen):
+        #     click_sfx.play()
+        #     game_pause()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -627,6 +639,9 @@ def game_screen():
     npc2reset = True
     npc3reset = True    
 
+    # pause ui
+    runpauseUI = False
+
     # chef UI
     runchefUI = False
     rundecorationUI = False
@@ -660,6 +675,7 @@ def game_screen():
     purchasewaiter2 = False
     purchasewaiter3 = False
     upgradecooldownchef = 0
+    upgradecooldownchef1 = 0
     disableupgradechef = False
     disableupgradechef1 = False
     disableupgradewaiter = False
@@ -1029,7 +1045,7 @@ def game_screen():
 
         if pause_button.draw(screen):
             click_sfx.play()
-            run = False
+            game_pause()
             
             
         # GUI
@@ -1424,6 +1440,7 @@ def game_screen():
             #      purchasechef1 = True 
             
             if upgrade_button1.draw(screen):
+               
 
                 if money >= 250 and purchasechef1 == False and disableupgradechef == False :
                     click_sfx.play()
@@ -1445,6 +1462,21 @@ def game_screen():
                     money -= 450
                     chefcookingtime = 3
                     purchasechef2 = True
+
+                if purchasechef2 == True and upgradecooldownchef1 <= 1:
+                    disableupgradechef1 = True 
+                    upgradecooldownchef1 += 1
+
+                if upgradecooldownchef1 == 2 :
+                    disableupgradechef1 = False
+
+                if money >= 550 and  purchasechef3 == False and disableupgradechef1 == False :
+                    click_sfx.play()
+                    chef3 = starupgrade_img
+                    money -= 550 
+                    chefcookingtime = 4
+                    purchasechef3 = True
+                
 
 
             if upgrade_button2.draw(screen):
@@ -1665,7 +1697,63 @@ def game_screen():
         clock.tick(60)
 
 
+def game_pause ():
+    
+    global runpauseUI
 
+    
+    
+    runpauseUI = True
+
+    music_playing = True
+
+    while runpauseUI:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE :
+                    runpauseUI = False
+                if event.key == pygame.K_ESCAPE:
+                    runpauseUI = False
+
+        # Draw the shop background
+        
+        screen.blit(pausebackground_img, (410, 25))
+
+
+        if pause_mute.draw(screen):
+            click_sfx.play()
+            if music_playing:
+                mixer.music.stop()  # Stop background music if playing
+                pause_mute = mute_img
+
+            else:
+                mixer.music.play(-1)  # Play background music if stopped
+            music_playing = not music_playing  # Toggle music state
+
+        if pause_continue.draw(screen):
+            click_sfx.play()
+            runpauseUI = False 
+
+        if pause_exit.draw(screen):
+            click_sfx.play()
+            main_menu()
+
+        if pause_click.draw(screen):
+            click_sfx.play
+            click_sfx.stop()
+
+        if pause_reset.draw(screen):
+            click_sfx.play()
+            game_screen()
+
+        
+
+        pygame.display.update()
+        
+    
 
 def credit_menu():
     RunCredit = True
@@ -1683,12 +1771,7 @@ def credit_menu():
                 RunCredit = False
         pygame.display.update()
 
-    
 
-        
-
-
-            
         pygame.display.update()
 
             
