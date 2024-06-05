@@ -176,6 +176,9 @@ cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
 
+#customersleft image
+customersleft_img = pygame.image.load('gameasset/customersleft.png').convert_alpha()
+
 
 
 # text
@@ -1031,9 +1034,9 @@ def game_screen():
         daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
         daycycle_rect = daycycle_surf.get_rect(topleft=(490,620))
 
-        customer_font = pygame.font.Font('font/segoepr.ttf', 30)
+        customer_font = pygame.font.Font('font/segoepr.ttf', 40)
         customer_surf = customer_font.render(str(max(satisfy,0)), True, 'darkred')
-        customer_rect = customer_surf.get_rect(topleft=(480,560))
+        customer_rect = customer_surf.get_rect(topleft=(785,598))
 
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
         money_surf = money_font.render(str(int(money)), True, 'darkred')
@@ -1056,6 +1059,7 @@ def game_screen():
         # GUI
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
+        screen.blit(customersleft_img, (580,586))
         screen.blit(daycycle_surf,daycycle_rect)
         screen.blit(money_surf,money_rect)
         screen.blit(moneychange_surf,moneychange_rect)
