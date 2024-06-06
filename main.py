@@ -1909,7 +1909,7 @@ def game_screen():
         
         
         # vignette
-        # screen.blit(vignette_img, (0,0))
+        screen.blit(vignette_img, (0,0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
