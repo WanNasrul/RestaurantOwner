@@ -47,7 +47,7 @@ nextdialogue_button = button.Button(1070, 620, nextdialogue_img, 1)
 skipdialogue_button = button.Button(100, 620, skipdialogue_img, 1)
 
 nextday_img = pygame.image.load('gameasset/nextdaybutton.png').convert_alpha()
-nextday_button = button.Button(910, 350, nextday_img, 1)
+nextday_button = button.Button(963, 350, nextday_img, 1)
 
 
 # game images
@@ -860,15 +860,6 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
-        
-
-        # BLACK SCREEN TRANSITION
-        if int(max(satisfy,0)) == 0:
-            if nextday_button.draw(screen):
-                    click_sfx.play()
-                    daytransition = True
-                    resetday = True
-
 
         # RESET DAY 
         if resetday == True:
@@ -1207,15 +1198,7 @@ def game_screen():
             game_pause()
             
         chef_button = button.Button(200, 215, chef_img, 1)
-            
-        # GUI
-        screen.blit(moneycounter_img, (30,530))
-        screen.blit(daycounter_img, (380,615))
-        screen.blit(customersleft_img, (580,586))
-        screen.blit(daycycle_surf,daycycle_rect)
-        screen.blit(money_surf,money_rect)
-        screen.blit(moneychange_surf,moneychange_rect)
-        screen.blit(customer_surf, customer_rect)
+        
 
     
         # testing, add 12 money every 1 frame
@@ -1565,6 +1548,22 @@ def game_screen():
             
 
         # npc movement ================================== #
+
+
+        # GUI
+        screen.blit(moneycounter_img, (30,530))
+        screen.blit(daycounter_img, (380,615))
+        screen.blit(daycycle_surf,daycycle_rect)
+        screen.blit(money_surf,money_rect)
+        screen.blit(moneychange_surf,moneychange_rect)
+        screen.blit(customer_surf, customer_rect)
+        screen.blit(customersleft_img, (580,586))
+        # BLACK SCREEN TRANSITION
+        if int(max(satisfy,0)) == 0:
+            if nextday_button.draw(screen):
+                    click_sfx.play()
+                    daytransition = True
+                    resetday = True
 
         # insert shop code here
         if rundecorationUI == False and runShopUI2 == False and runShopUI == False:
