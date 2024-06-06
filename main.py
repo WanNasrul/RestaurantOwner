@@ -76,6 +76,28 @@ waiter_walk = [waiterwalk1_img,waiterwalk2_img]
 waiter_index = 0
 waiter_img = waiter_walk[waiter_index]
 
+#npcanimation
+npcalien1_img = pygame.image.load('gameasset/npcanimationpack/npcalien1.png').convert_alpha()
+npcalien2_img = pygame.image.load('gameasset/npcanimationpack/npcalien2.png').convert_alpha()
+npcalien3_img = pygame.image.load('gameasset/npcanimationpack/npcalien3.png').convert_alpha()
+npcalien4_img = pygame.image.load('gameasset/npcanimationpack/npcalien4.png').convert_alpha()
+npcalien_walk = [npcalien2_img,npcalien3_img]
+npcalien_index = 0
+npcalien_img = npcalien_walk[npcalien_index]
+
+npccat1_img = pygame.image.load('gameasset/npcanimationpack/npccat1.png').convert_alpha()
+npccat2_img = pygame.image.load('gameasset/npcanimationpack/npccat2.png').convert_alpha()
+npccat3_img = pygame.image.load('gameasset/npcanimationpack/npccat3.png').convert_alpha()
+npccat_walk = [npccat2_img,npccat3_img]
+npccat_index = 0
+npccat_img = npccat_walk[npccat_index]
+
+npcblob1_img = pygame.image.load('gameasset/npcanimationpack/npcblob1.png').convert_alpha()
+npcblob2_img = pygame.image.load('gameasset/npcanimationpack/npcblob2.png').convert_alpha()
+npcblob3_img = pygame.image.load('gameasset/npcanimationpack/npcblob3.png').convert_alpha()
+npcblob_walk = [npcblob2_img,npcblob3_img]
+npcblob_index = 0
+npcblob_img = npcblob_walk[npcblob_index]
 
 # chef ui images
 chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
@@ -235,22 +257,59 @@ customersleft_img = pygame.image.load('gameasset/customersleft.png').convert_alp
 #     return money, day
     
 def npc(x, y):
-    npc1_width = int(npc1_img.get_width() * 1)
-    npc1_height = int(npc1_img.get_height() * 1)
-    npc1_resize= pygame.transform.scale(npc1_img, (npc1_width, npc1_height))
-    screen.blit(npc1_resize, (x, y))
+    npcalien_width = int(npcalien_img.get_width() * 1)
+    npcalien_height = int(npcalien_img.get_height() * 1)
+    npcalien_resize= pygame.transform.scale(npcalien_img, (npcalien_width, npcalien_height))
+    screen.blit(npcalien_resize, (x, y))
+
+def npc1_animation(action):
+    global npcalien_img, npcalien_index
+    if action == "standing":
+        npcalien_img = npcalien1_img
+    if action == "walking":
+        npcalien_index += 0.07
+        if npcalien_index >= len(npcalien_walk):
+            npcalien_index = 0
+        npcalien_img = npcalien_walk[int(npcalien_index)]
+    if action == "sitting":
+        npcalien_img = npcalien4_img
 
 def npc2(x, y):
-    npc2_width = int(npc1_img.get_width() * 1)
-    npc2_height = int(npc1_img.get_height() * 1)
-    npc2_resize= pygame.transform.scale(npc2_img, (npc2_width, npc2_height))
-    screen.blit(npc2_resize, (x, y))
+    npccat_width = int(npccat_img.get_width() * 1)
+    npccat_height = int(npccat_img.get_height() * 1)
+    npccat_resize= pygame.transform.scale(npccat_img, (npccat_width, npccat_height))
+    screen.blit(npccat_resize, (x, y))
+
+def npc2_animation(action):
+    global npccat_img, npccat_index
+    if action == "standing":
+        npccat_img = npccat1_img
+    if action == "walking":
+        npccat_index += 0.07
+        if npccat_index >= len(npccat_walk):
+            npccat_index = 0
+        npccat_img = npccat_walk[int(npccat_index)]
+    if action == "sitting":
+        npccat_img = npccat1_img
 
 def npc3(x, y):
-    npc3_width = int(npc1_img.get_width() * 1)
-    npc3_height = int(npc1_img.get_height() * 1)
-    npc3_resize= pygame.transform.scale(npc3_img, (npc3_width, npc3_height))
-    screen.blit(npc3_resize, (x, y))
+    global npcblob_img, npcblob_index
+    npcblob_width = int(npcblob_img.get_width() * 1)
+    npcblob_height = int(npcblob_img.get_height() * 1)
+    npcblob_resize= pygame.transform.scale(npcblob_img, (npcblob_width, npcblob_height))
+    screen.blit(npcblob_resize, (x, y))
+
+def npc3_animation(action):
+    global npcblob_img, npcblob_index
+    if action == "standing":
+        npcblob_img = npcblob1_img
+    if action == "walking":
+        npcblob_index += 0.07
+        if npcblob_index >= len(npcblob_walk):
+            npcblob_index = 0
+        npcblob_img = npcblob_walk[int(npcblob_index)]
+    if action == "sitting":
+        npcblob_img = npcblob1_img
 
 def waiter(x, y, WaiterDirection):
     waiter_width = int(waiter_img.get_width() * 1)
@@ -1253,7 +1312,9 @@ def game_screen():
 
         if npcfoodrequest == False:
             npcqueuetime +=1
+            npc1_animation("standing")
             if npcqueuetime >= 250:
+                npc1_animation("walking")
                 npc1_x_pos -= 1.5
                 if npc1_x_pos <= 650:  
                     npc1_x_pos = 651
@@ -1262,9 +1323,10 @@ def game_screen():
                     if npc1_y_pos >= 340: 
                         npc1_y_pos = 435
                         npc1_x_pos = 595
+                        npc1_animation("sitting")
                         npcfoodrequest = True
 
-                        
+
 
         if npcfoodrequest == True and not npc1_x_pos == -1000 and not npc1_y_pos == -1000:
             npcwaittime += 1
@@ -1329,14 +1391,16 @@ def game_screen():
         #npc 2 ======================================#
         if day >= 2 and npcfoodrequest2 == False:
             npcqueuetime2 += 1
-            
+            npc2_animation("standing")
             if npcqueuetime2 >= 700:
+                npc2_animation("walking")
                 npc2_x_pos -= 1.5
                 if npc2_x_pos <= 650:  
                     npc2_x_pos = 651
                     npc2_y_pos += 1.5
 
                     if npc2_y_pos >= 340: 
+                        npc2_animation("sitting")
                         npc2_y_pos = 435
                         npc2_x_pos = 950
                         npcfoodrequest2 = True
@@ -1404,14 +1468,16 @@ def game_screen():
         #npc 3 =================================================================================#
         if day >= 3 and npcfoodrequest3 == False:
             npcqueuetime3 += 1
-            
+            npc3_animation("standing")
             if npcqueuetime3 >= 1200:
+                npc3_animation("walking")
                 npc3_x_pos -= 1.5
                 if npc3_x_pos <= 650:  
                     npc3_x_pos = 651
                     npc3_y_pos += 1.5
 
                     if npc3_y_pos >= 240: 
+                        npc3_animation("sitting")
                         npc3_y_pos = 230
                         npc3_x_pos = 950
                         npcfoodrequest3 = True
