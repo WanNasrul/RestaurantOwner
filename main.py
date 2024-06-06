@@ -46,7 +46,8 @@ skipdialogue_img = pygame.image.load('gameasset/dialogue ui/skipdialogue.png').c
 nextdialogue_button = button.Button(1070, 620, nextdialogue_img, 1)
 skipdialogue_button = button.Button(100, 620, skipdialogue_img, 1)
 
-nextday_button = button.Button(1100, 440, nextdialogue_img, 1)
+nextday_img = pygame.image.load('gameasset/nextdaybutton.png').convert_alpha()
+nextday_button = button.Button(910, 350, nextday_img, 1)
 
 
 # game images
