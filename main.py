@@ -216,11 +216,32 @@ wrong_scaled = pygame.transform.scale(wrong_img, (int(wrong_img.get_width() * 0.
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
+pageturn_sfx = pygame.mixer.Sound('gameasset/pageturn.mp3')
+dispose_sfx = pygame.mixer.Sound('gameasset/dispose.mp3')
 
 #customersleft image
 customersleft_img = pygame.image.load('gameasset/customersleft.png').convert_alpha()
 
+#HOW TO PLAY image
+howtoplaybackground_img = pygame.image.load('gameasset/HowToPlay pack/howtoplaybackground.png').convert_alpha()
+howtoplaybutton_img = pygame.image.load('gameasset/HowToPlay pack/howtoplaybutton.png').convert_alpha()
+howtoplayclosebutton_img = pygame.image.load('gameasset/HowToPlay pack/howtoplayclosebutton.png').convert_alpha()
+howtoplaynextbutton_img = pygame.image.load('gameasset/HowToPlay pack/howtoplaynextbutton.png').convert_alpha()
+howtoplaypreviousbutton_img = pygame.image.load('gameasset/HowToPlay pack/howtoplaypreviousbutton.png').convert_alpha()
 
+how1_img = pygame.image.load('gameasset/HowToPlay pack/how1.png').convert_alpha()
+how2_img = pygame.image.load('gameasset/HowToPlay pack/how2.png').convert_alpha()
+how3_img = pygame.image.load('gameasset/HowToPlay pack/how3.png').convert_alpha()
+how4_img = pygame.image.load('gameasset/HowToPlay pack/how4.png').convert_alpha()
+how5_img = pygame.image.load('gameasset/HowToPlay pack/how5.png').convert_alpha()
+how6_img = pygame.image.load('gameasset/HowToPlay pack/how6.png').convert_alpha()
+how7_img = pygame.image.load('gameasset/HowToPlay pack/how7.png').convert_alpha()
+how8_img = pygame.image.load('gameasset/HowToPlay pack/how8.png').convert_alpha()
+
+howtoplaybutton_button = button.Button(160, 20, howtoplaybutton_img, 1)
+howtoplayclosebutton_button = button.Button(225, 520, howtoplayclosebutton_img, 1)
+howtoplaynextbutton_button = button.Button(925, 500, howtoplaynextbutton_img, 1)
+howtoplaypreviousbutton_button = button.Button(720, 500, howtoplaypreviousbutton_img, 1)
 
 # text
 # daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
@@ -613,7 +634,7 @@ def tutorial():
             message = "WAITER: Also, if you accidently chose the wrong food"
 
         if dialoguesequence == 12:
-            message = "WAITER: You can throw food away by pressing SPACE near the trash"
+            message = "WAITER: You can throw food away by pressing E near the trash"
 
         if dialoguesequence == 13:
             message = "WAITER: And press E to collect food on the counter table"
@@ -828,6 +849,13 @@ def game_screen():
     npcappeartime1 = 0
 
     npcstop = False
+
+    # HOW TO PLAY
+    runhowtoplayUI = True
+    howtoplaypicture = [how1_img,how2_img,how3_img,how4_img,how5_img,how6_img,how7_img,how8_img,]
+    howtoplay_index = 0
+
+
 
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height()-100)
@@ -1167,9 +1195,9 @@ def game_screen():
         daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
         daycycle_rect = daycycle_surf.get_rect(topleft=(490,620))
 
-        customer_font = pygame.font.Font('font/segoepr.ttf', 40)
+        customer_font = pygame.font.Font('font/segoepr.ttf', 45)
         customer_surf = customer_font.render(str(max(satisfy,0)), True, 'darkred')
-        customer_rect = customer_surf.get_rect(topleft=(785,598))
+        customer_rect = customer_surf.get_rect(topleft=(790,585))
 
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
         money_surf = money_font.render(str(int(money)), True, 'darkred')
@@ -1556,8 +1584,8 @@ def game_screen():
         screen.blit(daycycle_surf,daycycle_rect)
         screen.blit(money_surf,money_rect)
         screen.blit(moneychange_surf,moneychange_rect)
-        screen.blit(customer_surf, customer_rect)
         screen.blit(customersleft_img, (580,586))
+        screen.blit(customer_surf, customer_rect)
         # BLACK SCREEN TRANSITION
         if int(max(satisfy,0)) == 0:
             if nextday_button.draw(screen):
@@ -1566,7 +1594,7 @@ def game_screen():
                     resetday = True
 
         # insert shop code here
-        if rundecorationUI == False and runShopUI2 == False and runShopUI == False:
+        if rundecorationUI == False and runShopUI2 == False and runShopUI == False and runhowtoplayUI == False:
             if shop_button.draw(screen):
                 click_sfx.play()
                 runShopUI2 = True 
@@ -1798,6 +1826,28 @@ def game_screen():
 
         # Decoration UI ================================= #
 
+        # HOW TO PLAY
+    
+        if runhowtoplayUI == False and howtoplaybutton_button.draw(screen):
+            click_sfx.play()
+            runhowtoplayUI = True
+
+        if runhowtoplayUI == True:
+            screen.blit(howtoplaybackground_img, (200,50))
+            
+            if howtoplayclosebutton_button.draw(screen):
+                click_sfx.play()
+                runhowtoplayUI = False
+            if howtoplay_index <= 6 and howtoplaynextbutton_button.draw(screen):
+                pageturn_sfx.play()
+                howtoplay_index += 1
+            if howtoplay_index >= 1 and howtoplaypreviousbutton_button.draw(screen):
+                pageturn_sfx.play()
+                howtoplay_index -= 1
+
+            howtoplay = howtoplaypicture[howtoplay_index]
+            screen.blit(howtoplay, (230,150))
+
 
         # food serve (part 2) ================================ #
 
@@ -1813,10 +1863,12 @@ def game_screen():
                 FoodOnTable = emptybox_img
 
         # food serve ================================ #
+
+        #hint to click E to dispose food
         if trashtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_e]:
             if waiterfood != emptybox_img:
+                dispose_sfx.play()
                 # Food that the waiter is carrying
-
                 waiterfood = emptybox_img
 
         # Day reset black =============================== #
