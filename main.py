@@ -46,7 +46,8 @@ skipdialogue_img = pygame.image.load('gameasset/dialogue ui/skipdialogue.png').c
 nextdialogue_button = button.Button(1070, 620, nextdialogue_img, 1)
 skipdialogue_button = button.Button(100, 620, skipdialogue_img, 1)
 
-nextday_button = button.Button(1100, 440, nextdialogue_img, 1)
+nextday_img = pygame.image.load('gameasset/nextdaybutton.png').convert_alpha()
+nextday_button = button.Button(963, 350, nextday_img, 1)
 
 
 # game images
@@ -55,7 +56,14 @@ shop_img = pygame.image.load('gameasset/shopui.png').convert_alpha()
 moneycounter_img = pygame.image.load('gameasset/moneycounter.png').convert_alpha()
 daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
 fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
-chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
+
+chefstanding_img = pygame.image.load('gameasset/chef.png').convert_alpha()
+chefcooking1_img = pygame.image.load('gameasset/chef2.png').convert_alpha()
+chefcooking2_img = pygame.image.load('gameasset/chef3.png').convert_alpha()
+chef_cooking = [chefcooking1_img,chefcooking2_img]
+chef_index = 0
+chef_img = chef_cooking[chef_index]
+
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
 npc2_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
@@ -76,6 +84,28 @@ waiter_walk = [waiterwalk1_img,waiterwalk2_img]
 waiter_index = 0
 waiter_img = waiter_walk[waiter_index]
 
+#npcanimation
+npcalien1_img = pygame.image.load('gameasset/npcanimationpack/npcalien1.png').convert_alpha()
+npcalien2_img = pygame.image.load('gameasset/npcanimationpack/npcalien2.png').convert_alpha()
+npcalien3_img = pygame.image.load('gameasset/npcanimationpack/npcalien3.png').convert_alpha()
+npcalien4_img = pygame.image.load('gameasset/npcanimationpack/npcalien4.png').convert_alpha()
+npcalien_walk = [npcalien2_img,npcalien3_img]
+npcalien_index = 0
+npcalien_img = npcalien_walk[npcalien_index]
+
+npccat1_img = pygame.image.load('gameasset/npcanimationpack/npccat1.png').convert_alpha()
+npccat2_img = pygame.image.load('gameasset/npcanimationpack/npccat2.png').convert_alpha()
+npccat3_img = pygame.image.load('gameasset/npcanimationpack/npccat3.png').convert_alpha()
+npccat_walk = [npccat2_img,npccat3_img]
+npccat_index = 0
+npccat_img = npccat_walk[npccat_index]
+
+npcblob1_img = pygame.image.load('gameasset/npcanimationpack/npcblob1.png').convert_alpha()
+npcblob2_img = pygame.image.load('gameasset/npcanimationpack/npcblob2.png').convert_alpha()
+npcblob3_img = pygame.image.load('gameasset/npcanimationpack/npcblob3.png').convert_alpha()
+npcblob_walk = [npcblob2_img,npcblob3_img]
+npcblob_index = 0
+npcblob_img = npcblob_walk[npcblob_index]
 
 # chef ui images
 chefuibackground_img = pygame.image.load('gameasset/chef ui/chefuibackground.png').convert_alpha()
@@ -174,11 +204,11 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 
 # click the chef and cat
 fern_button = button.Button(498, 300, fern_img, 0.08)
-chef_button = button.Button(200, 215, chef_img, 1)
+
 
 # npc images
-chatbubble_img = pygame.image.load('gameasset/chatbubble.png').convert_alpha()
-chatbubble_resize = pygame.transform.scale(chatbubble_img, (int(chatbubble_img.get_width() * 0.03), int(chatbubble_img.get_height() * 0.03)))
+chatbubble_img = pygame.image.load('gameasset/chatbubbleremastered.png').convert_alpha()
+chatbubble_resize = pygame.transform.scale(chatbubble_img, (int(chatbubble_img.get_width() * 1), int(chatbubble_img.get_height() * 1)))
 wrong_img = pygame.image.load('gameasset/wrong.png').convert_alpha()
 wrong_scaled = pygame.transform.scale(wrong_img, (int(wrong_img.get_width() * 0.05), int(wrong_img.get_height() * 0.05)))
 
@@ -186,11 +216,32 @@ wrong_scaled = pygame.transform.scale(wrong_img, (int(wrong_img.get_width() * 0.
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
+pageturn_sfx = pygame.mixer.Sound('gameasset/pageturn.mp3')
+dispose_sfx = pygame.mixer.Sound('gameasset/dispose.mp3')
 
 #customersleft image
 customersleft_img = pygame.image.load('gameasset/customersleft.png').convert_alpha()
 
+#HOW TO PLAY image
+howtoplaybackground_img = pygame.image.load('gameasset/HowToPlay pack/howtoplaybackground.png').convert_alpha()
+howtoplaybutton_img = pygame.image.load('gameasset/HowToPlay pack/howtoplaybutton.png').convert_alpha()
+howtoplayclosebutton_img = pygame.image.load('gameasset/HowToPlay pack/howtoplayclosebutton.png').convert_alpha()
+howtoplaynextbutton_img = pygame.image.load('gameasset/HowToPlay pack/howtoplaynextbutton.png').convert_alpha()
+howtoplaypreviousbutton_img = pygame.image.load('gameasset/HowToPlay pack/howtoplaypreviousbutton.png').convert_alpha()
 
+how1_img = pygame.image.load('gameasset/HowToPlay pack/how1.png').convert_alpha()
+how2_img = pygame.image.load('gameasset/HowToPlay pack/how2.png').convert_alpha()
+how3_img = pygame.image.load('gameasset/HowToPlay pack/how3.png').convert_alpha()
+how4_img = pygame.image.load('gameasset/HowToPlay pack/how4.png').convert_alpha()
+how5_img = pygame.image.load('gameasset/HowToPlay pack/how5.png').convert_alpha()
+how6_img = pygame.image.load('gameasset/HowToPlay pack/how6.png').convert_alpha()
+how7_img = pygame.image.load('gameasset/HowToPlay pack/how7.png').convert_alpha()
+how8_img = pygame.image.load('gameasset/HowToPlay pack/how8.png').convert_alpha()
+
+howtoplaybutton_button = button.Button(160, 20, howtoplaybutton_img, 1)
+howtoplayclosebutton_button = button.Button(225, 520, howtoplayclosebutton_img, 1)
+howtoplaynextbutton_button = button.Button(925, 500, howtoplaynextbutton_img, 1)
+howtoplaypreviousbutton_button = button.Button(720, 500, howtoplaypreviousbutton_img, 1)
 
 # text
 # daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
@@ -235,22 +286,59 @@ customersleft_img = pygame.image.load('gameasset/customersleft.png').convert_alp
 #     return money, day
     
 def npc(x, y):
-    npc1_width = int(npc1_img.get_width() * 1)
-    npc1_height = int(npc1_img.get_height() * 1)
-    npc1_resize= pygame.transform.scale(npc1_img, (npc1_width, npc1_height))
-    screen.blit(npc1_resize, (x, y))
+    npcalien_width = int(npcalien_img.get_width() * 1)
+    npcalien_height = int(npcalien_img.get_height() * 1)
+    npcalien_resize= pygame.transform.scale(npcalien_img, (npcalien_width, npcalien_height))
+    screen.blit(npcalien_resize, (x, y))
+
+def npc1_animation(action):
+    global npcalien_img, npcalien_index
+    if action == "standing":
+        npcalien_img = npcalien1_img
+    if action == "walking":
+        npcalien_index += 0.07
+        if npcalien_index >= len(npcalien_walk):
+            npcalien_index = 0
+        npcalien_img = npcalien_walk[int(npcalien_index)]
+    if action == "sitting":
+        npcalien_img = npcalien4_img
 
 def npc2(x, y):
-    npc2_width = int(npc1_img.get_width() * 1)
-    npc2_height = int(npc1_img.get_height() * 1)
-    npc2_resize= pygame.transform.scale(npc2_img, (npc2_width, npc2_height))
-    screen.blit(npc2_resize, (x, y))
+    npccat_width = int(npccat_img.get_width() * 1)
+    npccat_height = int(npccat_img.get_height() * 1)
+    npccat_resize= pygame.transform.scale(npccat_img, (npccat_width, npccat_height))
+    screen.blit(npccat_resize, (x, y))
+
+def npc2_animation(action):
+    global npccat_img, npccat_index
+    if action == "standing":
+        npccat_img = npccat1_img
+    if action == "walking":
+        npccat_index += 0.07
+        if npccat_index >= len(npccat_walk):
+            npccat_index = 0
+        npccat_img = npccat_walk[int(npccat_index)]
+    if action == "sitting":
+        npccat_img = npccat1_img
 
 def npc3(x, y):
-    npc3_width = int(npc1_img.get_width() * 1)
-    npc3_height = int(npc1_img.get_height() * 1)
-    npc3_resize= pygame.transform.scale(npc3_img, (npc3_width, npc3_height))
-    screen.blit(npc3_resize, (x, y))
+    global npcblob_img, npcblob_index
+    npcblob_width = int(npcblob_img.get_width() * 1)
+    npcblob_height = int(npcblob_img.get_height() * 1)
+    npcblob_resize= pygame.transform.scale(npcblob_img, (npcblob_width, npcblob_height))
+    screen.blit(npcblob_resize, (x, y))
+
+def npc3_animation(action):
+    global npcblob_img, npcblob_index
+    if action == "standing":
+        npcblob_img = npcblob1_img
+    if action == "walking":
+        npcblob_index += 0.07
+        if npcblob_index >= len(npcblob_walk):
+            npcblob_index = 0
+        npcblob_img = npcblob_walk[int(npcblob_index)]
+    if action == "sitting":
+        npcblob_img = npcblob1_img
 
 def waiter(x, y, WaiterDirection):
     waiter_width = int(waiter_img.get_width() * 1)
@@ -273,6 +361,17 @@ def waiter_animation(keys):
 
     else:
         waiter_img = waiterstand_img
+
+def chef_animation(action):
+    global chef_img, chef_index
+    if action == "idle":
+        chef_img = chefstanding_img
+    if action == "cooking":
+        chef_index += 0.1
+        if chef_index >= len(chef_cooking):
+            chef_index = 0
+        chef_img = chef_cooking[int(chef_index)]
+
 
 def table1(x, y):
     tablechair1_width = int(tablechair1_img.get_width() * 1)
@@ -535,7 +634,7 @@ def tutorial():
             message = "WAITER: Also, if you accidently chose the wrong food"
 
         if dialoguesequence == 12:
-            message = "WAITER: You can throw food away by pressing SPACE near the trash"
+            message = "WAITER: You can throw food away by pressing E near the trash"
 
         if dialoguesequence == 13:
             message = "WAITER: And press E to collect food on the counter table"
@@ -751,6 +850,15 @@ def game_screen():
 
     npcstop = False
 
+    # HOW TO PLAY
+    runhowtoplayUI = True
+    howtoplaypicture = [how1_img,how2_img,how3_img,how4_img,how5_img,how6_img,how7_img,how8_img,]
+    howtoplay_index = 0
+
+    # The game won't start until the tutorial is closed for the first time
+    howtoplaygameplaycooldown = False
+
+
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height()-100)
     # rect object for table and chair
@@ -768,7 +876,7 @@ def game_screen():
 
     #trash
     trashtrigger_surf = pygame.image.load('gameasset/trash.png').convert_alpha()
-    trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 60))
+    trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 80))
 
     # casher object
     casher_rect = pygame.Rect(casherX, casherY, 80, 350)
@@ -782,15 +890,6 @@ def game_screen():
         # game screen code here
         screen.fill((255, 255, 255))
         screen.blit(bg_game_screen, (0, 0))
-        
-
-        # BLACK SCREEN TRANSITION
-        if int(max(satisfy,0)) == 0:
-            if nextday_button.draw(screen):
-                    click_sfx.play()
-                    daytransition = True
-                    resetday = True
-
 
         # RESET DAY 
         if resetday == True:
@@ -868,7 +967,10 @@ def game_screen():
 
             resetday = False
 
-            satisfyreset = False
+        # if day == 5:
+        #     waiter_img = fern_img
+
+        
         
         # if day == 4 and satisfyreset == False :
         #     satisfy += 1
@@ -1095,9 +1197,9 @@ def game_screen():
         daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
         daycycle_rect = daycycle_surf.get_rect(topleft=(490,620))
 
-        customer_font = pygame.font.Font('font/segoepr.ttf', 40)
+        customer_font = pygame.font.Font('font/segoepr.ttf', 45)
         customer_surf = customer_font.render(str(max(satisfy,0)), True, 'darkred')
-        customer_rect = customer_surf.get_rect(topleft=(785,598))
+        customer_rect = customer_surf.get_rect(topleft=(790,585))
 
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
         money_surf = money_font.render(str(int(money)), True, 'darkred')
@@ -1108,13 +1210,16 @@ def game_screen():
         moneychange_surf.set_alpha(moneychangeopacity)
         moneychange_rect = moneychange_surf.get_rect(topleft=(165,540))
 
-        pressE_font = pygame.font.Font('font/segoepr.ttf', 20)
-        pressE_surf = pressE_font.render("Press E to pick the food", True, "darkred")
-        pressE_rect = pressE_surf.get_rect(topleft=(waiterX-80,waiterY-30))
+        # pressE_font = pygame.font.Font('font/segoepr.ttf', 20)
+        # pressE_surf = pressE_font.render("Press E to pick the food", True, "darkred")
 
-        pressSPACE_font = pygame.font.Font('font/segoepr.ttf', 20)
-        pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
-        pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX+80,waiterY+45))
+        pressE_surf = pygame.image.load('gameasset/pickfoodhint.png').convert_alpha()
+        pressE_rect = pressE_surf.get_rect(topleft=(waiterX-40,waiterY-30))
+
+        # pressSPACE_font = pygame.font.Font('font/segoepr.ttf', 20)
+        # pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
+        pressSPACE_surf = pygame.image.load('gameasset/disposefoodhint.png').convert_alpha()
+        pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX-40,waiterY+110))
 
         if pause_button.draw(screen):
             click_sfx.play()
@@ -1122,16 +1227,8 @@ def game_screen():
             # insert pause code here
             game_pause()
             
-            
-            
-        # GUI
-        screen.blit(moneycounter_img, (30,530))
-        screen.blit(daycounter_img, (380,615))
-        screen.blit(customersleft_img, (580,586))
-        screen.blit(daycycle_surf,daycycle_rect)
-        screen.blit(money_surf,money_rect)
-        screen.blit(moneychange_surf,moneychange_rect)
-        screen.blit(customer_surf, customer_rect)
+        chef_button = button.Button(200, 215, chef_img, 1)
+        
 
     
         # testing, add 12 money every 1 frame
@@ -1248,9 +1345,11 @@ def game_screen():
         if npcnumber == day:
             npcstop = True
 
-        if npcfoodrequest == False:
+        if npcfoodrequest == False and howtoplaygameplaycooldown == True:
             npcqueuetime +=1
+            npc1_animation("standing")
             if npcqueuetime >= 250:
+                npc1_animation("walking")
                 npc1_x_pos -= 1.5
                 if npc1_x_pos <= 650:  
                     npc1_x_pos = 651
@@ -1259,9 +1358,10 @@ def game_screen():
                     if npc1_y_pos >= 340: 
                         npc1_y_pos = 435
                         npc1_x_pos = 595
+                        npc1_animation("sitting")
                         npcfoodrequest = True
 
-                        
+
 
         if npcfoodrequest == True and not npc1_x_pos == -1000 and not npc1_y_pos == -1000:
             npcwaittime += 1
@@ -1326,14 +1426,16 @@ def game_screen():
         #npc 2 ======================================#
         if day >= 2 and npcfoodrequest2 == False:
             npcqueuetime2 += 1
-            
+            npc2_animation("standing")
             if npcqueuetime2 >= 700:
+                npc2_animation("walking")
                 npc2_x_pos -= 1.5
                 if npc2_x_pos <= 650:  
                     npc2_x_pos = 651
                     npc2_y_pos += 1.5
 
                     if npc2_y_pos >= 340: 
+                        npc2_animation("sitting")
                         npc2_y_pos = 435
                         npc2_x_pos = 950
                         npcfoodrequest2 = True
@@ -1401,14 +1503,16 @@ def game_screen():
         #npc 3 =================================================================================#
         if day >= 3 and npcfoodrequest3 == False:
             npcqueuetime3 += 1
-            
+            npc3_animation("standing")
             if npcqueuetime3 >= 1200:
+                npc3_animation("walking")
                 npc3_x_pos -= 1.5
                 if npc3_x_pos <= 650:  
                     npc3_x_pos = 651
                     npc3_y_pos += 1.5
 
                     if npc3_y_pos >= 240: 
+                        npc3_animation("sitting")
                         npc3_y_pos = 230
                         npc3_x_pos = 950
                         npcfoodrequest3 = True
@@ -1475,8 +1579,24 @@ def game_screen():
 
         # npc movement ================================== #
 
+
+        # GUI
+        screen.blit(moneycounter_img, (30,530))
+        screen.blit(daycounter_img, (380,615))
+        screen.blit(daycycle_surf,daycycle_rect)
+        screen.blit(money_surf,money_rect)
+        screen.blit(moneychange_surf,moneychange_rect)
+        screen.blit(customersleft_img, (580,586))
+        screen.blit(customer_surf, customer_rect)
+        # BLACK SCREEN TRANSITION
+        if int(max(satisfy,0)) == 0:
+            if nextday_button.draw(screen):
+                    click_sfx.play()
+                    daytransition = True
+                    resetday = True
+
         # insert shop code here
-        if rundecorationUI == False and runShopUI2 == False and runShopUI == False:
+        if rundecorationUI == False and runShopUI2 == False and runShopUI == False and runhowtoplayUI == False:
             if shop_button.draw(screen):
                 click_sfx.play()
                 runShopUI2 = True 
@@ -1606,8 +1726,9 @@ def game_screen():
 
 
 
-    
+        chef_animation("idle")
         if runchefUI == True:
+            
             
             screen.blit(chefuibackground_img, (410,65))
             # close chef UI
@@ -1644,6 +1765,7 @@ def game_screen():
 
             
         if cooking != emptybox_img:
+            chef_animation("cooking")
             if progress <= 130:
                 progress += chefcookingtime
 
@@ -1706,6 +1828,29 @@ def game_screen():
 
         # Decoration UI ================================= #
 
+        # HOW TO PLAY
+    
+        if runhowtoplayUI == False and howtoplaybutton_button.draw(screen):
+            click_sfx.play()
+            runhowtoplayUI = True
+
+        if runhowtoplayUI == True:
+            screen.blit(howtoplaybackground_img, (200,50))
+            
+            if howtoplayclosebutton_button.draw(screen):
+                click_sfx.play()
+                howtoplaygameplaycooldown = True
+                runhowtoplayUI = False
+            if howtoplay_index <= 6 and howtoplaynextbutton_button.draw(screen):
+                pageturn_sfx.play()
+                howtoplay_index += 1
+            if howtoplay_index >= 1 and howtoplaypreviousbutton_button.draw(screen):
+                pageturn_sfx.play()
+                howtoplay_index -= 1
+
+            howtoplay = howtoplaypicture[howtoplay_index]
+            screen.blit(howtoplay, (230,150))
+
 
         # food serve (part 2) ================================ #
 
@@ -1721,8 +1866,11 @@ def game_screen():
                 FoodOnTable = emptybox_img
 
         # food serve ================================ #
-        if trashtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_SPACE]:
+
+        #hint to click E to dispose food
+        if trashtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_e]:
             if waiterfood != emptybox_img:
+                dispose_sfx.play()
                 # Food that the waiter is carrying
                 waiterfood = emptybox_img
 
@@ -1761,7 +1909,7 @@ def game_screen():
         
         
         # vignette
-        screen.blit(vignette_img, (0,0))
+        # screen.blit(vignette_img, (0,0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -1782,16 +1930,7 @@ def game_pause ():
     music_playing = True
 
     while runpauseUI:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE :
-                    runpauseUI = False
-                if event.key == pygame.K_ESCAPE:
-                    runpauseUI = False
-
+        
         # Draw the shop background
         
         screen.blit(pausebackground_img, (410, 25))
@@ -1821,9 +1960,18 @@ def game_pause ():
             click_sfx.play()
             game_screen()
 
-        
-
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE :
+                    runpauseUI = False
+                if event.key == pygame.K_ESCAPE:
+                    runpauseUI = False
+        clock.tick(60)
         pygame.display.update()
+    pass
         
     
 
@@ -1842,12 +1990,7 @@ def credit_menu():
             if event.type == pygame.QUIT:
                 RunCredit = False
         pygame.display.update()
-
-
-        pygame.display.update()
-
             
-
     # Update the display
     pygame.display.flip()
 
