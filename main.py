@@ -855,6 +855,8 @@ def game_screen():
     howtoplaypicture = [how1_img,how2_img,how3_img,how4_img,how5_img,how6_img,how7_img,how8_img,]
     howtoplay_index = 0
 
+    # The game won't start until the tutorial is closed for the first time
+    howtoplaygameplaycooldown = False
 
 
     # rect object for waiter
@@ -1343,7 +1345,7 @@ def game_screen():
         if npcnumber == day:
             npcstop = True
 
-        if npcfoodrequest == False:
+        if npcfoodrequest == False and howtoplaygameplaycooldown == True:
             npcqueuetime +=1
             npc1_animation("standing")
             if npcqueuetime >= 250:
@@ -1837,6 +1839,7 @@ def game_screen():
             
             if howtoplayclosebutton_button.draw(screen):
                 click_sfx.play()
+                howtoplaygameplaycooldown = True
                 runhowtoplayUI = False
             if howtoplay_index <= 6 and howtoplaynextbutton_button.draw(screen):
                 pageturn_sfx.play()
