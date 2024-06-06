@@ -55,7 +55,14 @@ shop_img = pygame.image.load('gameasset/shopui.png').convert_alpha()
 moneycounter_img = pygame.image.load('gameasset/moneycounter.png').convert_alpha()
 daycounter_img = pygame.image.load('gameasset/daycounter.png').convert_alpha()
 fern_img = pygame.image.load('gameasset/fern.png').convert_alpha()
-chef_img = pygame.image.load('gameasset/chef.png').convert_alpha()
+
+chefstanding_img = pygame.image.load('gameasset/chef.png').convert_alpha()
+chefcooking1_img = pygame.image.load('gameasset/chef2.png').convert_alpha()
+chefcooking2_img = pygame.image.load('gameasset/chef3.png').convert_alpha()
+chef_cooking = [chefcooking1_img,chefcooking2_img]
+chef_index = 0
+chef_img = chef_cooking[chef_index]
+
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
 npc2_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
@@ -196,11 +203,11 @@ shop_button  = button.Button(890, 510, shop_img, 2/3)
 
 # click the chef and cat
 fern_button = button.Button(498, 300, fern_img, 0.08)
-chef_button = button.Button(200, 215, chef_img, 1)
+
 
 # npc images
-chatbubble_img = pygame.image.load('gameasset/chatbubble.png').convert_alpha()
-chatbubble_resize = pygame.transform.scale(chatbubble_img, (int(chatbubble_img.get_width() * 0.03), int(chatbubble_img.get_height() * 0.03)))
+chatbubble_img = pygame.image.load('gameasset/chatbubbleremastered.png').convert_alpha()
+chatbubble_resize = pygame.transform.scale(chatbubble_img, (int(chatbubble_img.get_width() * 1), int(chatbubble_img.get_height() * 1)))
 wrong_img = pygame.image.load('gameasset/wrong.png').convert_alpha()
 wrong_scaled = pygame.transform.scale(wrong_img, (int(wrong_img.get_width() * 0.05), int(wrong_img.get_height() * 0.05)))
 
@@ -332,6 +339,17 @@ def waiter_animation(keys):
 
     else:
         waiter_img = waiterstand_img
+
+def chef_animation(action):
+    global chef_img, chef_index
+    if action == "idle":
+        chef_img = chefstanding_img
+    if action == "cooking":
+        chef_index += 0.1
+        if chef_index >= len(chef_cooking):
+            chef_index = 0
+        chef_img = chef_cooking[int(chef_index)]
+
 
 def table1(x, y):
     tablechair1_width = int(tablechair1_img.get_width() * 1)
@@ -827,7 +845,7 @@ def game_screen():
 
     #trash
     trashtrigger_surf = pygame.image.load('gameasset/trash.png').convert_alpha()
-    trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 60))
+    trashtrigger_rect = trashtrigger_surf.get_rect(topleft = (570, 80))
 
     # casher object
     casher_rect = pygame.Rect(casherX, casherY, 80, 350)
@@ -1170,13 +1188,16 @@ def game_screen():
         moneychange_surf.set_alpha(moneychangeopacity)
         moneychange_rect = moneychange_surf.get_rect(topleft=(165,540))
 
-        pressE_font = pygame.font.Font('font/segoepr.ttf', 20)
-        pressE_surf = pressE_font.render("Press E to pick the food", True, "darkred")
-        pressE_rect = pressE_surf.get_rect(topleft=(waiterX-80,waiterY-30))
+        # pressE_font = pygame.font.Font('font/segoepr.ttf', 20)
+        # pressE_surf = pressE_font.render("Press E to pick the food", True, "darkred")
 
-        pressSPACE_font = pygame.font.Font('font/segoepr.ttf', 20)
-        pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
-        pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX+80,waiterY+45))
+        pressE_surf = pygame.image.load('gameasset/pickfoodhint.png').convert_alpha()
+        pressE_rect = pressE_surf.get_rect(topleft=(waiterX-40,waiterY-30))
+
+        # pressSPACE_font = pygame.font.Font('font/segoepr.ttf', 20)
+        # pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
+        pressSPACE_surf = pygame.image.load('gameasset/disposefoodhint.png').convert_alpha()
+        pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX-40,waiterY+110))
 
         if pause_button.draw(screen):
             click_sfx.play()
@@ -1184,7 +1205,7 @@ def game_screen():
             # insert pause code here
             game_pause()
             
-            
+        chef_button = button.Button(200, 215, chef_img, 1)
             
         # GUI
         screen.blit(moneycounter_img, (30,530))
@@ -1675,8 +1696,9 @@ def game_screen():
 
 
 
-    
+        chef_animation("idle")
         if runchefUI == True:
+            
             
             screen.blit(chefuibackground_img, (410,65))
             # close chef UI
@@ -1713,6 +1735,7 @@ def game_screen():
 
             
         if cooking != emptybox_img:
+            chef_animation("cooking")
             if progress <= 130:
                 progress += chefcookingtime
 
@@ -1790,9 +1813,10 @@ def game_screen():
                 FoodOnTable = emptybox_img
 
         # food serve ================================ #
-        if trashtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_SPACE]:
+        if trashtrigger_rect.colliderect(waiter_rect) and keys[pygame.K_e]:
             if waiterfood != emptybox_img:
                 # Food that the waiter is carrying
+
                 waiterfood = emptybox_img
 
         # Day reset black =============================== #
@@ -1830,7 +1854,7 @@ def game_screen():
         
         
         # vignette
-        screen.blit(vignette_img, (0,0))
+        # screen.blit(vignette_img, (0,0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
