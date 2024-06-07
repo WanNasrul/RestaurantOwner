@@ -967,23 +967,6 @@ def game_screen():
 
             resetday = False
 
-        # if day == 5:
-        #     waiter_img = fern_img
-
-        
-        
-        # if day == 4 and satisfyreset == False :
-        #     satisfy += 1
-        #     satisfyreset = True
-            
-
-        # if day == 5 and satisfyreset == False:
-        #     satisfy += 2
-        #     satisfyreset = True
-
-        # if day >= 6 and satisfyreset == False:
-        #     satisfy += 3
-        #     satisfyreset = True
 
 
 
@@ -1229,11 +1212,6 @@ def game_screen():
             
         chef_button = button.Button(200, 215, chef_img, 1)
         
-
-    
-        # testing, add 12 money every 1 frame
-        # money += 0
-        
         # Decoration bought items
         if purchasedmenu == True:
             screen.blit(menudecoration_img, (336,236))
@@ -1344,6 +1322,13 @@ def game_screen():
         
         if npcnumber == day:
             npcstop = True
+            if int(max(satisfy,0)) == 0 and npcstop == True:
+                npc1_x_pos = -1000
+                npc2_x_pos = -1000
+                npc3_x_pos = -1000
+                npcfoodrequest = True
+                npcfoodrequest2 = True
+                npcfoodrequest3 = True
 
         if npcfoodrequest == False and howtoplaygameplaycooldown == True:
             npcqueuetime +=1
@@ -1577,8 +1562,7 @@ def game_screen():
                         npc3reset = False
             
 
-        # npc movement ================================== #
-
+        # npc movement ==============================
 
         # GUI
         screen.blit(moneycounter_img, (30,530))
@@ -1588,6 +1572,7 @@ def game_screen():
         screen.blit(moneychange_surf,moneychange_rect)
         screen.blit(customersleft_img, (580,586))
         screen.blit(customer_surf, customer_rect)
+
         # BLACK SCREEN TRANSITION
         if int(max(satisfy,0)) == 0:
             if nextday_button.draw(screen):
