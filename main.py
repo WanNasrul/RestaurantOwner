@@ -1574,8 +1574,9 @@ def game_screen():
         screen.blit(customer_surf, customer_rect)
 
         # BLACK SCREEN TRANSITION
+        # NEXT DAY BUTTON
         if int(max(satisfy,0)) == 0:
-            if nextday_button.draw(screen):
+            if runShopUI == False and runShopUI2 == False and rundecorationUI == False and runhowtoplayUI == False and runchefUI == False and nextday_button.draw(screen) :
                     click_sfx.play()
                     daytransition = True
                     resetday = True
