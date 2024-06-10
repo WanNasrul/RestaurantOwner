@@ -6,6 +6,7 @@ import time
 import math
 from pygame import mixer
 import pickle
+# import os 
 
 # initialize pygame
 pygame.init()
@@ -150,13 +151,12 @@ pausebackground_img = pygame.image.load('gameasset/pause ui/pausebackground.png'
 music_img = pygame.image.load('gameasset/pause ui/music.png').convert_alpha()
 continue_img = pygame.image.load('gameasset/pause ui/resume.png').convert_alpha()
 pauseexit_img = pygame.image.load('gameasset/pause ui/exit.png').convert_alpha()
-click_img = pygame.image.load('gameasset/pause ui/sound.png').convert_alpha()
 reset_img = pygame.image.load('gameasset/pause ui/reset.png').convert_alpha()
 mute_img = pygame.image.load('gameasset/pause ui/musicmuted.png').convert_alpha()
-pause_mute = button.Button(440, 90, music_img, 1)
+pause_mute = button.Button(575, 90, music_img, 1)
+pause_unmute =button.Button(575, 90, mute_img, 1)
 pause_continue = button.Button(440,250, continue_img,1)
 pause_exit = button.Button(740,250, pauseexit_img,1)
-pause_click = button.Button(710,90, click_img,1)
 pause_reset = button.Button(590,250, reset_img,1)
 
 # shop ui buttons 
@@ -243,47 +243,6 @@ howtoplayclosebutton_button = button.Button(225, 520, howtoplayclosebutton_img, 
 howtoplaynextbutton_button = button.Button(925, 500, howtoplaynextbutton_img, 1)
 howtoplaypreviousbutton_button = button.Button(720, 500, howtoplaypreviousbutton_img, 1)
 
-# text
-# daycycle_font = pygame.font.Font('font/segoepr.ttf', 50)
-# daycycle_surf = daycycle_font.render(str(day), True, 'darkred')
-# daycycle_rect = daycycle_surf.get_rect(topleft=(495,600))
-
-# money_font = pygame.font.Font('font/segoepr.ttf', 50)
-# money_surf = money_font.render(str(money), True, 'darkred')
-# money_rect = daycycle_surf.get_rect(topleft=(170,590))
-
-# def save_game(money, day):
-#     game_state = {
-#         'money': money,
-#         'day': day
-#     }
-#     try:
-#         with open('save_file.pkl', 'wb') as f:
-#             pickle.dump(game_state, f)
-#     except FileNotFoundError:
-#         with open('save_file.pkl', 'wb') as f:
-#             pickle.dump(game_state, f)
-#             print("Save file created.")
-
-# def load_game():
-#     try:
-#         with open('save_file.pkl', 'rb') as f:
-#             game_state = pickle.load(f)
-#     except FileNotFoundError:
-#         with open('save_file.pkl', 'wb') as f:
-#             game_state = {}
-#             pickle.dump(game_state, f)
-#             print("Save file created.")
-#             return game_state
-#     if 'money' in game_state:
-#         money = game_state['money']
-#     else:
-#         money = 0
-#     if 'day' in game_state:
-#         day = game_state['day']
-#     else:
-#         day = 1
-#     return money, day
     
 def npc(x, y):
     npcalien_width = int(npcalien_img.get_width() * 1)
@@ -459,10 +418,9 @@ def collision_detection(waiter_rect, table_rect):
 def easeOutSine(t):
     return math.sin(t * math.pi / 2)
 
-
-
 def main_menu():
 
+    highest_day = load_highest_day() 
 
     run = True
     while run:
@@ -483,6 +441,12 @@ def main_menu():
         screen.blit(mainmenubg_surf, mainmenubg_rect)
 
         title_button.draw(screen)
+
+        # Draw the highscore
+        highest_day_font = pygame.font.Font('font/segoepr.ttf', 40)
+        highest_day_surf = highest_day_font.render(f"Highest Day: {highest_day}", True, 'darkred')
+        highest_day_rect = highest_day_surf.get_rect(bottomleft=(20, screen.get_height() - 20))
+        screen.blit(highest_day_surf, highest_day_rect)
 
         if start_button.draw(screen):
             click_sfx.play()
@@ -530,7 +494,7 @@ def tutorial():
     intromusic = ['gameasset/intro music.mp3', 'gameasset/intro music 2.mp3']
     intromusic_file = random.choice(intromusic)
     pygame.mixer.music.load(intromusic_file)
-    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
     
     while RunTutorial:
@@ -698,10 +662,22 @@ def tutorial():
         clock.tick(60)
     pass
 
+def load_highest_day():
+    try:
+        with open('highest_day.txt', 'r') as file:
+            return int(file.read())
+    except (FileNotFoundError, ValueError):
+        return 1  # Return 1 if file doesn't exist or content is invalid
+
+# Function to save the highest day to a file
+def save_highest_day(day):
+    with open('highest_day.txt', 'w') as file:
+        file.write(str(day))
+
 
 def game_screen():
     # money, day = load_game()
-    global npc1_x_pos, npc1_img, npc1_y_pos
+    global npc1_x_pos, npc1_img, npc1_y_pos, active_button
     run = True
     
     # stop the intro music
@@ -714,7 +690,7 @@ def game_screen():
     pygame.mixer.music.play(-1)
 
     # default money and day value
-    money = 10000
+    money = 150
     prev_money = money
     amountchanged = ""
     moneychangecolor = "darkred"
@@ -726,6 +702,11 @@ def game_screen():
     daytransition = False
     daytransitiontick = 0
     resetday = False
+    
+    highest_day = 1
+    highest_day = load_highest_day()
+
+    active_button = None 
 
     tablechair1X = 750
     tablechair1Y = 480
@@ -787,25 +768,16 @@ def game_screen():
     chef = star_img
     chef2 = star_img
     chef3 = star_img 
-    chef4 = star_img
-    chef5 = star_img
-    chef6 = star_img
     waiter1 = star_img
     waiter2 = star_img
     waiter3 = star_img
-    chef_upgrade_purchased = False
     purchasechef1 = False
     purchasechef2 = False
     purchasechef3 = False
     purchasewaiter1 = False
     purchasewaiter2 = False
     purchasewaiter3 = False
-    upgradecooldownchef = 0
-    upgradecooldownchef1 = 0
-    disableupgradechef = False
-    disableupgradechef1 = False
-    disableupgradewaiter = False
-    upgradecooldownwaiter = 0
+    
      
 
     chefcookingtime = 1
@@ -885,6 +857,7 @@ def game_screen():
     piano_rect = pygame.Rect(pianoX, pianoY, 160, 40)
 
     # days progression
+
 
     while run:
         # game screen code here
@@ -1204,10 +1177,30 @@ def game_screen():
         pressSPACE_surf = pygame.image.load('gameasset/disposefoodhint.png').convert_alpha()
         pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX-40,waiterY+110))
 
+
+        if day > highest_day:
+            highest_day = day
+            save_highest_day(highest_day)
+
+        if money < 0 :  # Check if money is negative, display game over
+            game_over_font = pygame.font.Font(None, 80)
+            game_over_surf = game_over_font.render("Game Over", True, 'red')
+            game_over_rect = game_over_surf.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
+    
+            highest_day_font = pygame.font.Font(None, 40)
+            highest_day_surf = highest_day_font.render(f"Highest Day: {highest_day}", True, 'red')
+            highest_day_rect = highest_day_surf.get_rect(center=(screen.get_width()//2, screen.get_height()//2 + 80))
+
+            screen.blit(game_over_surf, game_over_rect)
+            screen.blit(highest_day_surf, highest_day_rect)
+    
+            pygame.display.update()
+            pygame.time.delay(2000)
+            main_menu()
+
+
         if pause_button.draw(screen):
             click_sfx.play()
-            pygame.mixer.music.stop()
-            # insert pause code here
             game_pause()
             
         chef_button = button.Button(200, 215, chef_img, 1)
@@ -1618,21 +1611,12 @@ def game_screen():
             screen.blit(waiter1, (610,315))
             screen.blit(waiter2, (710,315))
             screen.blit(waiter3, (810,315))
-            # screen.blit(chef4, (610,475))
-            # screen.blit(chef5, (710,475))
-            # screen.blit(chef6, (810,475))
             
             
             if xshopbutton_button.draw(screen) :
                 click_sfx.play()
                 runShopUI = False
 
-            # if upgrade_button1.draw(screen) and chef == star_img and money>= 150 and purchasechef1 == False :
-            #      click_sfx.play()
-            #      chef = starupgrade_img
-            #      money -= 150
-            #      chefcookingtime = 2
-            #      purchasechef1 = True 
             
             if upgrade_button1.draw(screen):
                
@@ -1643,14 +1627,14 @@ def game_screen():
                     chefcookingtime = 4
                     purchasechef3 = True
 
-                if money >= 250 and purchasechef1 == True and purchasechef2 == False and purchasechef3 == False:
+                if money >= 150 and purchasechef1 == True and purchasechef2 == False and purchasechef3 == False:
                     click_sfx.play()
                     chef2 = starupgrade_img
                     money -= 150
                     chefcookingtime = 3
                     purchasechef2 = True
 
-                if money >= 250 and purchasechef1 == False and purchasechef2 == False and purchasechef3 == False:
+                if money >= 150 and purchasechef1 == False and purchasechef2 == False and purchasechef3 == False:
                     click_sfx.play()
                     chef = starupgrade_img
                     money -= 150
@@ -1684,30 +1668,7 @@ def game_screen():
                 
                 
         
-            # if upgrade_button4.draw(screen) and chef3 == star_img and money >= 300:
-            #     click_sfx.play()
-            #     chef3 = starupgrade_img
-            #     money -= 300
-            #     chefcookingtime = 3
 
-            # if upgrade_button5.draw(screen) and chef4 == star_img and money >= 300:
-            #     click_sfx.play()
-            #     chef4 = starupgrade_img
-            #     money -= 300
-            #     waiter_speed = 7
-                
-            # if upgrade_button3.draw(screen) and waiter1 == star_img and money >= 150 :
-            #     click_sfx.play()
-            #     waiter1 = starupgrade_img
-            #     money -= 150
-
-            # if upgrade_button6.draw(screen) and waiter2 == star_img and money >= 300 :
-            #     click_sfx.play()
-            #     waiter2 = starupgrade_img
-            #     money -= 300
-
-            if chef_upgrade_purchased:
-                upgrade_button1.disabled = True
 
 
 
@@ -1891,6 +1852,7 @@ def game_screen():
         if moneychangeopacity >= 0:
             moneychangeopacity -= 3
         # detect if money is changed ==================== #
+
         
         
         # vignette
@@ -1899,7 +1861,7 @@ def game_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 # saveloadmanager.save_data() # <--- STOP HERE 7/5/24
-                # save_game(money, day) 
+                # save_game(money, day)   
                 pygame.quit()
                 exit()
         pygame.display.update()
@@ -1908,13 +1870,20 @@ def game_screen():
 
 def game_pause ():
     
-    global runpauseUI
+    global runpauseUI, active_button
     
     runpauseUI = True
 
     music_playing = True
 
+    click_playing = True
+
+
+    
+
     while runpauseUI:
+
+        
         
         # Draw the shop background
         
@@ -1923,23 +1892,24 @@ def game_pause ():
 
         if pause_mute.draw(screen):
             click_sfx.play()
+            
             if music_playing:
                 mixer.music.stop()  # Stop background music if playing
+                active_button = pause_unmute
             else:
-                mixer.music.play(-1)  # Play background music if stopped
+              mixer.music.play(-1)  # Play background music if stopped
+              active_button = pause_mute
             music_playing = not music_playing  # Toggle music state
+
+        
 
         if pause_continue.draw(screen):
             click_sfx.play()
-            runpauseUI = False 
+            return   
 
         if pause_exit.draw(screen):
             click_sfx.play()
             main_menu()
-
-        if pause_click.draw(screen):
-            click_sfx.play
-            click_sfx.stop()
 
         if pause_reset.draw(screen):
             click_sfx.play()
@@ -1949,17 +1919,25 @@ def game_pause ():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE :
                     runpauseUI = False
                 if event.key == pygame.K_ESCAPE:
                     runpauseUI = False
+
+        if active_button:
+            active_button.draw(screen)
+
+        
+
+        # Draw the shop background
+
+
         clock.tick(60)
         pygame.display.update()
     pass
-        
+             
     
-
 def credit_menu():
     RunCredit = True
     while RunCredit :
@@ -1967,7 +1945,7 @@ def credit_menu():
         screen.fill((255, 255, 255))
         screen.blit(bg_credit_menu, (0, 0))
 
-        if pause_button.draw(screen):
+        if pause_button.draw(screen): 
             click_sfx.play()
             RunCredit = False
 
@@ -1979,18 +1957,9 @@ def credit_menu():
     # Update the display
     pygame.display.flip()
 
-
     # Cap the frame rate
     clock.tick(60)
 
-# test
-# def credits_menu():
-   # run = True
-   # while run:
-        # credits menu code here
-     #   pass
-
-# call the main menu
 main_menu()
 
 pygame.quit()
