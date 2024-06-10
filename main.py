@@ -48,7 +48,7 @@ nextdialogue_button = button.Button(1070, 620, nextdialogue_img, 1)
 skipdialogue_button = button.Button(100, 620, skipdialogue_img, 1)
 
 nextday_img = pygame.image.load('gameasset/nextdaybutton.png').convert_alpha()
-nextday_button = button.Button(963, 50, nextday_img, 1)
+nextday_button = button.Button(963,50, nextday_img, 1)
 
 
 # game images
@@ -155,9 +155,11 @@ reset_img = pygame.image.load('gameasset/pause ui/reset.png').convert_alpha()
 mute_img = pygame.image.load('gameasset/pause ui/musicmuted.png').convert_alpha()
 pause_mute = button.Button(575, 90, music_img, 1)
 pause_unmute =button.Button(575, 90, mute_img, 1)
-pause_continue = button.Button(440,250, continue_img,1)
-pause_exit = button.Button(740,250, pauseexit_img,1)
-pause_reset = button.Button(590,250, reset_img,1)
+pause_exit = button.Button(590,250, pauseexit_img,1)
+pause_continue = button.Button(740,250, continue_img,1)
+pause_reset = button.Button(440,250, reset_img,1)
+
+
 
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
@@ -244,15 +246,11 @@ howtoplaynextbutton_button = button.Button(925, 500, howtoplaynextbutton_img, 1)
 howtoplaypreviousbutton_button = button.Button(720, 500, howtoplaypreviousbutton_img, 1)
 
     
-def npc(x, y, alpha):
-    global npcalien_rect
+def npc(x, y):
     npcalien_width = int(npcalien_img.get_width() * 1)
     npcalien_height = int(npcalien_img.get_height() * 1)
-    npcalien_resize = pygame.transform.scale(npcalien_img, (npcalien_width, npcalien_height))
-    npcalien_resize.set_alpha(alpha)
+    npcalien_resize= pygame.transform.scale(npcalien_img, (npcalien_width, npcalien_height))
     screen.blit(npcalien_resize, (x, y))
-    npcalien_rect = npcalien_resize.get_rect(topleft=(npc1_x_pos,npc1_y_pos))
-    # pygame.draw.rect(screen, (255, 0, 0), npcalien_rect, 2)
 
 def npc1_animation(action):
     global npcalien_img, npcalien_index
@@ -266,15 +264,11 @@ def npc1_animation(action):
     if action == "sitting":
         npcalien_img = npcalien4_img
 
-def npc2(x, y, alpha):
-    global npccat_rect
+def npc2(x, y):
     npccat_width = int(npccat_img.get_width() * 1)
     npccat_height = int(npccat_img.get_height() * 1)
     npccat_resize= pygame.transform.scale(npccat_img, (npccat_width, npccat_height))
-    npccat_resize.set_alpha(alpha)
     screen.blit(npccat_resize, (x, y))
-    npccat_rect = npccat_resize.get_rect(topleft=(npc2_x_pos,npc2_y_pos))
-    # pygame.draw.rect(screen, (0, 0, 255), npccat_rect, 2)
 
 def npc2_animation(action):
     global npccat_img, npccat_index
@@ -288,15 +282,12 @@ def npc2_animation(action):
     if action == "sitting":
         npccat_img = npccat1_img
 
-def npc3(x, y, alpha):
-    global npcblob_rect
+def npc3(x, y):
+    global npcblob_img, npcblob_index
     npcblob_width = int(npcblob_img.get_width() * 1)
     npcblob_height = int(npcblob_img.get_height() * 1)
     npcblob_resize= pygame.transform.scale(npcblob_img, (npcblob_width, npcblob_height))
-    npcblob_resize.set_alpha(alpha)
     screen.blit(npcblob_resize, (x, y))
-    npcblob_rect = npcblob_resize.get_rect(topleft=(npc3_x_pos,npc3_y_pos))
-    # pygame.draw.rect(screen, (0, 255, 0), npcblob_rect, 2)
 
 def npc3_animation(action):
     global npcblob_img, npcblob_index
@@ -672,7 +663,6 @@ def tutorial():
         pygame.display.update()
         clock.tick(60)
     pass
-
 def load_highest_day():
     try:
         with open('highest_day.txt', 'r') as file:
@@ -688,7 +678,7 @@ def save_highest_day(day):
 
 def game_screen():
     # money, day = load_game()
-    global npc1_x_pos, npc1_img, npc1_y_pos, active_button, npc2_x_pos, npc2_img, npc2_y_pos, npc3_x_pos, npc3_img, npc3_y_pos
+    global npc1_x_pos, npc1_img, npc1_y_pos, active_button
     run = True
     
     # stop the intro music
@@ -1254,6 +1244,20 @@ def game_screen():
 
         customerplate3(customerplate3X,customerplate3Y, CustomerFood3)
 
+        if day >= 1:
+            npcappeartime1 += 1
+            if npcappeartime1 >= 150:
+                npc(npc1_x_pos, npc1_y_pos)
+
+        if day >= 2:
+            npcappeartime2 +=1
+            if npcappeartime2 >= 600:
+                npc2(npc2_x_pos,npc2_y_pos)
+        
+        if day >= 3:
+            npcappeartime3 +=1
+            if npcappeartime3 >= 1100:
+                npc3(npc3_x_pos,npc3_y_pos)
 
         #table4(tablechair4X,tablechair4Y)
         
@@ -1281,47 +1285,14 @@ def game_screen():
         foodserve(foodserveX,foodserveY,FoodOnTable)
         
         #hint to click E to get the food
-        if waiterfood == emptybox_img and FoodOnTable != emptybox_img and foodtrigger_rect.colliderect(waiter_rect):
+        if foodtrigger_rect.colliderect(waiter_rect) and FoodOnTable != emptybox_img:
             screen.blit(pressE_surf,pressE_rect)
 
         #hint to click SPACE to throw away food
         if trashtrigger_rect.colliderect(waiter_rect) and waiterfood != emptybox_img:
             screen.blit(pressSPACE_surf,pressSPACE_rect)
 
-        
-        npc(npc1_x_pos, npc1_y_pos, 0)
-        npc2(npc2_x_pos, npc2_y_pos, 0)
-        npc3(npc3_x_pos, npc3_y_pos, 0)
         waiter(waiterX, waiterY, WaiterDirection)
-    
-
-        if day >= 1:
-            npcappeartime1 += 1
-            if npcappeartime1 >= 150:
-                npc(npc1_x_pos, npc1_y_pos, 256)
-                waiter(waiterX, waiterY, WaiterDirection)
-
-        if day >= 2:
-            npcappeartime2 +=1
-            if npcappeartime2 >= 600:
-                npc2(npc2_x_pos,npc2_y_pos, 256)
-                waiter(waiterX, waiterY, WaiterDirection)
-        if day >= 3:
-            npcappeartime3 +=1
-            if npcappeartime3 >= 1100:
-                npc3(npc3_x_pos,npc3_y_pos, 256)
-                waiter(waiterX, waiterY, WaiterDirection)
-
-
-        
-        # if day >= 2 and waiterY < npc2_y_pos and waiter_rect.colliderect(npccat_rect):
-        #     waiter(waiterX, waiterY, WaiterDirection)
-
-
-        # if day >= 3 and waiterY < npc3_y_pos and waiter_rect.colliderect(npcblob_rect):
-        #     waiter(waiterX, waiterY, WaiterDirection)
-
-            
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
         # food serve ================================ #
 
@@ -1597,9 +1568,8 @@ def game_screen():
         screen.blit(customer_surf, customer_rect)
 
         # BLACK SCREEN TRANSITION
-        # NEXT DAY BUTTON
         if int(max(satisfy,0)) == 0:
-            if runShopUI == False and runShopUI2 == False and rundecorationUI == False and runhowtoplayUI == False and runchefUI == False and nextday_button.draw(screen) :
+            if nextday_button.draw(screen):
                     click_sfx.play()
                     daytransition = True
                     resetday = True
@@ -1686,7 +1656,7 @@ def game_screen():
                     click_sfx.play()
                     waiter2 = starupgrade_img
                     money -= 250
-                    waiter_speed = 6
+                    waiter_speed = 5
                     purchasewaiter2 = True
 
                 if money >= 250 and purchasewaiter1 == False and purchasewaiter2 == False and purchasewaiter3 == False:
@@ -1697,12 +1667,6 @@ def game_screen():
                     purchasewaiter1 =True
 
                 
-                
-        
-
-
-
-
         chef_animation("idle")
         if runchefUI == True:
             
@@ -1902,7 +1866,7 @@ def game_screen():
 def game_pause ():
     
     global runpauseUI, active_button
-    
+
     runpauseUI = True
 
     music_playing = True
