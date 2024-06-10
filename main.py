@@ -540,7 +540,7 @@ def tutorial():
     intromusic = ['gameasset/intro music.mp3', 'gameasset/intro music 2.mp3']
     intromusic_file = random.choice(intromusic)
     pygame.mixer.music.load(intromusic_file)
-    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.set_volume(0.25)
     pygame.mixer.music.play(-1)
     
     while RunTutorial:
@@ -720,7 +720,7 @@ def game_screen():
     # load and play bg music
     background_music = 'gameasset/gameplay music.mp3'
     pygame.mixer.music.load(background_music)
-    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.set_volume(0.1)
     pygame.mixer.music.play(-1)
 
     # default money and day value
@@ -1252,6 +1252,7 @@ def game_screen():
             
         chef_button = button.Button(200, 215, chef_img, 1)
         
+
         # Decoration bought items
         if purchasedmenu == True:
             screen.blit(menudecoration_img, (336,236))
