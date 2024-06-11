@@ -161,6 +161,7 @@ pause_reset = button.Button(440,250, reset_img,1)
 
 
 
+
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
 upgrade_button1 = button.Button(1050, 150, upgradebutton_img, 1)
@@ -663,6 +664,7 @@ def tutorial():
         pygame.display.update()
         clock.tick(60)
     pass
+
 def load_highest_day():
     try:
         with open('highest_day.txt', 'r') as file:
@@ -1184,15 +1186,19 @@ def game_screen():
             save_highest_day(highest_day)
 
         if money < 0 :  # Check if money is negative, display game over
-            game_over_font = pygame.font.Font(None, 80)
-            game_over_surf = game_over_font.render("Game Over", True, 'red')
-            game_over_rect = game_over_surf.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
-    
-            highest_day_font = pygame.font.Font(None, 40)
-            highest_day_surf = highest_day_font.render(f"Highest Day: {highest_day}", True, 'red')
+            
+            # game_over_font = pygame.font.Font('font/segoepr.ttf', 80)
+            # game_over_surf = game_over_font.render("Game Over", True, 'red')
+            game_over_img = pygame.image.load('gameasset/gameover.png').convert_alpha()
+            game_over_rect = game_over_img.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
+            screen.blit(game_over_img, game_over_rect)
+
+
+            highest_day_font = pygame.font.Font('font/segoepr.ttf', 40)
+            highest_day_surf = highest_day_font.render(f"Highest Day: {highest_day}", True, 'darkred')
             highest_day_rect = highest_day_surf.get_rect(center=(screen.get_width()//2, screen.get_height()//2 + 80))
 
-            screen.blit(game_over_surf, game_over_rect)
+            
             screen.blit(highest_day_surf, highest_day_rect)
     
             pygame.display.update()
