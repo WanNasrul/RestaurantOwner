@@ -25,6 +25,7 @@ mainmenubg_rect = mainmenubg_surf.get_rect(topleft = (0,10))
 mainmenubg2_surf = pygame.image.load('gameasset/backgroundmainmenuanimateddark.png').convert_alpha()
 mainmenubg2_rect = mainmenubg2_surf.get_rect(topleft = (50,-50))
 
+
 # main menu images
 bg_game_screen = pygame.image.load('gameasset/background.png').convert_alpha()
 bg_credit_menu = pygame.image.load('gameasset/credit.png').convert_alpha()
@@ -64,6 +65,9 @@ chefcooking2_img = pygame.image.load('gameasset/chef3.png').convert_alpha()
 chef_cooking = [chefcooking1_img,chefcooking2_img]
 chef_index = 0
 chef_img = chef_cooking[chef_index]
+
+# game icon
+pygame.display.set_icon(chefcooking1_img)
 
 waiter_img = pygame.image.load('gameasset/waiter.png').convert_alpha()
 npc1_img = pygame.image.load('gameasset/cashier.png').convert_alpha()
