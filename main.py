@@ -48,12 +48,7 @@ nextdialogue_button = button.Button(1070, 620, nextdialogue_img, 1)
 skipdialogue_button = button.Button(100, 620, skipdialogue_img, 1)
 
 nextday_img = pygame.image.load('gameasset/nextdaybutton.png').convert_alpha()
-nextday_button = button.Button(963, 50, nextday_img, 1)
-
-clickhint_img = pygame.image.load('gameasset/clickhint.png').convert_alpha()
-
-# closed shop 
-closedshop_img = pygame.image.load('gameasset/closedshop.png').convert_alpha()
+nextday_button = button.Button(963,50, nextday_img, 1)
 
 
 # game images
@@ -160,9 +155,12 @@ reset_img = pygame.image.load('gameasset/pause ui/reset.png').convert_alpha()
 mute_img = pygame.image.load('gameasset/pause ui/musicmuted.png').convert_alpha()
 pause_mute = button.Button(575, 90, music_img, 1)
 pause_unmute =button.Button(575, 90, mute_img, 1)
-pause_continue = button.Button(440,250, continue_img,1)
-pause_exit = button.Button(740,250, pauseexit_img,1)
-pause_reset = button.Button(590,250, reset_img,1)
+pause_exit = button.Button(590,250, pauseexit_img,1)
+pause_continue = button.Button(740,250, continue_img,1)
+pause_reset = button.Button(440,250, reset_img,1)
+
+
+
 
 # shop ui buttons 
 xshopbutton_button = button.Button(1100, 30, xbutton_img, 1)
@@ -199,9 +197,6 @@ buypiano_button = button.Button(635+45, 170+125, buypiano_img, 1)
 buycarpet_button = button.Button(430+45, 400+125, buycarpet_img, 1)
 buyflowers_button = button.Button(635+45, 400+125, buyflowers_img, 1)
 
-#piano
-piano_button = button.Button(680,15, piano_img, 1)
-
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
 start_button = button.Button(515, 350, start_img, 0.5)
@@ -211,7 +206,7 @@ pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
 
 # click the chef and cat
-fern_button = button.Button(950, 50, fern_img, 0.08)
+fern_button = button.Button(498, 300, fern_img, 0.08)
 
 
 # npc images
@@ -252,15 +247,11 @@ howtoplaynextbutton_button = button.Button(925, 500, howtoplaynextbutton_img, 1)
 howtoplaypreviousbutton_button = button.Button(720, 500, howtoplaypreviousbutton_img, 1)
 
     
-def npc(x, y, alpha):
-    global npcalien_rect
+def npc(x, y):
     npcalien_width = int(npcalien_img.get_width() * 1)
     npcalien_height = int(npcalien_img.get_height() * 1)
-    npcalien_resize = pygame.transform.scale(npcalien_img, (npcalien_width, npcalien_height))
-    npcalien_resize.set_alpha(alpha)
+    npcalien_resize= pygame.transform.scale(npcalien_img, (npcalien_width, npcalien_height))
     screen.blit(npcalien_resize, (x, y))
-    npcalien_rect = npcalien_resize.get_rect(topleft=(npc1_x_pos,npc1_y_pos))
-    # pygame.draw.rect(screen, (255, 0, 0), npcalien_rect, 2)
 
 def npc1_animation(action):
     global npcalien_img, npcalien_index
@@ -274,15 +265,11 @@ def npc1_animation(action):
     if action == "sitting":
         npcalien_img = npcalien4_img
 
-def npc2(x, y, alpha):
-    global npccat_rect
+def npc2(x, y):
     npccat_width = int(npccat_img.get_width() * 1)
     npccat_height = int(npccat_img.get_height() * 1)
     npccat_resize= pygame.transform.scale(npccat_img, (npccat_width, npccat_height))
-    npccat_resize.set_alpha(alpha)
     screen.blit(npccat_resize, (x, y))
-    npccat_rect = npccat_resize.get_rect(topleft=(npc2_x_pos,npc2_y_pos))
-    # pygame.draw.rect(screen, (0, 0, 255), npccat_rect, 2)
 
 def npc2_animation(action):
     global npccat_img, npccat_index
@@ -296,15 +283,12 @@ def npc2_animation(action):
     if action == "sitting":
         npccat_img = npccat1_img
 
-def npc3(x, y, alpha):
-    global npcblob_rect
+def npc3(x, y):
+    global npcblob_img, npcblob_index
     npcblob_width = int(npcblob_img.get_width() * 1)
     npcblob_height = int(npcblob_img.get_height() * 1)
     npcblob_resize= pygame.transform.scale(npcblob_img, (npcblob_width, npcblob_height))
-    npcblob_resize.set_alpha(alpha)
     screen.blit(npcblob_resize, (x, y))
-    npcblob_rect = npcblob_resize.get_rect(topleft=(npc3_x_pos,npc3_y_pos))
-    # pygame.draw.rect(screen, (0, 255, 0), npcblob_rect, 2)
 
 def npc3_animation(action):
     global npcblob_img, npcblob_index
@@ -696,7 +680,7 @@ def save_highest_day(day):
 
 def game_screen():
     # money, day = load_game()
-    global npc1_x_pos, npc1_img, npc1_y_pos, active_button, npc2_x_pos, npc2_img, npc2_y_pos, npc3_x_pos, npc3_img, npc3_y_pos
+    global npc1_x_pos, npc1_img, npc1_y_pos, active_button
     run = True
     
     # stop the intro music
@@ -721,12 +705,6 @@ def game_screen():
     daytransition = False
     daytransitiontick = 0
     resetday = False
-
-    appearclickhint1 = False
-    clickhintappearonce = False
-    clickY = 180
-
-    closeshopY = -720
     
     highest_day = 1
     highest_day = load_highest_day()
@@ -847,9 +825,6 @@ def game_screen():
 
     npcstop = False
 
-    #easter egg
-    easteregg = False
-
     # HOW TO PLAY
     runhowtoplayUI = True
     howtoplaypicture = [how1_img,how2_img,how3_img,how4_img,how5_img,how6_img,how7_img,how8_img,]
@@ -858,23 +833,6 @@ def game_screen():
     # The game won't start until the tutorial is closed for the first time
     howtoplaygameplaycooldown = False
 
-    # Piano sound
-    pianosound = ['gameasset/24-piano-keys/key01.mp3','gameasset/24-piano-keys/key02.mp3','gameasset/24-piano-keys/key03.mp3',
-                'gameasset/24-piano-keys/key04.mp3','gameasset/24-piano-keys/key05.mp3','gameasset/24-piano-keys/key06.mp3',
-                'gameasset/24-piano-keys/key07.mp3','gameasset/24-piano-keys/key08.mp3','gameasset/24-piano-keys/key09.mp3',
-                'gameasset/24-piano-keys/key10.mp3','gameasset/24-piano-keys/key11.mp3','gameasset/24-piano-keys/key12.mp3',
-                'gameasset/24-piano-keys/key13.mp3','gameasset/24-piano-keys/key14.mp3','gameasset/24-piano-keys/key15.mp3',
-                'gameasset/24-piano-keys/key16.mp3','gameasset/24-piano-keys/key17.mp3','gameasset/24-piano-keys/key18.mp3',
-                'gameasset/24-piano-keys/key19.mp3','gameasset/24-piano-keys/key20.mp3','gameasset/24-piano-keys/key21.mp3',
-                'gameasset/24-piano-keys/key22.mp3','gameasset/24-piano-keys/key23.mp3','gameasset/24-piano-keys/key24.mp3']
-    piano_index = 0
-    # pygame.mixer.music.load(pianosound_file)
-
-    # piano_index = 0
-
-    # pianoplay = pianosound[piano_index]
-
-    pygame.mixer.music.set_volume(1)
 
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height()-100)
@@ -1228,15 +1186,18 @@ def game_screen():
             save_highest_day(highest_day)
 
         if money < 0 :  # Check if money is negative, display game over
-            game_over_font = pygame.font.Font(None, 80)
-            game_over_surf = game_over_font.render("Game Over", True, 'red')
-            game_over_rect = game_over_surf.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
-    
-            highest_day_font = pygame.font.Font(None, 40)
-            highest_day_surf = highest_day_font.render(f"Highest Day: {highest_day}", True, 'red')
+            # game_over_font = pygame.font.Font('font/segoepr.ttf', 80)
+            # game_over_surf = game_over_font.render("Game Over", True, 'red')
+            game_over_img = pygame.image.load('gameasset/gameover.png').convert_alpha()
+            game_over_rect = game_over_img.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
+            screen.blit(game_over_img, game_over_rect)
+
+
+            highest_day_font = pygame.font.Font('font/segoepr.ttf', 40)
+            highest_day_surf = highest_day_font.render(f"Highest Day: {highest_day}", True, 'darkred')
             highest_day_rect = highest_day_surf.get_rect(center=(screen.get_width()//2, screen.get_height()//2 + 80))
 
-            screen.blit(game_over_surf, game_over_rect)
+            
             screen.blit(highest_day_surf, highest_day_rect)
     
             pygame.display.update()
@@ -1256,30 +1217,10 @@ def game_screen():
 
 
         if purchasedpiano == True:
-            if piano_button.draw(screen):
-                pianosound_file = pianosound[piano_index]
-                piano_sfx = pygame.mixer.Sound(pianosound_file)
-                piano_sfx.play()
-                piano_index +=1
-                print(piano_index)
-                if piano_index >= 24:
-                    piano_index = 0
-                if piano_index == 15 and easteregg == False:
-                    easteregg = True
-                if piano_index >= 16 and easteregg == True:
-                    easteregg = False
-
-        if easteregg == True:
-            if fern_button.draw(screen):
-                cat_sfx.play()
-                if cat_sfx.play():
-                    money += 100
-            
-            
-                
+            screen.blit(piano_img, (680,15))
         # check for collision between waiter and piano
             if collision_detection(waiter_rect, piano_rect):
-                # If collision is detected, prevent waiter fom moving in that direction
+                # If collision is detected, prevent waiter from moving in that direction
                     if keys[pygame.K_w] and waiter_rect.top < piano_rect.bottom:
                         waiterY += waiter_speed
                     if keys[pygame.K_s] and waiter_rect.bottom > piano_rect.top:
@@ -1308,6 +1249,20 @@ def game_screen():
 
         customerplate3(customerplate3X,customerplate3Y, CustomerFood3)
 
+        if day >= 1:
+            npcappeartime1 += 1
+            if npcappeartime1 >= 150:
+                npc(npc1_x_pos, npc1_y_pos)
+
+        if day >= 2:
+            npcappeartime2 +=1
+            if npcappeartime2 >= 600:
+                npc2(npc2_x_pos,npc2_y_pos)
+        
+        if day >= 3:
+            npcappeartime3 +=1
+            if npcappeartime3 >= 1100:
+                npc3(npc3_x_pos,npc3_y_pos)
 
         #table4(tablechair4X,tablechair4Y)
         
@@ -1322,8 +1277,6 @@ def game_screen():
         if chef_button.draw(screen):
             click_sfx.play()
             runchefUI = True
-            appearclickhint1 = False
-            clickhintappearonce = True
             runShopUI2 = False
             rundecorationUI = False
             runShopUI = False
@@ -1337,55 +1290,14 @@ def game_screen():
         foodserve(foodserveX,foodserveY,FoodOnTable)
         
         #hint to click E to get the food
-        if waiterfood == emptybox_img and FoodOnTable != emptybox_img and foodtrigger_rect.colliderect(waiter_rect):
+        if foodtrigger_rect.colliderect(waiter_rect) and FoodOnTable != emptybox_img:
             screen.blit(pressE_surf,pressE_rect)
 
         #hint to click SPACE to throw away food
         if trashtrigger_rect.colliderect(waiter_rect) and waiterfood != emptybox_img:
             screen.blit(pressSPACE_surf,pressSPACE_rect)
 
-        # hint to click the chef for the first time
-        if appearclickhint1 == True and clickhintappearonce == False:
-            if clickY < 200:
-                clickY += 0.3
-            if clickY >= 200:
-                clickY = 180
-            screen.blit(clickhint_img, (205, int(clickY)))
-
-        
-        npc(npc1_x_pos, npc1_y_pos, 0)
-        npc2(npc2_x_pos, npc2_y_pos, 0)
-        npc3(npc3_x_pos, npc3_y_pos, 0)
         waiter(waiterX, waiterY, WaiterDirection)
-    
-
-        if day >= 1:
-            npcappeartime1 += 1
-            if npcappeartime1 >= 150:
-                npc(npc1_x_pos, npc1_y_pos, 256)
-                waiter(waiterX, waiterY, WaiterDirection)
-
-        if day >= 2:
-            npcappeartime2 +=1
-            if npcappeartime2 >= 600:
-                npc2(npc2_x_pos,npc2_y_pos, 256)
-                waiter(waiterX, waiterY, WaiterDirection)
-        if day >= 3:
-            npcappeartime3 +=1
-            if npcappeartime3 >= 1100:
-                npc3(npc3_x_pos,npc3_y_pos, 256)
-                waiter(waiterX, waiterY, WaiterDirection)
-
-
-        
-        # if day >= 2 and waiterY < npc2_y_pos and waiter_rect.colliderect(npccat_rect):
-        #     waiter(waiterX, waiterY, WaiterDirection)
-
-
-        # if day >= 3 and waiterY < npc3_y_pos and waiter_rect.colliderect(npcblob_rect):
-        #     waiter(waiterX, waiterY, WaiterDirection)
-
-            
         screen.blit(waiterfood, (waiterX - 35,waiterY - 105))
         # food serve ================================ #
 
@@ -1416,7 +1328,6 @@ def game_screen():
                 npcfoodrequest = True
                 npcfoodrequest2 = True
                 npcfoodrequest3 = True
-                
 
         if npcfoodrequest == False and howtoplaygameplaycooldown == True:
             npcqueuetime +=1
@@ -1432,7 +1343,6 @@ def game_screen():
                         npc1_y_pos = 435
                         npc1_x_pos = 595
                         npc1_animation("sitting")
-                        appearclickhint1 = True
                         npcfoodrequest = True
 
 
@@ -1449,7 +1359,7 @@ def game_screen():
                     pygame.draw.rect(screen,'red',waitbar_rect)
                     screen.blit(chatbubble_resize, (npc1_x_pos,npc1_y_pos - 100))
                     foodnpcreq(npc1_x_pos + 33,npc1_y_pos - 90, randomfood)
-                    waitdelay += 1*day*0.2
+                    waitdelay += 1
                     
 
                 # increase letter wait bar
@@ -1526,7 +1436,7 @@ def game_screen():
                     pygame.draw.rect(screen,'red',waitbar_rect2)
                     screen.blit(chatbubble_resize, (npc2_x_pos,npc2_y_pos - 100))
                     foodnpcreq2(npc2_x_pos + 33,npc2_y_pos - 90, randomfood2)
-                    waitdelay2 += 1*day*0.2
+                    waitdelay2 += 1
                         
 
                 # increase letter wait bar
@@ -1603,7 +1513,7 @@ def game_screen():
                     pygame.draw.rect(screen,'red',waitbar_rect3)
                     screen.blit(chatbubble_resize, (npc3_x_pos,npc3_y_pos - 100))
                     foodnpcreq2(npc3_x_pos + 33,npc3_y_pos - 90, randomfood3)
-                    waitdelay3 += 1*day*0.2
+                    waitdelay3 += 1
                         
 
                 # increase letter wait bar
@@ -1653,14 +1563,7 @@ def game_screen():
 
         # npc movement ==============================
 
-        # close shop animation
-        if int(max(satisfy,0)) == 0 and npcstop == True:
-            if closeshopY < -5:
-                closeshopY += 10
-            screen.blit(closedshop_img, (-50,closeshopY))
-            
         # GUI
-
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
         screen.blit(daycycle_surf,daycycle_rect)
@@ -1669,17 +1572,9 @@ def game_screen():
         screen.blit(customersleft_img, (580,586))
         screen.blit(customer_surf, customer_rect)
 
-        if pause_button.draw(screen):
-            click_sfx.play()
-            pygame.mixer.music.stop()
-            # insert pause code here
-            game_pause()
-
         # BLACK SCREEN TRANSITION
-        # NEXT DAY BUTTON
         if int(max(satisfy,0)) == 0:
-            if runShopUI == False and runShopUI2 == False and rundecorationUI == False and runhowtoplayUI == False and runchefUI == False and nextday_button.draw(screen) :
-                    closeshopY = -720
+            if nextday_button.draw(screen):
                     click_sfx.play()
                     daytransition = True
                     resetday = True
@@ -1766,7 +1661,7 @@ def game_screen():
                     click_sfx.play()
                     waiter2 = starupgrade_img
                     money -= 250
-                    waiter_speed = 6
+                    waiter_speed = 5
                     purchasewaiter2 = True
 
                 if money >= 250 and purchasewaiter1 == False and purchasewaiter2 == False and purchasewaiter3 == False:
@@ -1777,12 +1672,6 @@ def game_screen():
                     purchasewaiter1 =True
 
                 
-                
-        
-
-
-
-
         chef_animation("idle")
         if runchefUI == True:
             
@@ -1933,21 +1822,9 @@ def game_screen():
 
         # Day reset black =============================== #
         if daytransition == True:
-            screen.fill((255, 235, 216))
-            # screen.blit(bg_main_menu, (0, 0)
-            # moving background
-            mainmenubg_rect.x -= 2
-            if mainmenubg_rect.left <= -743: 
-                mainmenubg_rect.left = 0
-            
-            mainmenubg2_rect.x -= 1
-            if mainmenubg2_rect.left <= -743: 
-                mainmenubg2_rect.left = 0
-
-            screen.blit(mainmenubg2_surf, mainmenubg2_rect)
-            screen.blit(mainmenubg_surf, mainmenubg_rect)
+            screen.fill((0,0,0))
             transition_font = pygame.font.Font('font/segoepr.ttf', 60)
-            transition_surf = transition_font.render(f"Day {day}", True, 'darkred')
+            transition_surf = transition_font.render(f"Day {day}", True, 'white')
             transition_rect = money_surf.get_rect(center=(590,340))
             screen.blit(transition_surf, transition_rect)
             daytransitiontick += 1
@@ -1994,7 +1871,7 @@ def game_screen():
 def game_pause ():
     
     global runpauseUI, active_button
-    
+
     runpauseUI = True
 
     music_playing = True
