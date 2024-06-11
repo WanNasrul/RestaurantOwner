@@ -722,7 +722,7 @@ def game_screen():
     pygame.mixer.music.play(-1)
 
     # default money and day value
-    money = 150
+    money = 10000
     prev_money = money
     amountchanged = ""
     moneychangecolor = "darkred"
@@ -1270,7 +1270,7 @@ def game_screen():
             pygame.time.delay(2000)
             main_menu()
 
-
+  
         if pause_button.draw(screen):
             click_sfx.play()
             game_pause()
