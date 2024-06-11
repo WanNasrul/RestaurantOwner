@@ -194,6 +194,9 @@ buypiano_button = button.Button(635+45, 170+125, buypiano_img, 1)
 buycarpet_button = button.Button(430+45, 400+125, buycarpet_img, 1)
 buyflowers_button = button.Button(635+45, 400+125, buyflowers_img, 1)
 
+#piano
+piano_button = button.Button(680,15, piano_img, 1)
+
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
 start_button = button.Button(515, 350, start_img, 0.5)
@@ -203,7 +206,7 @@ pause_button = button.Button(20, 20, pause_img, 2/3)
 shop_button  = button.Button(890, 510, shop_img, 2/3)
 
 # click the chef and cat
-fern_button = button.Button(498, 300, fern_img, 0.08)
+fern_button = button.Button(950, 50, fern_img, 0.08)
 
 
 # npc images
@@ -833,6 +836,9 @@ def game_screen():
 
     npcstop = False
 
+    #easter egg
+    easteregg = False
+
     # HOW TO PLAY
     runhowtoplayUI = True
     howtoplaypicture = [how1_img,how2_img,how3_img,how4_img,how5_img,how6_img,how7_img,how8_img,]
@@ -841,6 +847,23 @@ def game_screen():
     # The game won't start until the tutorial is closed for the first time
     howtoplaygameplaycooldown = False
 
+    # Piano sound
+    pianosound = ['gameasset/24-piano-keys/key01.mp3','gameasset/24-piano-keys/key02.mp3','gameasset/24-piano-keys/key03.mp3',
+                'gameasset/24-piano-keys/key04.mp3','gameasset/24-piano-keys/key05.mp3','gameasset/24-piano-keys/key06.mp3',
+                'gameasset/24-piano-keys/key07.mp3','gameasset/24-piano-keys/key08.mp3','gameasset/24-piano-keys/key09.mp3',
+                'gameasset/24-piano-keys/key10.mp3','gameasset/24-piano-keys/key11.mp3','gameasset/24-piano-keys/key12.mp3',
+                'gameasset/24-piano-keys/key13.mp3','gameasset/24-piano-keys/key14.mp3','gameasset/24-piano-keys/key15.mp3',
+                'gameasset/24-piano-keys/key16.mp3','gameasset/24-piano-keys/key17.mp3','gameasset/24-piano-keys/key18.mp3',
+                'gameasset/24-piano-keys/key19.mp3','gameasset/24-piano-keys/key20.mp3','gameasset/24-piano-keys/key21.mp3',
+                'gameasset/24-piano-keys/key22.mp3','gameasset/24-piano-keys/key23.mp3','gameasset/24-piano-keys/key24.mp3']
+    piano_index = 0
+    # pygame.mixer.music.load(pianosound_file)
+
+    # piano_index = 0
+
+    # pianoplay = pianosound[piano_index]
+
+    pygame.mixer.music.set_volume(1)
 
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height()-100)
@@ -1222,10 +1245,30 @@ def game_screen():
 
 
         if purchasedpiano == True:
-            screen.blit(piano_img, (680,15))
+            if piano_button.draw(screen):
+                pianosound_file = pianosound[piano_index]
+                piano_sfx = pygame.mixer.Sound(pianosound_file)
+                piano_sfx.play()
+                piano_index +=1
+                print(piano_index)
+                if piano_index >= 24:
+                    piano_index = 0
+                if piano_index == 15 and easteregg == False:
+                    easteregg = True
+                if piano_index >= 16 and easteregg == True:
+                    easteregg = False
+
+        if easteregg == True:
+            if fern_button.draw(screen):
+                cat_sfx.play()
+                if cat_sfx.play():
+                    money += 100
+            
+            
+                
         # check for collision between waiter and piano
             if collision_detection(waiter_rect, piano_rect):
-                # If collision is detected, prevent waiter from moving in that direction
+                # If collision is detected, prevent waiter fom moving in that direction
                     if keys[pygame.K_w] and waiter_rect.top < piano_rect.bottom:
                         waiterY += waiter_speed
                     if keys[pygame.K_s] and waiter_rect.bottom > piano_rect.top:
@@ -1352,6 +1395,7 @@ def game_screen():
                 npcfoodrequest = True
                 npcfoodrequest2 = True
                 npcfoodrequest3 = True
+                
 
         if npcfoodrequest == False and howtoplaygameplaycooldown == True:
             npcqueuetime +=1
@@ -1383,7 +1427,7 @@ def game_screen():
                     pygame.draw.rect(screen,'red',waitbar_rect)
                     screen.blit(chatbubble_resize, (npc1_x_pos,npc1_y_pos - 100))
                     foodnpcreq(npc1_x_pos + 33,npc1_y_pos - 90, randomfood)
-                    waitdelay += 1
+                    waitdelay += 1*day*0.2
                     
 
                 # increase letter wait bar
@@ -1460,7 +1504,7 @@ def game_screen():
                     pygame.draw.rect(screen,'red',waitbar_rect2)
                     screen.blit(chatbubble_resize, (npc2_x_pos,npc2_y_pos - 100))
                     foodnpcreq2(npc2_x_pos + 33,npc2_y_pos - 90, randomfood2)
-                    waitdelay2 += 1
+                    waitdelay2 += 1*day*0.2
                         
 
                 # increase letter wait bar
@@ -1537,7 +1581,7 @@ def game_screen():
                     pygame.draw.rect(screen,'red',waitbar_rect3)
                     screen.blit(chatbubble_resize, (npc3_x_pos,npc3_y_pos - 100))
                     foodnpcreq2(npc3_x_pos + 33,npc3_y_pos - 90, randomfood3)
-                    waitdelay3 += 1
+                    waitdelay3 += 1*day*0.2
                         
 
                 # increase letter wait bar
@@ -1586,8 +1630,11 @@ def game_screen():
             
 
         # npc movement ==============================
-
+        if int(max(satisfy,0)) == 0 and npcstop == True:
+            screen.fill((0, 0, 0))
+            
         # GUI
+
         screen.blit(moneycounter_img, (30,530))
         screen.blit(daycounter_img, (380,615))
         screen.blit(daycycle_surf,daycycle_rect)
@@ -1595,6 +1642,12 @@ def game_screen():
         screen.blit(moneychange_surf,moneychange_rect)
         screen.blit(customersleft_img, (580,586))
         screen.blit(customer_surf, customer_rect)
+
+        if pause_button.draw(screen):
+            click_sfx.play()
+            pygame.mixer.music.stop()
+            # insert pause code here
+            game_pause()
 
         # BLACK SCREEN TRANSITION
         # NEXT DAY BUTTON
