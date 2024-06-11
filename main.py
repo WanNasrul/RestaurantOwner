@@ -50,6 +50,11 @@ skipdialogue_button = button.Button(100, 620, skipdialogue_img, 1)
 nextday_img = pygame.image.load('gameasset/nextdaybutton.png').convert_alpha()
 nextday_button = button.Button(963, 50, nextday_img, 1)
 
+clickhint_img = pygame.image.load('gameasset/clickhint.png').convert_alpha()
+
+# closed shop 
+closedshop_img = pygame.image.load('gameasset/closedshop.png').convert_alpha()
+
 
 # game images
 pause_img = pygame.image.load('gameasset/pause.png').convert_alpha()
@@ -716,6 +721,12 @@ def game_screen():
     daytransition = False
     daytransitiontick = 0
     resetday = False
+
+    appearclickhint1 = False
+    clickhintappearonce = False
+    clickY = 180
+
+    closeshopY = -720
     
     highest_day = 1
     highest_day = load_highest_day()
@@ -1311,6 +1322,8 @@ def game_screen():
         if chef_button.draw(screen):
             click_sfx.play()
             runchefUI = True
+            appearclickhint1 = False
+            clickhintappearonce = True
             runShopUI2 = False
             rundecorationUI = False
             runShopUI = False
@@ -1330,6 +1343,14 @@ def game_screen():
         #hint to click SPACE to throw away food
         if trashtrigger_rect.colliderect(waiter_rect) and waiterfood != emptybox_img:
             screen.blit(pressSPACE_surf,pressSPACE_rect)
+
+        # hint to click the chef for the first time
+        if appearclickhint1 == True and clickhintappearonce == False:
+            if clickY < 200:
+                clickY += 0.3
+            if clickY >= 200:
+                clickY = 180
+            screen.blit(clickhint_img, (205, int(clickY)))
 
         
         npc(npc1_x_pos, npc1_y_pos, 0)
@@ -1411,6 +1432,7 @@ def game_screen():
                         npc1_y_pos = 435
                         npc1_x_pos = 595
                         npc1_animation("sitting")
+                        appearclickhint1 = True
                         npcfoodrequest = True
 
 
@@ -1630,8 +1652,12 @@ def game_screen():
             
 
         # npc movement ==============================
+
+        # close shop animation
         if int(max(satisfy,0)) == 0 and npcstop == True:
-            screen.fill((0, 0, 0))
+            if closeshopY < -5:
+                closeshopY += 10
+            screen.blit(closedshop_img, (-50,closeshopY))
             
         # GUI
 
@@ -1653,6 +1679,7 @@ def game_screen():
         # NEXT DAY BUTTON
         if int(max(satisfy,0)) == 0:
             if runShopUI == False and runShopUI2 == False and rundecorationUI == False and runhowtoplayUI == False and runchefUI == False and nextday_button.draw(screen) :
+                    closeshopY = -720
                     click_sfx.play()
                     daytransition = True
                     resetday = True
@@ -1906,9 +1933,21 @@ def game_screen():
 
         # Day reset black =============================== #
         if daytransition == True:
-            screen.fill((0,0,0))
+            screen.fill((255, 235, 216))
+            # screen.blit(bg_main_menu, (0, 0)
+            # moving background
+            mainmenubg_rect.x -= 2
+            if mainmenubg_rect.left <= -743: 
+                mainmenubg_rect.left = 0
+            
+            mainmenubg2_rect.x -= 1
+            if mainmenubg2_rect.left <= -743: 
+                mainmenubg2_rect.left = 0
+
+            screen.blit(mainmenubg2_surf, mainmenubg2_rect)
+            screen.blit(mainmenubg_surf, mainmenubg_rect)
             transition_font = pygame.font.Font('font/segoepr.ttf', 60)
-            transition_surf = transition_font.render(f"Day {day}", True, 'white')
+            transition_surf = transition_font.render(f"Day {day}", True, 'darkred')
             transition_rect = money_surf.get_rect(center=(590,340))
             screen.blit(transition_surf, transition_rect)
             daytransitiontick += 1
