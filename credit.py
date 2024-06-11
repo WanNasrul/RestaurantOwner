@@ -131,7 +131,17 @@ def main_menu():
         clock.tick(60)
 
 
+def load_highest_day():
+    try:
+        with open('highest_day.txt', 'r') as file:
+            highest_day = int(file.read())
+    except FileNotFoundError:
+        highest_day = 1  # Default value if the file doesn't exist
+    return highest_day
 
+def save_highest_day(highest_day):
+    with open('highest_day.txt', 'w') as file:
+        file.write(str(highest_day))
 
 
 
@@ -143,6 +153,9 @@ def game_screen():
     # default money and day value
     money = 1000
     day = 1
+
+     # Load highest day
+    highest_day = load_highest_day()
 
     while run:
         # game screen code here
@@ -172,6 +185,10 @@ def game_screen():
         money_font = pygame.font.Font('font/segoepr.ttf', 40)
         money_surf = money_font.render(str(money), True, 'darkred')
         money_rect = money_surf.get_rect(topleft=(165,598))
+
+        highest_day_font = pygame.font.Font('font/segoepr.ttf', 30)
+        highest_day_text = highest_day_font.render("Highest Day: " + str(highest_day), True, 'darkred')
+        highest_day_rect = highest_day_text.get_rect(topleft=(30, 30))
 
         if pause_button.draw(screen):
             game_pause()
