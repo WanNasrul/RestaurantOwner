@@ -1186,7 +1186,6 @@ def game_screen():
             save_highest_day(highest_day)
 
         if money < 0 :  # Check if money is negative, display game over
-            
             # game_over_font = pygame.font.Font('font/segoepr.ttf', 80)
             # game_over_surf = game_over_font.render("Game Over", True, 'red')
             game_over_img = pygame.image.load('gameasset/gameover.png').convert_alpha()
