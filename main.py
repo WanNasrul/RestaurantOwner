@@ -880,7 +880,7 @@ def game_screen():
     # opacity of cooking progress bar
     progressbar_opacity = 255
 
-
+    # resized cooking at stove
     foodstove_width = 45
     foodstove_height = 45
 
@@ -1207,6 +1207,7 @@ def game_screen():
         # pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
         pressSPACE_surf = pygame.image.load('gameasset/disposefoodhint.png').convert_alpha()
         pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX-40,waiterY+110))
+
 
 
         if day > highest_day:
@@ -1777,11 +1778,12 @@ def game_screen():
 
                 if chefcookingtime >= 5:
                     progress += chefcookingtime
-                    chefcookingtime = 0
+                    chefcookingtime = 0 
             else:
                 FoodOnTable = cooking
                 cooking = emptybox_img
                 progress = 0
+                
 
             # resize the cooking image
             resized_cooking(cooking, (205, 170), (foodstove_width, foodstove_height))
@@ -1796,7 +1798,7 @@ def game_screen():
             # progressbar_font.set_alpha(progressbar_opacity)
             progressbar_rect_surface.fill('red')
             screen.blit(progressbar_rect_surface, progressbar_rect)
-            
+
 
         # Chef UI ====================================== #
 
