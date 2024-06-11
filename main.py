@@ -2,11 +2,9 @@ import pygame
 import button
 from sys import exit #import one thing
 import random
-import time
 import math
 from pygame import mixer
-import pickle
-# import os 
+
 
 # initialize pygame
 pygame.init()
@@ -375,6 +373,12 @@ def foodserve(x, y, FoodOnTable):
     foodserve_resize = pygame.transform.scale(FoodOnTable, (foodserve_width, foodserve_height))
     screen.blit(foodserve_resize, (x, y))
 
+# def foodstove(x, y, FoodOnTable):
+#     foodstove_width = int(FoodOnTable.get_width() *0.5)
+#     foodstove_height = int(FoodOnTable.get_height() * 0.5)
+#     foodstove_resize = pygame.transform.scale(FoodOnTable, (foodstove_width, foodstove_height))
+#     screen.blit(foodstove_resize, (x, y))
+
 def customerplate1(x, y, CustomerFood):
     customerplate1_width = int(CustomerFood.get_width() *0.5)
     customerplate1_height = int(CustomerFood.get_height() *0.5)
@@ -411,6 +415,11 @@ def foodnpcreq3(x,y, randomfood):
     foodnpcreq3_height = int(randomfood.get_height() *0.5)
     foodnpcreq3_resize = pygame.transform.scale(randomfood, (foodnpcreq3_width, foodnpcreq3_height))
     screen.blit(foodnpcreq3_resize, (x,y))
+
+# function to resize and blit the cooking image
+def resized_cooking(image, position, size):
+    resized_image = pygame.transform.scale(image, size)
+    screen.blit(resized_image, position)
 
 # def casher(x, y):
 #     casher_width = int(casher_img.get_width() * 1)
@@ -513,7 +522,7 @@ def tutorial():
     intromusic = ['gameasset/intro music.mp3', 'gameasset/intro music 2.mp3']
     intromusic_file = random.choice(intromusic)
     pygame.mixer.music.load(intromusic_file)
-    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.set_volume(0.25)
     pygame.mixer.music.play(-1)
     
     while RunTutorial:
@@ -705,7 +714,7 @@ def game_screen():
     # load and play bg music
     background_music = 'gameasset/gameplay music.mp3'
     pygame.mixer.music.load(background_music)
-    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.set_volume(0.1)
     pygame.mixer.music.play(-1)
 
     # default money and day value
@@ -805,7 +814,7 @@ def game_screen():
     
      
 
-    chefcookingtime = 1
+    chefcookingtime = 0.5
 
 
     # shopui2
@@ -824,6 +833,7 @@ def game_screen():
     # deco collision
     pianoX = 680
     pianoY = 15
+
 
     #npc
     npcfoodrequest = False
@@ -899,7 +909,16 @@ def game_screen():
     casher_rect = pygame.Rect(casherX, casherY, 80, 350)
 
     # rect object for deco
-    piano_rect = pygame.Rect(pianoX, pianoY, 160, 40)
+    piano_rect = pygame.Rect(pianoX, pianoY, 160, 133)
+
+    # opacity of cooking progress bar
+    progressbar_opacity = 255
+
+    # resized cooking at stove
+    foodstove_width = 45
+    foodstove_height = 45
+
+
 
     # days progression
 
@@ -1157,6 +1176,7 @@ def game_screen():
                 waiterX += waiter_speed
             if keys[pygame.K_d] and waiter_rect.right > tablechair2_rect.left:
                 waiterX -= waiter_speed
+
             if CustomerFood3 == emptybox_img and npcfoodrequest3 == True and npc3_x_pos == 950:
                 CustomerFood3 = waiterfood
                 waiterfood = emptybox_img
@@ -1221,6 +1241,7 @@ def game_screen():
         # pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
         pressSPACE_surf = pygame.image.load('gameasset/disposefoodhint.png').convert_alpha()
         pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX-40,waiterY+110))
+
 
 
         if day > highest_day:
@@ -1316,8 +1337,8 @@ def game_screen():
         
         # chef progress bar
         progressbar_font = pygame.font.Font('font/segoepr.ttf', 15)
-        progressbar_surf = progressbar_font.render('.'*progress, False, (64,64,64))
-        progressbar_rect = progressbar_surf.get_rect(midleft = (615,535))
+        progressbar_surf = progressbar_font.render(' '*int(progress), False, (64,64,64))
+        progressbar_rect = progressbar_surf.get_rect(midleft = (549,535))
 
         if chef_button.draw(screen):
             click_sfx.play()
@@ -1335,7 +1356,7 @@ def game_screen():
         # food serve (part 1) ================================ #
         screen.blit(foodtrigger_scaled, foodtrigger_rect,) # foodtrigger
         foodserve(foodserveX,foodserveY,FoodOnTable)
-        
+        # foodstove(foodstoveX,foodstoveY,FoodOnTable)
         #hint to click E to get the food
         if waiterfood == emptybox_img and FoodOnTable != emptybox_img and foodtrigger_rect.colliderect(waiter_rect):
             screen.blit(pressE_surf,pressE_rect)
@@ -1782,7 +1803,6 @@ def game_screen():
 
 
 
-
         chef_animation("idle")
         if runchefUI == True:
             
@@ -1793,52 +1813,73 @@ def game_screen():
             if xbutton_button.draw(screen):
                 click_sfx.play()
                 runchefUI = False
+                # change opacity when xbutton is clicked
+                progressbar_opacity = 0
             
             if chicken_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = chicken_img
                 money -= 18
                 # if the player clicks on the food icon, it will be added to the cooking slot
+                progressbar_opacity = 255
 
+            
             if fish_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = fish_img
                 money -= 12
+                progressbar_opacity = 255
 
             if burger_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = burger_img
                 money -= 30
+                progressbar_opacity = 255
 
             if pizza_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = pizza_img
                 money -= 35
+                progressbar_opacity = 255
+
                 
             if steak_button.draw(screen) and cooking == emptybox_img:
                 click_sfx.play()
                 cooking = steak_img
                 money -= 60
+                progressbar_opacity = 255
 
             
         if cooking != emptybox_img:
             chef_animation("cooking")
-            if progress <= 130:
-                progress += chefcookingtime
+            if progress <= 85:
+                progress += chefcookingtime 
+
 
                 if chefcookingtime >= 5:
                     progress += chefcookingtime
-                    chefcookingtime = 0       
+                    chefcookingtime = 0 
             else:
                 FoodOnTable = cooking
                 cooking = emptybox_img
                 progress = 0
                 
 
-            screen.blit(cooking, (450,480))
-            screen.blit(progressbar_img, (605,515))
+            # resize the cooking image
+            resized_cooking(cooking, (205, 170), (foodstove_width, foodstove_height))
+
+            # set the alpha (transparency) for the progress bar
+            progressbar_img.set_alpha(progressbar_opacity)
+            screen.blit(progressbar_img, (540, 515))
             screen.blit(progressbar_surf, progressbar_rect)
-            pygame.draw.rect(screen,'red',progressbar_rect)
+            # draw the red progress rect with the same opacity
+            progressbar_rect_surface = pygame.Surface(progressbar_rect.size)
+            progressbar_rect_surface.set_alpha(progressbar_opacity)
+            # progressbar_font.set_alpha(progressbar_opacity)
+            progressbar_rect_surface.fill('red')
+            screen.blit(progressbar_rect_surface, progressbar_rect)
+
+
         # Chef UI ====================================== #
 
        
