@@ -718,11 +718,11 @@ def game_screen():
     # load and play bg music
     background_music = 'gameasset/gameplay music.mp3'
     pygame.mixer.music.load(background_music)
-    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.set_volume(0.025)
     pygame.mixer.music.play(-1)
 
     # default money and day value
-    money = 10000
+    money = 150
     prev_money = money
     amountchanged = ""
     moneychangecolor = "darkred"
