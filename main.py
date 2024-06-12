@@ -722,7 +722,7 @@ def game_screen():
     pygame.mixer.music.play(-1)
 
     # default money and day value
-    money = 150
+    money = 10000
     prev_money = money
     amountchanged = ""
     moneychangecolor = "darkred"
@@ -881,7 +881,7 @@ def game_screen():
                 'gameasset/24-piano-keys/key16.mp3','gameasset/24-piano-keys/key17.mp3','gameasset/24-piano-keys/key18.mp3',
                 'gameasset/24-piano-keys/key19.mp3','gameasset/24-piano-keys/key20.mp3','gameasset/24-piano-keys/key21.mp3',
                 'gameasset/24-piano-keys/key22.mp3','gameasset/24-piano-keys/key23.mp3','gameasset/24-piano-keys/key24.mp3']
-    piano_index = 0
+    piano_index = 24
     # pygame.mixer.music.load(pianosound_file)
 
     # piano_index = 0
