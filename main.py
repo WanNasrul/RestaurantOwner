@@ -722,7 +722,7 @@ def game_screen():
     pygame.mixer.music.play(-1)
 
     # default money and day value
-    money = 10000
+    money = 150
     prev_money = money
     amountchanged = ""
     moneychangecolor = "darkred"
