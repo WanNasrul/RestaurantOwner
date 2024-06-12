@@ -201,8 +201,12 @@ buypiano_button = button.Button(635+45, 170+125, buypiano_img, 1)
 buycarpet_button = button.Button(430+45, 400+125, buycarpet_img, 1)
 buyflowers_button = button.Button(635+45, 400+125, buyflowers_img, 1)
 
-#piano
+#easteregg picture
+easteregg_img = pygame.image.load("gameasset/cat_easter_egg.gif")
+#easteregg button
 piano_button = button.Button(680,15, piano_img, 1)
+menudecoration_button = button.Button(336,236, menudecoration_img,1)
+flower_button = button.Button(1065,300, flowers_img,1)
 
 # create button instances
 title_button = button.Button(300, 100, title_img, 0.5)
@@ -223,6 +227,7 @@ wrong_img = pygame.image.load('gameasset/wrong.png').convert_alpha()
 wrong_scaled = pygame.transform.scale(wrong_img, (int(wrong_img.get_width() * 0.05), int(wrong_img.get_height() * 0.05)))
 
 # sound effects
+
 cat_sfx = pygame.mixer.Sound('gameasset/catmeow.mp3')
 music_sfx = pygame.mixer.Sound('gameasset/music2.mp3')
 click_sfx = pygame.mixer.Sound('gameasset/click (2).mp3')
@@ -377,12 +382,6 @@ def foodserve(x, y, FoodOnTable):
     foodserve_resize = pygame.transform.scale(FoodOnTable, (foodserve_width, foodserve_height))
     screen.blit(foodserve_resize, (x, y))
 
-# def foodstove(x, y, FoodOnTable):
-#     foodstove_width = int(FoodOnTable.get_width() *0.5)
-#     foodstove_height = int(FoodOnTable.get_height() * 0.5)
-#     foodstove_resize = pygame.transform.scale(FoodOnTable, (foodstove_width, foodstove_height))
-#     screen.blit(foodstove_resize, (x, y))
-
 def customerplate1(x, y, CustomerFood):
     customerplate1_width = int(CustomerFood.get_width() *0.5)
     customerplate1_height = int(CustomerFood.get_height() *0.5)
@@ -425,12 +424,6 @@ def resized_cooking(image, position, size):
     resized_image = pygame.transform.scale(image, size)
     screen.blit(resized_image, position)
 
-# def casher(x, y):
-#     casher_width = int(casher_img.get_width() * 1)
-#     casher_height = int(casher_img.get_height() * 1)
-#     casher_resize = pygame.transform.scale(casher_img, (casher_width, casher_height))
-#     screen.blit(casher_resize, (x, y))
-
 def piano(x, y):
     piano_width = int(piano_img.get_width() * 1)
     piano_height = int(piano_img.get_height() * 1)
@@ -438,13 +431,6 @@ def piano(x, y):
     screen.blit(piano_resize, (x, y))
 
 def collision_detection(waiter_rect, table_rect):
-
-    # print("waiter_rect:", waiter_rect)
-    # print("table_rect:", table_rect)
-    # print("Collision:", waiter_rect.colliderect(table_rect))
-
-
-    # Check if two rectangles collide while taking into account the waiter's position
     return waiter_rect.colliderect(table_rect)
 
 def easeOutSine(t):
@@ -531,8 +517,6 @@ def tutorial():
     
     while RunTutorial:
         screen.fill((255, 235, 216))
-        # screen.blit(bg_main_menu, (0, 0)
-        # moving main menu background
         mainmenubg_rect.x -= 2
         if mainmenubg_rect.left <= -743: 
             mainmenubg_rect.left = 0
@@ -676,14 +660,6 @@ def tutorial():
                 click_sfx.play()
                 game_screen()
                 RunTutorial = False
-
-
-        # # quitting
-        # if pause_button.draw(screen):
-        #     click_sfx.play()
-        #     pygame.mixer.music.stop()
-        #     # insert pause code here
-        #     RunTutorial = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -861,8 +837,7 @@ def game_screen():
 
     npcstop = False
 
-    #easter egg
-    easteregg = False
+
 
     # HOW TO PLAY
     runhowtoplayUI = True
@@ -872,6 +847,8 @@ def game_screen():
     # The game won't start until the tutorial is closed for the first time
     howtoplaygameplaycooldown = False
 
+    #easter egg ===========================================================================================#
+    easteregg_sfx = pygame.mixer.Sound('gameasset/cat-laughing-at-you-made-with-Voicemod.mp3')
     # Piano sound
     pianosound = ['gameasset/24-piano-keys/key01.mp3','gameasset/24-piano-keys/key02.mp3','gameasset/24-piano-keys/key03.mp3',
                 'gameasset/24-piano-keys/key04.mp3','gameasset/24-piano-keys/key05.mp3','gameasset/24-piano-keys/key06.mp3',
@@ -880,15 +857,22 @@ def game_screen():
                 'gameasset/24-piano-keys/key13.mp3','gameasset/24-piano-keys/key14.mp3','gameasset/24-piano-keys/key15.mp3',
                 'gameasset/24-piano-keys/key16.mp3','gameasset/24-piano-keys/key17.mp3','gameasset/24-piano-keys/key18.mp3',
                 'gameasset/24-piano-keys/key19.mp3','gameasset/24-piano-keys/key20.mp3','gameasset/24-piano-keys/key21.mp3',
-                'gameasset/24-piano-keys/key22.mp3','gameasset/24-piano-keys/key23.mp3','gameasset/24-piano-keys/key24.mp3']
-    piano_index = 24
-    # pygame.mixer.music.load(pianosound_file)
-
-    # piano_index = 0
-
-    # pianoplay = pianosound[piano_index]
-
+                'gameasset/24-piano-keys/key22.mp3','gameasset/24-piano-keys/key23.mp3','gameasset/24-piano-keys/key24.mp3',
+                'gameasset/catmeow.mp3']
+    
+    piano_index = 0
     pygame.mixer.music.set_volume(1)
+
+    menudecoration_index = 0
+
+    flower_index = 0
+
+    easteregg_img = pygame.image.load('gameasset/cat_easter_egg.gif').convert_alpha()
+    easteregg_img = pygame.transform.scale(easteregg_img, (easteregg_img.get_width() * 4, easteregg_img.get_height() * 2))
+
+    easteregg = False
+    easteregg2 = True
+    eastereggwait = 0
 
     # rect object for waiter
     waiter_rect = pygame.Rect(waiterX, waiterY, waiter_img.get_width(), waiter_img.get_height()-100)
@@ -1008,9 +992,6 @@ def game_screen():
 
             resetday = False
 
-
-
-
 # NPC 1 RESET --------------------------------------------------------------------------------------------------------------#
         if npc1reset == False and npcstop == False:
 
@@ -1115,10 +1096,6 @@ def game_screen():
 # NPC 3 RESET --------------------------------------------------------------------------------------------------------------#
 
 
-        # if fern_button.draw(screen) and runchefUI == False and runShopUI2 == True and rundecorationUI == True:
-        #     cat_sfx.play()
-
-
         # get the state of all keyboard keys
         keys = pygame.key.get_pressed()
 
@@ -1141,15 +1118,6 @@ def game_screen():
 
         # update waiter Rect object position
         waiter_rect.bottomleft = (waiterX, waiterY+110)
-
-        # rectangle draw testing
-        # pygame.draw.rect(screen, 'red', waiter_rect, 2)
-
-        # pygame.draw.rect(screen, 'red', tablechair1_rect, 2)
-        # pygame.draw.rect(screen, 'red', tablechair2_rect, 2)
-        # pygame.draw.rect(screen, 'red', tablechair3_rect, 2)
-
-
 
         # check for collision between waiter and table chair (1)
         if collision_detection(waiter_rect, tablechair1_rect):
@@ -1235,18 +1203,14 @@ def game_screen():
         moneychange_surf.set_alpha(moneychangeopacity)
         moneychange_rect = moneychange_surf.get_rect(topleft=(165,540))
 
-        # pressE_font = pygame.font.Font('font/segoepr.ttf', 20)
-        # pressE_surf = pressE_font.render("Press E to pick the food", True, "darkred")
-
         pressE_surf = pygame.image.load('gameasset/pickfoodhint.png').convert_alpha()
         pressE_rect = pressE_surf.get_rect(topleft=(waiterX-40,waiterY-30))
 
-        # pressSPACE_font = pygame.font.Font('font/segoepr.ttf', 20)
-        # pressSPACE_surf = pressSPACE_font.render("Press SPACE to throw away food", True, "darkred")
         pressSPACE_surf = pygame.image.load('gameasset/disposefoodhint.png').convert_alpha()
         pressSPACE_rect = pressSPACE_surf.get_rect(topleft=(waiterX-40,waiterY+110))
 
-
+        easter_font = pygame.font.Font('font/segoepr.ttf', 10)
+        easter_surf = easter_font.render(f"F = 12, M = 5, P = 24" , True, 'darkred')
 
         if day > highest_day:
             highest_day = day
@@ -1278,18 +1242,15 @@ def game_screen():
         chef_button = button.Button(200, 215, chef_img, 1)
         
         # Decoration bought items
-        if purchasedmenu == True:
-            screen.blit(menudecoration_img, (336,236))
-
-
+        #easteregg 1 =========================================================================
         if purchasedpiano == True:
             if piano_button.draw(screen):
                 pianosound_file = pianosound[piano_index]
                 piano_sfx = pygame.mixer.Sound(pianosound_file)
                 piano_sfx.play()
                 piano_index +=1
-                print(piano_index)
-                if piano_index >= 24:
+                print (f"{piano_index} piano")
+                if piano_index >= 25:
                     piano_index = 0
                 if piano_index == 15 and easteregg == False:
                     easteregg = True
@@ -1301,7 +1262,21 @@ def game_screen():
                 cat_sfx.play()
                 if cat_sfx.play():
                     money += 100
-            
+
+        #easteregg 2=======================================================#
+        if purchasedmenu == True:
+            if menudecoration_button.draw(screen):
+                menudecoration_index += 1
+                print (f"{menudecoration_index} menu")
+                if menudecoration_index >= 9:
+                    menudecoration_index = 0
+        
+        if purchasedflowers == True:
+            if flower_button.draw(screen):
+                flower_index += 1
+                print (f"{flower_index} flower")
+                if flower_index >= 15:
+                    flower_index = 0
             
                 
         # check for collision between waiter and piano
@@ -1320,8 +1295,6 @@ def game_screen():
         if purchasedcarpet == True:
             screen.blit(carpet_img, (400,270))
 
-        if purchasedflowers == True:
-            screen.blit(flowers_img, (1065,300))
 
         table1(tablechair1X,tablechair1Y)
 
@@ -1334,10 +1307,8 @@ def game_screen():
         customerplate2(customerplate2X,customerplate2Y, CustomerFood2)
 
         customerplate3(customerplate3X,customerplate3Y, CustomerFood3)
-
-
-        #table4(tablechair4X,tablechair4Y)
         
+        screen.blit(easter_surf, (180,20))
         
         # Chef UI ====================================== #
         
@@ -1696,6 +1667,16 @@ def game_screen():
         screen.blit(customersleft_img, (580,586))
         screen.blit(customer_surf, customer_rect)
 
+        #easter egg 2 ______________________________________________________________________________________________
+        if flower_index == 12 and menudecoration_index == 6 and piano_index == 24 and easteregg2 == True:
+            screen.blit(easteregg_img, (200,70))
+            easteregg_sfx.play()
+            eastereggwait += 1
+            if eastereggwait >= 190:
+                easteregg2 = False
+                eastereggwait = 0
+
+        #pause
         if pause_button.draw(screen):
             click_sfx.play()
             pygame.mixer.music.stop()
@@ -1742,7 +1723,6 @@ def game_screen():
             screen.blit(shopbackground_img, (410,25))
             screen.blit(cheficon_img, (440,135))
             screen.blit(waitericon_img, (440,295))
-            # screen.blit(cheficon_img, (440,450))
             screen.blit(chef, (610,155))
             screen.blit(chef2, (710,155))
             screen.blit(chef3, (810,155))
